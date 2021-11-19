@@ -143,7 +143,7 @@
             <h2 class="text-center">New products</h2>
             <div class="row">
                 @foreach ($products as $product)
-                    <x-product-card :product="$product" />
+                    <x-product-card :product="$product"/>
                 @endforeach
             </div>
     </section>
