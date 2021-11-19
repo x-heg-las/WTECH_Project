@@ -1,0 +1,280 @@
+.shopping-container
+{
+    margin-top: 50px;
+}
+
+.content-wrapper 
+{
+    max-width: 1264 px;
+}
+
+.shopping-container .cart-item 
+{
+    list-style: none;
+    padding-bottom: 10px;
+    border-style: none none solid none;
+    border-width: 1px;
+    margin-bottom: 25px;
+    margin-right: 10px;
+    border-color: #9615DB;
+}
+
+.product-wrapper
+{
+    flex-direction: column;
+}
+
+.pay-options
+{
+    display: flex;
+    padding-top: 25px;
+    text-align: center;
+}
+
+.pay-options img 
+{
+   padding-top: 15px; 
+}
+
+.product-quantity-wrapper
+{
+    padding-right: 12px;
+    padding-left: 12px;
+}
+
+.dropdown-quantity
+{
+    border: 1px solid;
+}
+
+.product-meta
+{
+
+    position: relative;
+    align-self: bottom;
+    vertical-align: bottom;
+   
+}
+
+.login-form
+{
+    margin-top: 150px;
+    padding: 15px;
+    text-align: center;
+    border : 1px solid;
+    border-color: gray;
+}
+
+a, a:hover, a:focus, a:active
+{
+    text-decoration: none;
+    color: black;
+}
+
+
+.product-meta > ul
+{
+    list-style: none;
+}
+
+.product-meta > ul > li
+{
+    display: inline;
+}
+
+span.pricetag
+{
+    float: right;
+}
+
+.image-wrapper
+{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.dropdown-menu
+{
+    min-width: auto;
+}
+
+.product-description
+{   
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 4;
+    overflow: hidden;
+     
+}
+
+body
+{
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+footer
+{
+    margin-top: 150px;
+}
+
+main
+{
+    margin-top:25px;
+}
+
+
+.shipping-container .form-group
+{
+    margin-bottom: 15px;
+}
+
+.checkout-wrapper
+{
+    padding: 35px;
+}
+
+.login-btn-group .row
+{
+
+    margin-top: 15px;
+}
+
+.shipping-bulletpoint
+{
+    margin-top: 15px;
+    display: table;
+}
+
+.bulletpoint
+{
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+}
+
+.option-btn
+{
+    max-width: 100%;
+    min-width:120px;
+    height:120px;
+    background-color: white;
+    border-width: 5px;
+    border-color: #9615DB;
+    color:black;
+}
+
+.option-btn.active, .option-btn:hover
+{
+    color:white;
+    background-color:#9615DB;
+
+}
+
+#checkoutNavigation .btn
+{
+    width: 100%;
+}
+
+#paypal
+{
+    color: blue;
+}
+
+#banknote
+{
+    color: green;
+}
+
+.purple-btn, .purple-btn:hover, .purple-btn:focus, .purple-btn:active
+{
+    background-color: #9615DB;
+    color: #fff;
+    border: 5px solid ;
+    border-color: #9615DB;
+}
+
+.form-control, .form-control:hover, .form-control:focus, .inactive-btn, .product-card, #allCategories > .card
+{
+    border-color: #9615DB;
+}
+
+.product-card
+{
+    margin-top: 15px;
+}
+
+
+
+#card_0
+{
+    background-color: #9615DB;
+}
+
+#card_1
+{
+    background-color: #66FCF1;
+}
+
+#card_2
+{
+    background-color: #1F2833;
+}
+
+#card_3
+{
+    background-color: #3778C2;
+}
+
+#card_sale
+{
+    background-color: #E56B1F;
+}
+
+.category-card
+{
+    color:white;
+}
+
+@media (min-width: 576px) 
+{ 
+    
+    .product-card{
+        max-height: 500px;
+    }
+ }
+
+
+@media (min-width: 768px) 
+{ 
+    .categories-group
+    {
+        display: grid;
+        grid-template-columns: repeat(5, 20%);
+    }
+}
+
+.first-detail-description
+{   
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 11;
+    overflow: hidden;
+     
+}
+
+.second-detail-description
+{   
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 25;
+    overflow: hidden;
+     
+}
+
+.arrow{
+    font-size: 5vw;
+    vertical-align: middle;
+}
