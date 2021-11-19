@@ -127,10 +127,7 @@
           <div class="row  px-0 flex-d">
           @if($products->isNotEmpty())
             @foreach ($products as $product)
-                <div class="post-list">
-                    <p>{{ $product->name }}</p>
-                    <p>{{ $product->description}}</p>
-                </div>
+              <x-product-card :product="$product"/>
             @endforeach
           @else 
               <div>
