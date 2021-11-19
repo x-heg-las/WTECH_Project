@@ -5,10 +5,10 @@
         </a>
         <section>
             <div class="card-body">
-                <a href="#"><h3 class="text-truncate">Product name</h3></a>
+                <a href="#"><h3 class="text-truncate">{{ product->name }}</h3></a>
             </div>
             <div class="card-body">
-                123 €
+                {{ porduct->price }}
             </div>
         </section>
     </div>
