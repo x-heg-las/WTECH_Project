@@ -9,7 +9,7 @@
         <div class="product-meta row ">
             <ul>
                 <li><a href="#"><span class="fa fa-times-circle" aria-hidden="true">Remove</span></a></li>
-                <li><span class="pricetag">123,4$</span></li>
+                <li><span class="pricetag">$item->total_price</span></li>
             </ul>
         </div>
     </div>

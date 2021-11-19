@@ -8,6 +8,7 @@ class CartItem extends Component
 {
 
     public $item;
+
     /**
      * Create a new component instance.
      *

@@ -13,7 +13,7 @@ class ShoppingCartController extends Controller
      */
     public function index()
     {
-        //
+        return view('layout.shopping-cart');
     }
 
     /**
@@ -32,9 +32,9 @@ class ShoppingCartController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, Product $product)
     {
-        //
+        
     }
 
     /**
