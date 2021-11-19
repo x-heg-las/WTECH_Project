@@ -13,16 +13,6 @@ class Product extends Model
 
     public function images()
     {
-        return DB::table('images')
-                    ->where('product_id', '=', $this->id)
-                    ->get();
-    }
-
-    public function thumbnail()
-    {
-        return DB::table('images')
-                    ->where('product_id', '=', $this->id)
-                    ->take(1)
-                    ->get();
+        return $this->hasMany(Image::class);
     }
 }
