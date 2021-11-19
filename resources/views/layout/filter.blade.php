@@ -1,14 +1,6 @@
-<!doctype html>
-<html lang="en">
+@extends('layout.app')
 
-<head>
-    @include('layout.partials.head')
-</head>
-
-<body>
-  @include('layout.partials.nav')
-
-  <main>
+@section('content')
     <div class="container-xxl px-4 px-xl-4 px-xxl-0">
 
       <div class="row">
@@ -166,9 +158,4 @@
         </nav>
       </div>
     </div>
-  </main>
-  <!-- Footer -->
-  @include('layout.partials.footer')
-</body>
-
-</html>
+@endsection
