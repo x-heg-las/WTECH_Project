@@ -15,11 +15,15 @@ use App\Http\Controllers\ProductController;
 */
 
 Route::get('/', function () {
-    return view('base.index');
+    return view('layout.base.index');
 });
 
 Route::get('/login', function (){
     return view('auth.login');
+});
+
+Route::get('/shopping_cart', function () {
+    return view('layout.base.shopping-cart');
 });
 
 Route::get('/search', [ProductController::class, 'search'])->name('search');
