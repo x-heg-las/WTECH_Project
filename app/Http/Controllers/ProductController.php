@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Models\Product;
+
+use Illuminate\Support\Facades\Log;     // TODO vymaz asi potom?
 
 class ProductController extends Controller
 {
@@ -82,5 +85,28 @@ class ProductController extends Controller
     public function destroy(Product $product)
     {
         //
+    }
+
+    /**
+     * Search products by their name.
+     * 
+     * @param \App\Http\Requests\UpdateProductRequest  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function search(Request $request)
+    {
+        $out = new \Symfony\Component\Console\Output\ConsoleOutput();
+        $out->writeln("Hello from Terminal");
+        $out->writeln($request);
+        $out->writeln("============================================");
+
+
+        // Load search string
+        $search = $request->input('search');
+
+        // Find all products with request string in their name
+        $products = Product::select("*")->where('name', 'ILIKE', "%{$search}%")->get();
+
+        return view('layout.filter', compact('products',$products));
     }
 }

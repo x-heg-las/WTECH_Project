@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProductController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,6 +17,12 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('layout.app');
 });
+
+Route::get('/login', function (){
+    return view('auth.login');
+});
+
+Route::get('/search', [ProductController::class, 'search'])->name('search');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
