@@ -95,17 +95,11 @@ class ProductController extends Controller
      */
     public function search(Request $request)
     {
-        $out = new \Symfony\Component\Console\Output\ConsoleOutput();
-        $out->writeln("Hello from Terminal");
-        $out->writeln($request);
-        $out->writeln("============================================");
-
-
         // Load search string
         $search = $request->input('search');
 
         // Find all products with request string in their name
-        $products = Product::select("*")->where('name', 'ILIKE', "%{$search}%")->get();
+        $products = Product::select("*")->where('name', 'ILIKE', "%{$search}%")->paginate(1);
 
         return view('layout.filter', compact('products',$products));
     }
