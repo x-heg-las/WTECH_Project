@@ -4,11 +4,13 @@ namespace App\View\Components;
 
 use Illuminate\View\Component;
 use App\Models\Product;
+use App\Models\Image;
 
 class ProductCard extends Component
 {
 
     public $record;
+    public $gallery;
     /**
      * Create a new component instance.
      *
@@ -17,6 +19,7 @@ class ProductCard extends Component
     public function __construct($product)
     {
         $this->record = $product;
+        $this->gallery = Image::where('product_id', $product->id)->get();
     }
 
     /**
