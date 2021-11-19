@@ -15,7 +15,7 @@ use App\Http\Controllers\ProductController;
 */
 
 Route::get('/', function () {
-    return view('layout.app');
+    return view('index');
 });
 
 Route::get('/login', function (){

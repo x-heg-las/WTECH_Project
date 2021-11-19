@@ -10,7 +10,6 @@
 <link href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" rel="stylesheet">
 
 <!--Styles -->
-<link rel="stylesheet" href="{{ asset('css/app.css') }}"> 
 <link rel="stylesheet" type="text/css" href="{{ asset('css/styles.css') }}"> 
 
 <!--Scripts -->
