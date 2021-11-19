@@ -15,9 +15,9 @@
               Sort by
             </button>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-              <li><a class="dropdown-item" href="/search?order_by=created_at&order=desc">Newest</a></li>
-              <li><a class="dropdown-item" href="/search?order_by=price&order=asc">Lowest price</a></li>
-              <li><a class="dropdown-item" href="/search?order_by=price&order=desc">Highest price</a></li>
+              <li><a class="dropdown-item" href="{{ request()->fullUrlWithQuery(['order_by' => 'created_at', 'order' => 'desc']) }} ">Newest</a></li>
+              <li><a class="dropdown-item" href="{{ request()->fullUrlWithQuery(['order_by' => 'price', 'order' => 'asc']) }}">Lowest price</a></li>
+              <li><a class="dropdown-item" href="{{ request()->fullUrlWithQuery(['order_by' => 'price', 'order' => 'desc']) }}">Highest price</a></li>
             </ul>
           </div>
         </div>

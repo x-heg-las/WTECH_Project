@@ -98,8 +98,15 @@ class ProductController extends Controller
         // Load search string
         $search = $request->input('search');
 
-        // Find all products with request string in their name
-        $products = Product::select("*")->where('name', 'ILIKE', "%{$search}%")->paginate(1);
+        // Find all products with request string in their name, order by sort
+        if ($request->has('order_by')){
+            $order_by = $request->input('order_by');
+            $order = (string) $request->input('order');
+
+            $products = Product::select("*")->where('name', 'ILIKE', "%{$search}%")->orderBy("{$order_by}", "{$order}")->paginate(10);
+        } else {
+            $products = Product::select("*")->where('name', 'ILIKE', "%{$search}%")->paginate(10);    
+        }
 
         return view('layout.filter', compact('products',$products));
     }
