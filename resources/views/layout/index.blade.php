@@ -139,9 +139,13 @@
             </div>
         </div>
     </section>
-    #sekcie spravit ako samostatny blade partial !!
     <section>
             <h2 class="text-center">New products</h2>
+            <div class="row">
+                @foreach ($products as $product)
+                    <x-product-card :product="$product" />
+                @endforeach
+            </div>
     </section>
     <section>
             <h2 class="text-center">Trending products</h2>
