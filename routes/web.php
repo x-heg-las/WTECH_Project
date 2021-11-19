@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
+use App\Models\Product;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,7 +16,8 @@ use App\Http\Controllers\ProductController;
 */
 
 Route::get('/', function () {
-    return view('layout.base.index');
+    $products = Product::all();
+    return view('layout.index', compact('products', $products));
 });
 
 Route::get('/login', function (){
@@ -23,7 +25,7 @@ Route::get('/login', function (){
 });
 
 Route::get('/shopping_cart', function () {
-    return view('layout.base.shopping-cart');
+    return view('layout.shopping-cart');
 });
 
 Route::get('/search', [ProductController::class, 'search'])->name('search');
