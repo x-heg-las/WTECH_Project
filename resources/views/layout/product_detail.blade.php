@@ -53,8 +53,10 @@
                     </div>
 
                     <div class="row">
-                            <form  method="PUT" class="d-grid col-md-7">
-                                <a href="{{url('products/'.$request->route('product'))}}" role="button" class="btn btn-success btn-lg">Buy</a>
+                            <form  method="POST" class="d-grid col-md-7" action="{{ URL::to('/') }}/products/{{ $request->route('product')->id }}">
+                                <input name="_method" type="hidden" value="PUT">
+                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                <input type="submit" value="Buy" class="btn btn-success btn-lg"/>
                             </form>
                         <div class="col-md-5">
                             <button type="button" class="btn btn-lg btn-full-width btn-secondary big-button">Add to
