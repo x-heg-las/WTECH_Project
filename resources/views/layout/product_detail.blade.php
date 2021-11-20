@@ -1,6 +1,9 @@
 @extends('layout.app')
 
 @section('content')
+    @if (Session::has('message'))
+        <div class="alert alert-info">{{ Session::get('message') }}</div>
+    @endif
         <div class="container">
             <div class="row py-5">
                 <div class="col-12 col-md-6 col-lg-6">
