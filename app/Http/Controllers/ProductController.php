@@ -116,15 +116,12 @@ class ProductController extends Controller
         }
 
         if ($request->has('memory')) {
-            $out->writeln($request->input('memory'));
 
             $memory = $request->input('memory');
 
-            //$lol = $products->has('parameters.number', $memory)->get();
-
-            $products = $products->whereHas('parameters', function ($query) use ($memory) {
-                $query->where('key', 'Memory')->where('number', '=', $memory);
-            });
+                $products = $products->whereHas('parameters', function ($query) use ($memory) {
+                    $query->where('key', 'Memory')->whereIn('number', $memory);
+                });
         }
 
         if ($request->has('storage')) {
@@ -135,7 +132,7 @@ class ProductController extends Controller
             //$lol = $products->has('parameters.number', $memory)->get();
 
             $products = $products->whereHas('parameters', function ($query) use ($storage) {
-                $query->where('key', 'Storage')->where('number', '=', $storage);
+                $query->where('key', 'Storage')->whereIn('number', $storage);
             });
 
         }
@@ -162,7 +159,7 @@ class ProductController extends Controller
             $order_by = $request->input('order_by');
             $order = (string) $request->input('order');
 
-            $products = $products->orderBy("{$order_by}", "{$order}")->paginate(10);
+            $products = $products->orderBy("{$order_by}", "{$order}");
         }
 
         $products = $products->paginate(10);
