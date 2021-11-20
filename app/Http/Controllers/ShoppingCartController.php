@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
+use App\Models\Customer;
+use Session;
 
 class ShoppingCartController extends Controller
 {
@@ -11,9 +15,23 @@ class ShoppingCartController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        $customer = Session::has('customer') ? Session::get('customer') : null;
+        
+        if(Auth::check())
+        {
+            $customer = Customer::find(Auth::id())->id;
+        }
+
+        if($customer)
+        {
+            $items = ShoppingCart::find($customer)->cartItems();
+            return view('layout.shopping-cart', compact('items', $items));
+        }
+
         return view('layout.shopping-cart');
+        
     }
 
     /**
@@ -45,7 +63,18 @@ class ShoppingCartController extends Controller
      */
     public function show($id)
     {
-        //
+        if (Auth::check())
+        {
+            $user = Auth::id();
+            
+        }
+        else
+        {
+            $user = Cache::get('id');
+        }
+
+        $cart = Customer::find($user)->shoppingCart;
+        return redirect('/lauout.shopping-cart', compact('cart', $cart->find($cart->id)->get()));
     }
 
     /**
