@@ -1,6 +1,6 @@
 <div class="col-12 col-sm-6 col-md-4 col-lg-3">
     <div class="card product-card text-center">
-        <a href="#">
+        <a href="/products/{{$record->id}}">
             @if(count($gallery) >= 1)
                 <img src="images/{{ $gallery->first()->image_source }}" alt="Arduino" class="img-fluid" />
             @else

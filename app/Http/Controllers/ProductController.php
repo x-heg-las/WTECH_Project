@@ -6,8 +6,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Models\Product;
-
-use Illuminate\Support\Facades\Log;     // TODO vymaz asi potom?
+use App\Models\Image;
+use App\Models\Parameter;
 
 class ProductController extends Controller
 {
@@ -50,7 +50,10 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
-        //
+        $gallery = Image::where('product_id', $product->id)->get();
+        $parameters = Parameter::where('product_id', $product->id)->get();
+        // Show product detail page
+        return view('layout.product_detail',compact('product', $product, 'gallery', $gallery, 'parameters', $parameters));
     }
 
     /**
@@ -98,8 +101,15 @@ class ProductController extends Controller
         // Load search string
         $search = $request->input('search');
 
-        // Find all products with request string in their name
-        $products = Product::select("*")->where('name', 'ILIKE', "%{$search}%")->paginate(1);
+        // Find all products with request string in their name, order by sort
+        if ($request->has('order_by')){
+            $order_by = $request->input('order_by');
+            $order = (string) $request->input('order');
+
+            $products = Product::select("*")->where('name', 'ILIKE', "%{$search}%")->orderBy("{$order_by}", "{$order}")->paginate(10);
+        } else {
+            $products = Product::select("*")->where('name', 'ILIKE', "%{$search}%")->paginate(10);    
+        }
 
         return view('layout.filter', compact('products',$products));
     }
