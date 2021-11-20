@@ -5,21 +5,21 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Product;
-use App\Models\Order;
+use App\Models\ShoppingCart;
 
 class CartItem extends Model
 {
     use HasFactory;
 
-    protected $filalble = ['order_id', 'product_id', 'quantity', 'total_price', 'unit_price'];
+    protected $filalble = ['order_id', 'product_id', 'quantity', 'total_price', 'unit_price', 'shopping_cart_id'];
 
     public function product()
     {
-        return $this->belongsTo(Product::class, 'product_id');
+        return $this->hasOne(Product::class, 'product_id');
     }
 
     public function order()
     {
-        return $this->belongsTo(Order::class, 'order_id');
+        return $this->hasOne(ShoppingCart::class, 'shopping_cart_id');
     }
 }

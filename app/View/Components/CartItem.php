@@ -3,12 +3,13 @@
 namespace App\View\Components;
 
 use Illuminate\View\Component;
+use App\Models\Product;
 
 class CartItem extends Component
 {
 
     public $item;
-
+    public $product;
     /**
      * Create a new component instance.
      *
@@ -17,6 +18,7 @@ class CartItem extends Component
     public function __construct($item)
     {
         $this->item = $item;
+        $this->product = Product::find($item->product_id)->first();
     }
 
     /**

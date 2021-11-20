@@ -43,14 +43,10 @@ class ShoppingCartController extends Controller
     public function index(Request $request)
     {
         $customer = $this->getCartIdFromSession();
+        
+        $items = ShoppingCart::find($customer)->cartItems()->get();
 
-        if($customer)
-        {
-            $items = ShoppingCart::find($customer)->cartItems();
-            dd($items);
-            return view('layout.shopping-cart', compact('items', $items));
-        }
-
+        return view('layout.shopping-cart', compact('items', $items));
    
     }
 
@@ -67,6 +63,8 @@ class ShoppingCartController extends Controller
              ]
         );
         
+        $request->session()->flash('message', 'Added to the sopping cart.');
+        return redirect('products/'.$id);
     }
 
     /**

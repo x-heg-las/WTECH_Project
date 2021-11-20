@@ -4,12 +4,12 @@
     </div>
     <div class="product-wrapper col-8 container-fluid d-flex align-item-begin align-content-start">
         <div class="product-description row mb-auto">
-            <a href="#"><p>$item->name</p></a>
+            <a href="#"><p>{{ $product->name }}</p></a>
         </div>
         <div class="product-meta row ">
             <ul>
                 <li><a href="#"><span class="fa fa-times-circle" aria-hidden="true">Remove</span></a></li>
-                <li><span class="pricetag">$item->total_price</span></li>
+                <li><span class="pricetag">{{ $item->total_price }}</span></li>
             </ul>
         </div>
     </div>
