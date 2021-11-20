@@ -125,8 +125,6 @@ class ProductController extends Controller
         }
 
         if ($request->has('storage')) {
-            $out->writeln($request->input('storage'));
-
             $storage = $request->input('storage');
 
             //$lol = $products->has('parameters.number', $memory)->get();
@@ -135,6 +133,21 @@ class ProductController extends Controller
                 $query->where('key', 'Storage')->whereIn('number', $storage);
             });
 
+        }
+
+        if ($request->has('min_price') and $request->input('min_price') != null) {
+            $out->writeln('oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo');
+            $out->writeln($request->input('min_price'));
+            $min_price = $request->input('min_price');
+            
+            $products = $products->where('price', '>=', $min_price);
+        }
+
+        if ($request->has('max_price') and $request->input('max_price') != null) {
+
+            $max_price = $request->input('max_price');
+            
+            $products = $products->where('price', '<=', $max_price);
         }
 
         $out->writeln($request);

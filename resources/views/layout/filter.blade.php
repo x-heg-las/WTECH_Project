@@ -29,8 +29,8 @@
         <div class="summary-wrapper col-12 col-md-4 col-lg-3">
           <div class="checkout-wrapper shadow row">
             <span class="display-5 row">Options</span>
-            <form name="filter" action='/search'>
-            <input type="hidden" name="search">
+            <form id='filter' name="filter" action='/search'>
+            <!--<input type="hidden" name="search">-->
             <div class="brand py-3">
               <button class="btn purple-btn" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample"
                 aria-expanded="false" aria-controls="collapseExample">
@@ -118,8 +118,8 @@
             <span class="fs-6 text-center">Lowest and highest price</span>
 
             <div class="input-group">
-              <input name="min_price" type="number" aria-label="Lowest price" class="form-control">
-              <input name="max_price" type="number" aria-label="Highest price" class="form-control">
+              <input name="min_price" type="number" step="0.01" aria-label="Lowest price" class="form-control">
+              <input name="max_price" type="number" step="0.01" aria-label="Highest price" class="form-control">
             </div>
 
             <input class="btn btn-primary" type="submit" value="Submit">
