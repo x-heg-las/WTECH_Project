@@ -27,6 +27,14 @@ Route::get('/login', function (){
     return view('auth.login');
 });
 
+
+Route::get('/shopping_cart', function () {
+    return view('layout.shopping-cart');
+});
+
+Route::get('/products/{product}', [ProductController::class, 'show'])->name('show');
+
+
 Route::get('/search', [ProductController::class, 'search'])->name('search');
 
 Route::get('/dashboard', function () {
