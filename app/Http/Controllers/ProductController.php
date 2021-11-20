@@ -48,12 +48,12 @@ class ProductController extends Controller
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function show(Product $product)
+    public function show(Request $request, Product $product)
     {
         $gallery = Image::where('product_id', $product->id)->get();
         $parameters = Parameter::where('product_id', $product->id)->get();
         // Show product detail page
-        return view('layout.product_detail',compact('product', $product, 'gallery', $gallery, 'parameters', $parameters));
+        return view('layout.product_detail',compact('product', $product, 'gallery', $gallery, 'parameters', $parameters, 'request', $request));
     }
 
     /**
