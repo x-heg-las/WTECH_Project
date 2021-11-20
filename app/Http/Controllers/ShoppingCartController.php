@@ -17,16 +17,42 @@ class ShoppingCartController extends Controller
     public function getCartIdFromSession()
     {
         $customer = Session::has('shopping_cart') ? Session::get('shopping_cart') : null;
+
+        $out = new \Symfony\Component\Console\Output\ConsoleOutput();
+        $out->writeln("EEEEEEEEEEEEEEE------------------------------------------------------------------------------------------------");
+        $out->writeln(Auth::check());
+        $out->writeln("------------------------------------------------------------------------------------------------");
         
         if(Auth::check())
         {
-            $customer = Customer::find('user_id', Auth::id())->id;
+            $out = new \Symfony\Component\Console\Output\ConsoleOutput();
+            $out->writeln("FFFFFFFFFFFFFFF------------------------------------------------------------------------------------------------");
+            $out->writeln(Auth::id());
+            $out->writeln("------------------------------------------------------------------------------------------------");
+            $customer = Customer::where('user_id', Auth::id())->first();
+
+            $shopping_cart = ShoppingCart::where('customer_id' ,$customer->id)->first();
+
+            if ($shopping_cart == null){
+                $id = DB::table('shopping_carts')->insertGetId([
+                    'customer_id' => $customer->id,
+                ]);
+                Session::put('shopping_cart', ShoppingCart::find($id));
+                return $id;
+            }
+
+            else{
+                return $shopping_cart->id;
+            }
+            
+            $out->writeln("------------------------------------------------------------------------------------------------");
+            $out->writeln($shoppingCart);
+            $out->writeln("------------------------------------------------------------------------------------------------");
         }
 
         if($customer)
         {
-         
-            return ShoppingCart::find($customer->id)->id;
+            return ShoppingCart::where('customer_id' ,$customer->id)->first()->id;      // toto jest problemo
         
         }
        
@@ -57,8 +83,8 @@ class ShoppingCartController extends Controller
         DB::table('cart_items')->insert(
             ['shopping_cart_id' => $cartId,
              'product_id' => $product->id,
-             'quantity' => 1,
-             'unit_price' => $product->price,
+             'quantity' => 1,                       // vyber pre detail
+             'unit_price' => $product->price,       // dorob calc pre tieto hodnoty
              'total_price' => $product->price
              ]
         );

@@ -27,6 +27,13 @@
                     <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required />
                 </div>
 
+                <!-- Telephone -->
+                <div class="mt-4">
+                    <x-label for="tel" :value="__('Telephone number')" />
+
+                    <x-input id="tel" pattern="[0-9]{10}" class="block mt-1 w-full" type="tel" name="telephone" :value="old('tel')" />
+                </div>
+
                 <!-- Password -->
                 <div class="mt-4">
                     <x-label for="password" :value="__('Password')" />

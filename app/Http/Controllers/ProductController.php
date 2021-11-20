@@ -98,16 +98,11 @@ class ProductController extends Controller
      */
     public function search(Request $request)
     {
-        //$products = Product::select("*")->where('name', 'ILIKE', "%{$search}%");
-        $out = new \Symfony\Component\Console\Output\ConsoleOutput();
-
         // Load search string
         $search = $request->input('search');
         $products = Product::select("*")->where('name', 'ILIKE', "%{$search}%");
 
-        if ($request->has('brand')) {
-            $out->writeln($request->input('brand'));
-            
+        if ($request->has('brand')) {  
             $brands = $request->input('brand');
 
             foreach ($brands as $brand) {
@@ -119,15 +114,13 @@ class ProductController extends Controller
 
             $memory = $request->input('memory');
 
-                $products = $products->whereHas('parameters', function ($query) use ($memory) {
-                    $query->where('key', 'Memory')->whereIn('number', $memory);
-                });
+            $products = $products->whereHas('parameters', function ($query) use ($memory) {
+                $query->where('key', 'Memory')->whereIn('number', $memory);
+            });
         }
 
         if ($request->has('storage')) {
             $storage = $request->input('storage');
-
-            //$lol = $products->has('parameters.number', $memory)->get();
 
             $products = $products->whereHas('parameters', function ($query) use ($storage) {
                 $query->where('key', 'Storage')->whereIn('number', $storage);
@@ -136,8 +129,6 @@ class ProductController extends Controller
         }
 
         if ($request->has('min_price') and $request->input('min_price') != null) {
-            $out->writeln('oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo');
-            $out->writeln($request->input('min_price'));
             $min_price = $request->input('min_price');
             
             $products = $products->where('price', '>=', $min_price);
@@ -148,14 +139,6 @@ class ProductController extends Controller
             $max_price = $request->input('max_price');
             
             $products = $products->where('price', '<=', $max_price);
-        }
-
-        $out->writeln($request);
-
-        $out->writeln("-------------------------------------------------");
-
-        if ($request->has('storage')) {
-            $out->writeln($request->input('storage'));
         }
 
         // Find all products with request string in their name, order by sort

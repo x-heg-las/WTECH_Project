@@ -59,6 +59,7 @@
                             <form  method="POST" class="d-grid col-md-7" action="{{ URL::to('/') }}/products/{{ $request->route('product')->id }}">
                                 <input name="_method" type="hidden" value="PUT">
                                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                <input type='number' name='quantity' id="number"  value=1 min="1">
                                 <input type="submit" value="Buy" class="btn btn-success btn-lg"/>
                             </form>
                         <div class="col-md-5">
@@ -353,4 +354,18 @@
                 </div>
             </div>
         </div>
+    <script>
+        // Select your input element.
+        var number = document.getElementById('number');
+
+        // Listen for input event on numInput.
+        number.onkeydown = function(e) {
+            if(!((e.keyCode > 95 && e.keyCode < 106)
+            || (e.keyCode > 47 && e.keyCode < 58) 
+            || e.keyCode == 8)) {
+                return false;
+            }
+        }
+    </script>
+    
 @endsection
