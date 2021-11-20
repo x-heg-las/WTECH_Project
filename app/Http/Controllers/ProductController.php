@@ -98,6 +98,13 @@ class ProductController extends Controller
      */
     public function search(Request $request)
     {
+        $out = new \Symfony\Component\Console\Output\ConsoleOutput();
+        $out->writeln($request);
+
+        $out->writeln("-------------------------------------------------");
+
+        $out->writeln($request->input('brand'));
+
         // Load search string
         $search = $request->input('search');
 
