@@ -6,10 +6,35 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use App\Models\Customer;
+use App\Models\ShoppingCart;
+use Illuminate\Support\Facades\DB;
+use App\Models\Product;
 use Session;
 
 class ShoppingCartController extends Controller
 {
+
+    public function getCartIdFromSession()
+    {
+        $customer = Session::has('shopping_cart') ? Session::get('shopping_cart') : null;
+        
+        if(Auth::check())
+        {
+            $customer = Customer::find('user_id', Auth::id())->id;
+        }
+
+        if($customer)
+        {
+         
+            return ShoppingCart::find($customer->id)->id;
+        
+        }
+       
+        $id = DB::table('shopping_carts')->insertGetId([]);
+        Session::put('shopping_cart', ShoppingCart::find($id));
+        return $id;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -17,25 +42,30 @@ class ShoppingCartController extends Controller
      */
     public function index(Request $request)
     {
-        $customer = Session::has('customer') ? Session::get('customer') : null;
-        
-        if(Auth::check())
-        {
-            $customer = Customer::find(Auth::id())->id;
-        }
+        $customer = $this->getCartIdFromSession();
 
         if($customer)
         {
             $items = ShoppingCart::find($customer)->cartItems();
+            dd($items);
             return view('layout.shopping-cart', compact('items', $items));
         }
 
-        return view('layout.shopping-cart');
-        
+   
     }
 
     public function addToShoppingCart(Request $request, $id)
     {
+        $cartId = $this->getCartIdFromSession();
+        $product = Product::find($id);
+        DB::table('cart_items')->insert(
+            ['shopping_cart_id' => $cartId,
+             'product_id' => $product->id,
+             'quantity' => 1,
+             'unit_price' => $product->price,
+             'total_price' => $product->price
+             ]
+        );
         
     }
 
