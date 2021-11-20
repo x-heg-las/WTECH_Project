@@ -35,6 +35,19 @@ class ShoppingCartController extends Controller
         return $id;
     }
 
+    public function changeOption(Request $request, $option, $value, $page)
+    {
+        if(Session::has($option))
+        {
+            Session::forget($option);
+        }
+       
+
+        Session::put($option, $value);
+       
+        return redirect('/checkout/'.$page);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -65,6 +78,12 @@ class ShoppingCartController extends Controller
         
         $request->session()->flash('message', 'Added to the sopping cart.');
         return redirect('products/'.$id);
+    }
+
+    public function choosePaymentMethod(Request $request)
+    {
+
+        return view('layout.checkout-pay');
     }
 
     /**

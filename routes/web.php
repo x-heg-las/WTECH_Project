@@ -38,6 +38,10 @@ Route::put('/products/{product}', [ShoppingCartController::class, 'addToShopping
 
 Route::get('/search', [ProductController::class, 'search'])->name('search');
 
+Route::get('/checkout/payment', [ShoppingCartController::class, 'choosePaymentMethod']);
+
+Route::get('/activate/{option}/{value}/{page}', [ShoppingCartController::class, 'changeOption'] );
+
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');

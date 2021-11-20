@@ -28,7 +28,7 @@
                 </div>
             </div>
             <div class="mt-3 d-flex flex-column justify-content-center text-center">
-                <button id="continue-shopping" type="button" class="btn btn-dark mt-3">Continue shopping</button> 
+                <a href="{{ url()->previous() }}" id="continue-shopping" role="button" class="btn btn-dark mt-3">Continue shopping</a> 
                 <span class="mt-3 fs-4 fw-bold">Total: 129$</span>
                 <a href="shipping_information.html" role="button" class="mt-3 btn btn-dark purple-btn">Checkout</a>
             </div>
