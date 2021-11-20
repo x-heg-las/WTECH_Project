@@ -53,9 +53,9 @@
                     </div>
 
                     <div class="row">
-                        <div class="d-grid col-md-7">
-                            <button type="button" class="btn btn-success btn-lg">Buy</button>
-                        </div>
+                            <form  method="PUT" class="d-grid col-md-7">
+                                <a href="{{url('products/'.$request->route('product'))}}" role="button" class="btn btn-success btn-lg">Buy</a>
+                            </form>
                         <div class="col-md-5">
                             <button type="button" class="btn btn-lg btn-full-width btn-secondary big-button">Add to
                                 wishlist</button>

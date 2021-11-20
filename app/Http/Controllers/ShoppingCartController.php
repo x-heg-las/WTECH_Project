@@ -34,6 +34,11 @@ class ShoppingCartController extends Controller
         
     }
 
+    public function addToShoppingCart(Request $request, $id)
+    {
+        
+    }
+
     /**
      * Show the form for creating a new resource.
      *
