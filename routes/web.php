@@ -17,17 +17,6 @@ use App\Models\Product;
 |
 */
 
-Route::get('/', function () {
-    $products = Product::all();
-
-    return view('layout.index', compact('products', $products));
-});
-
-Route::get('/login', function (){
-    return view('auth.login');
-});
-
-
 Route::get('/shopping_cart', function () {
     return view('layout.shopping-cart');
 });
@@ -38,10 +27,23 @@ Route::put('/products/{product}', [ShoppingCartController::class, 'addToShopping
 
 Route::get('/search', [ProductController::class, 'search'])->name('search');
 
+Route::get('/shopping_cart', [ShoppingCartController::class, 'index']);
+
+Route::get('/', function () {
+
+    $out = new \Symfony\Component\Console\Output\ConsoleOutput();
+    if (Auth::user() != null){
+        $out->writeln(Auth::user()->name);
+    }
+    $out->writeln("------------------------------------------------------------------------------------------------");
+
+    $products = Product::all();
+
+    return view('layout.index', compact('products', $products));
+});
+
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
-
-Route::get('/shopping_cart', [ShoppingCartController::class, 'index']);
 
 require __DIR__.'/auth.php';

@@ -11,8 +11,21 @@
         <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" role="button" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user-circle fa-lg"></i></a>
         <ul class="dropdown-menu" aria-labelledby="profileDropdown">
-            <li><span class="dropdown-item">Customer Name</span></li>
-            <li><a class="dropdown-item" href="#">Profile settings</a></li>
+            @if(Auth::user())
+                <li><span class="dropdown-item">{{ Auth::user()->name }}</span></li>
+                <li><a class="dropdown-item" href="#">Profile settings</a></li>
+                <li><form method="POST" action="{{ route('logout') }}">
+                                @csrf
+
+                                <x-dropdown-link :href="route('logout')"
+                                        onclick="event.preventDefault();
+                                                    this.closest('form').submit();">
+                                    {{ __('Log Out') }}
+                                </x-dropdown-link>
+                            </form></li>
+            @else
+                <li><span class="dropdown-item">Login first to acces profile!</span></li>
+            @endif
         </ul>
         </li>
         <li class="nav-item">
