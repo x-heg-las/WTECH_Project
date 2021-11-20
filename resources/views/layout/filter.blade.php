@@ -30,6 +30,7 @@
           <div class="checkout-wrapper shadow row">
             <span class="display-5 row">Options</span>
             <form name="filter" action='/search'>
+            <input type="hidden" name="search">
             <div class="brand py-3">
               <button class="btn purple-btn" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample"
                 aria-expanded="false" aria-controls="collapseExample">

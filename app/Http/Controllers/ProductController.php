@@ -122,11 +122,22 @@ class ProductController extends Controller
 
             //$lol = $products->has('parameters.number', $memory)->get();
 
-            $lol = $products->whereHas('parameters', function ($query) use ($memory) {
-                $query->where('number', '=', $memory);
-            })->get();
+            $products = $products->whereHas('parameters', function ($query) use ($memory) {
+                $query->where('key', 'Memory')->where('number', '=', $memory);
+            });
+        }
 
-            $out->writeln($lol);
+        if ($request->has('storage')) {
+            $out->writeln($request->input('storage'));
+
+            $storage = $request->input('storage');
+
+            //$lol = $products->has('parameters.number', $memory)->get();
+
+            $products = $products->whereHas('parameters', function ($query) use ($storage) {
+                $query->where('key', 'Storage')->where('number', '=', $storage);
+            });
+
         }
 
         $out->writeln($request);
@@ -138,14 +149,23 @@ class ProductController extends Controller
         }
 
         // Find all products with request string in their name, order by sort
-        if ($request->has('order_by')){
+        /*if ($request->has('order_by')){
             $order_by = $request->input('order_by');
             $order = (string) $request->input('order');
 
             $products = Product::select("*")->where('name', 'ILIKE', "%{$search}%")->orderBy("{$order_by}", "{$order}")->paginate(10);
         } else {
             $products = Product::select("*")->where('name', 'ILIKE', "%{$search}%")->paginate(10);    
+        }*/
+
+        if ($request->has('order_by')){
+            $order_by = $request->input('order_by');
+            $order = (string) $request->input('order');
+
+            $products = $products->orderBy("{$order_by}", "{$order}")->paginate(10);
         }
+
+        $products = $products->paginate(10);
 
         return view('layout.filter', compact('products',$products));
     }
