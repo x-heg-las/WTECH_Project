@@ -54,12 +54,6 @@
                   <input name="brand[]" type="checkbox" id="esp" value="esp32">
                   <label for="esp">ESP32</label>
                 </div>
-               
-                <!--
-                <input type="radio" name="cars[]" id='r' value="Volvo"><label for='r'>Raspberry Pi</label>
-                <input type="radio" name="cars[]" id='a' value="Saab"><label for='a'>Arduino</label>
-                <input type="radio" name="cars[]" id='e' value="Mercedes"><label for='e'>ESP32</label>
-                -->
               </div>
             </div>
 
@@ -73,22 +67,22 @@
 
               <div class="collapse" id="collapseMemory">
                 <div class="radio-button">
-                  <input name="memory" type="radio" id="1gb" value=1>
+                  <input name="memory[]" type="checkbox" id="1gb" value=1>
                   <label for="1gb">1 GB</label>
                 </div>
 
                 <div class="radio-button">
-                  <input name="memory" type="radio" id="2gb" value=2>
+                  <input name="memory[]" type="checkbox" id="2gb" value=2>
                   <label for="2gb">2 GB</label>
                 </div>
 
                 <div class="radio-button">
-                  <input name="memory" type="radio" id="4gb" value=4>
+                  <input name="memory[]" type="checkbox" id="4gb" value=4>
                   <label for="4gb">4 GB</label>
                 </div>
 
                 <div class="radio-button">
-                  <input name="memory" type="radio" id="8gb" value=8>
+                  <input name="memory[]" type="checkbox" id="8gb" value=8>
                   <label for="8gb">8 GB</label>
                 </div>
               </div>
@@ -104,17 +98,17 @@
 
               <div class="collapse" id="collapseStorage">
                 <div class="radio-button">
-                  <input name="storage" type="radio" id="8-storage" value=8>
+                  <input name="storage[]" type="checkbox" id="8-storage" value=8>
                   <label for="8-storage">8 GB</label>
                 </div>
 
                 <div class="radio-button">
-                  <input name="storage" type="radio" id="16-storage" value=16>
+                  <input name="storage[]" type="checkbox" id="16-storage" value=16>
                   <label for="16-storage">16 GB</label>
                 </div>
 
                 <div class="radio-button">
-                  <input name="storage" type="radio" id="32-storage" value=32>
+                  <input name="storage[]" type="checkbox" id="32-storage" value=32>
                   <label for="32-storage">32 GB</label>
                 </div>
               </div>

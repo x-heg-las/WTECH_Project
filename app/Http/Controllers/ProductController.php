@@ -98,15 +98,44 @@ class ProductController extends Controller
      */
     public function search(Request $request)
     {
+        //$products = Product::select("*")->where('name', 'ILIKE', "%{$search}%");
         $out = new \Symfony\Component\Console\Output\ConsoleOutput();
+
+        // Load search string
+        $search = $request->input('search');
+        $products = Product::select("*")->where('name', 'ILIKE', "%{$search}%");
+
+        if ($request->has('brand')) {
+            $out->writeln($request->input('brand'));
+            
+            $brands = $request->input('brand');
+
+            foreach ($brands as $brand) {
+                $out->writeln($brand);
+            }
+        }
+
+        if ($request->has('memory')) {
+            $out->writeln($request->input('memory'));
+
+            $memory = $request->input('memory');
+
+            //$lol = $products->has('parameters.number', $memory)->get();
+
+            $lol = $products->whereHas('parameters', function ($query) use ($memory) {
+                $query->where('number', '=', $memory);
+            })->get();
+
+            $out->writeln($lol);
+        }
+
         $out->writeln($request);
 
         $out->writeln("-------------------------------------------------");
 
-        $out->writeln($request->input('brand'));
-
-        // Load search string
-        $search = $request->input('search');
+        if ($request->has('storage')) {
+            $out->writeln($request->input('storage'));
+        }
 
         // Find all products with request string in their name, order by sort
         if ($request->has('order_by')){
