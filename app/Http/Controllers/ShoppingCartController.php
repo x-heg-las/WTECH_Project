@@ -164,8 +164,15 @@ class ShoppingCartController extends Controller
 
     public function chooseShippingMethod(Request $request)
     {
-      
-        return view('layout.checkout-shipping');
+        $customer = null;
+        if(Auth::user()) {
+            $out = new \Symfony\Component\Console\Output\ConsoleOutput();
+            $out->writeln("------------------------------------------------------------------------------------------------");
+            $out->writeln(Auth::user());
+            $out->writeln("------------------------------------------------------------------------------------------------");
+            $customer = Customer::where('user_id', Auth::user()->id)->first();
+        }
+        return view('layout.checkout-shipping', compact('customer', $customer));
     }
 
     public function recapitulation()
