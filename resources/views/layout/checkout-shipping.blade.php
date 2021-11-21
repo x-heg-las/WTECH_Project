@@ -51,17 +51,15 @@
         </div>
     </div>  
 </div>
-<div class="row shipping-bulletpoint">
-    <div class="col-1 bulletpoint">
-        <i class="far fa-check-circle fa-2x"></i>
+@if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+            @endforeach
+        </ul>
     </div>
-    <span class="col-11 display-6 " id="shipping"> Shipping method</span>
-</div>
-<div class="btn-toolbar mt-4" role="toolbar">
-    <x-checkout-option name="shipping" text="Reserve in shop" domain="shipping" label="fas fa-store-alt fa-3x"/>
-    <x-checkout-option name="shipping" text="Postal service" domain="shipping" label="far fa-envelope fa-3x"/>
-    <x-checkout-option name="shipping" text="Standard delivery" domain="shipping" label="fas fa-truck fa-3x"/>
-</div>
+@endif
 <div class="d-flex justify-content-between mt-5" id="checkoutNavigation">
     <a href="{{ url('/shopping_cart') }}" role="button" class="w-25 btn btn-dark btn-lg">Back</a>
     <button type="submit" class="w-25 purple-btn btn btn-dark btn-lg">Next step</button>

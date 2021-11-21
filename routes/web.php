@@ -36,7 +36,11 @@ Route::get('/checkout/shipping', [ShoppingCartController::class, 'chooseShipping
 
 Route::post('/shipping', [ShoppingCartController::class, 'addShippingData']);
 
+Route::delete('/remove_item/{id}', [ShoppingCartController::class, 'removeFromShoppingCart']);
+
 Route::get('/shopping_cart', [ShoppingCartController::class, 'index']);
+
+Route::get('/checkout/recap', [ShoppingCartController::class, 'recapitulation']);
 
 Route::get('/', function () {
 

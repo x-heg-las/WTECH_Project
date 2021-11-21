@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Cache;
 use App\Models\Customer;
 use App\Models\ShoppingCart;
 use App\Models\CartItem;
+use App\Models\Address;
 use Illuminate\Support\Facades\DB;
 use App\Models\Product;
 use Session;
@@ -71,8 +72,9 @@ class ShoppingCartController extends Controller
         $customer = $this->getCartIdFromSession();
         
         $items = ShoppingCart::find($customer)->cartItems()->get();
+        $sum = $items->sum('total_price');
 
-        return view('layout.shopping-cart', compact('items', $items));
+        return view('layout.shopping-cart', compact('items', $items, 'sum', $sum));
    
     }
 
@@ -106,15 +108,17 @@ class ShoppingCartController extends Controller
 
     public function addShippingData(Request $request)
     {
+        /*
         $request->validate([
             'first_name' => 'required|min:3|max:255',
             'last_name' => 'required|min:3|max:255',
             'street_and_number' => 'required|max:255',
             'city' => 'required',
             'zip_code' => 'required|min:5|max:5',
-            'telephone' => 'required|regex:/(+421)|(0)[0-9]{9}/',
-            'email' => 'required|max:255'
+            'telephone' => 'regex:/^\+421[0-9]{9}/',
+            'email' => 'regex:/^.+@.+$/i'
         ]);
+        */
 
         $customer = Session::has('customer') ? Session::get('customer') : null;
         if(Auth::check())
@@ -141,7 +145,7 @@ class ShoppingCartController extends Controller
         }
 
         $address = Address::create([
-            'customer_id' => $customer->id,
+            'customer_id' => $customer->id, 
             'street_and_number' => $request->street_and_number,
             'city' => $request->city,
             'zip_code' => $request->zip_code
@@ -152,15 +156,51 @@ class ShoppingCartController extends Controller
         return redirect('/checkout/payment');
     }
 
+    public function removeFromShoppingCart($id)
+    {
+        CartItem::destroy($id);
+        return redirect('/shopping_cart');
+    }
+
     public function chooseShippingMethod(Request $request)
     {
+      
         return view('layout.checkout-shipping');
+    }
+
+    public function recapitulation()
+    {
+        $cartId = $this->getCartIdFromSession();
+        $items = ShoppingCart::find($cartId)->cartItems()->get();
+
+
+        if(Session::has('customer') && Session::has('shipping') && Session::has('payment'))
+        {
+            $customer = Session::get('customer');
+            $shipping = Session::get('shipping');
+            $payment = Session::get('payment');
+            $sum = $items->sum('total_price');
+
+            return view('layout.checkout-recap',
+            compact(
+                'customer', $customer,
+                'shipping',
+                'payment',
+                'items', $items,
+                'sum'
+            ));
+        }
+
+        return view('layout.checkout-recap');
     }
 
     public function choosePaymentMethod(Request $request)
     {
+        $cartId = $this->getCartIdFromSession();
+        $items = ShoppingCart::find($cartId)->cartItems()->get();
+        $sum = $items->sum('total_price');
 
-        return view('layout.checkout-pay');
+        return view('layout.checkout-pay', compact('items', $items, 'sum', $sum));
     }
 
     /**
