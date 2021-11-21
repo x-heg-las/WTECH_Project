@@ -29,18 +29,43 @@
                     <label for="streetAndNumber">Last name:</label>
                     <input type="text" id="lastName" placeholder="Last name" value="{{$customer->last_name}}" class="form-control" name="last_name">
                 </div>
-                <div class="form-group">
-                    <label for="streetAndNumber">Street and number:</label>
-                    <input type="text" id="streetAndNumber" placeholder="Street and Number" class="form-control" name="street_and_number">
-                </div>
-                <div class="form-group">
-                    <label for="city">City:</label>
-                    <input type="text" id="city" placeholder="City" class="form-control" name="city"> 
-                </div>
-                <div class="form-group">
-                    <label for="zipCode">Zip code:</label>
-                    <input type="text" id="zipCode" placeholder="Zip Code" class="form-control" name="zip_code">
-                </div>
+
+                @if($address != null)
+                    <div class="form-group">
+                        <label for="streetAndNumber">Street and number:</label>
+                        <input type="text" id="streetAndNumber" placeholder="Street and Number" value="{{$address->street_and_number}}" class="form-control" name="street_and_number">
+                    </div>
+                    <div class="form-group">
+                        <label for="city">City:</label>
+                        <input type="text" id="city" placeholder="City" class="form-control" value="{{$address->city}}" name="city"> 
+                    </div>
+                    <div class="form-group">
+                        <label for="zipCode">Zip code:</label>
+                        <input type="text" id="zipCode" placeholder="Zip Code" class="form-control" value="{{$address->zip_code}}" name="zip_code">
+                    </div>
+                    <div class="form-group">
+                        <label for="zipCode">Country:</label>
+                        <input type="text" id="country" placeholder="Country" class="form-control" value="{{$address->country}}" name="country">
+                    </div>
+                @else
+                    <div class="form-group">
+                        <label for="streetAndNumber">Street and number:</label>
+                        <input type="text" id="streetAndNumber" placeholder="Street and Number" class="form-control" name="street_and_number">
+                    </div>
+                    <div class="form-group">
+                        <label for="city">City:</label>
+                        <input type="text" id="city" placeholder="City" class="form-control" name="city"> 
+                    </div>
+                    <div class="form-group">
+                        <label for="zipCode">Zip code:</label>
+                        <input type="text" id="zipCode" placeholder="Zip Code" class="form-control" name="zip_code">
+                    </div>
+                    <div class="form-group">
+                        <label for="phoneNumber">Country:</label> 
+                        <input type="text" id="country" placeholder="Country" class="form-control" name="country">
+                    </div>
+                @endif
+                
                 <div class="form-group">
                     <label for="phoneNumber">Phone number:</label> 
                     <input type="text" id="phoneNumber" placeholder="Phone number" value="{{$customer->telephone}}" class="form-control" name="telephone">
@@ -69,6 +94,10 @@
                 <div class="form-group">
                     <label for="zipCode">Zip code:</label>
                     <input type="text" id="zipCode" placeholder="Zip Code" class="form-control" name="zip_code">
+                </div>
+                <div class="form-group">
+                    <label for="phoneNumber">Country:</label> 
+                    <input type="text" id="country" placeholder="Country" class="form-control" name="country">
                 </div>
                 <div class="form-group">
                     <label for="phoneNumber">Phone number:</label> 

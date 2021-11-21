@@ -148,7 +148,8 @@ class ShoppingCartController extends Controller
             'customer_id' => $customer->id, 
             'street_and_number' => $request->street_and_number,
             'city' => $request->city,
-            'zip_code' => $request->zip_code
+            'zip_code' => $request->zip_code,
+            'country' => $request->country
         ]);
 
         //pridaj priradenie nakupneho kosa k zakaznikovi
@@ -165,14 +166,14 @@ class ShoppingCartController extends Controller
     public function chooseShippingMethod(Request $request)
     {
         $customer = null;
+        $address = null;
         if(Auth::user()) {
-            $out = new \Symfony\Component\Console\Output\ConsoleOutput();
-            $out->writeln("------------------------------------------------------------------------------------------------");
-            $out->writeln(Auth::user());
-            $out->writeln("------------------------------------------------------------------------------------------------");
-            $customer = Customer::where('user_id', Auth::user()->id)->first();
+            $customer = Customer::with('address')->where('user_id', Auth::user()->id)->first();
+            if ($customer -> address != null){
+                $address = $customer->address;
+            }
         }
-        return view('layout.checkout-shipping', compact('customer', $customer));
+        return view('layout.checkout-shipping', compact('customer', $customer, 'address', $address));
     }
 
     public function recapitulation()
