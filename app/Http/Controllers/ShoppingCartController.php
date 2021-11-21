@@ -109,7 +109,7 @@ class ShoppingCartController extends Controller
 
     public function addShippingData(Request $request)
     {
-        /*
+        /*                                              // vrat validaciu
         $request->validate([
             'first_name' => 'required|min:3|max:255',
             'last_name' => 'required|min:3|max:255',
@@ -136,20 +136,21 @@ class ShoppingCartController extends Controller
                 'email' => $request->email,
                 'telephone' => $request->telephone
             ]);
-
-            if(Session::has('customer'))
-            {
-                Session::forget('customer', $customer);
-            }
-
-            Session::put('customer', $customer);
         }
+
+        if(Session::has('customer'))
+        {
+            Session::forget('customer');
+        }
+
+        Session::put('customer', $customer);
 
         $address = Address::create([
             'customer_id' => $customer->id, 
             'street_and_number' => $request->street_and_number,
             'city' => $request->city,
-            'zip_code' => $request->zip_code
+            'zip_code' => $request->zip_code,
+            'country' => $request->country
         ]);
 
         //pridaj priradenie nakupneho kosa k zakaznikovi
@@ -165,8 +166,15 @@ class ShoppingCartController extends Controller
 
     public function chooseShippingMethod(Request $request)
     {
-      
-        return view('layout.checkout-shipping');
+        $customer = null;
+        $address = null;
+        if(Auth::user()) {
+            $customer = Customer::with('address')->where('user_id', Auth::user()->id)->first();
+            if ($customer -> address != null){
+                $address = $customer->address;
+            }
+        }
+        return view('layout.checkout-shipping', compact('customer', $customer, 'address', $address));
     }
 
     public function recapitulation()
@@ -174,6 +182,10 @@ class ShoppingCartController extends Controller
         $cartId = $this->getCartIdFromSession();
         $items = ShoppingCart::find($cartId)->cartItems()->get();
 
+        $out = new \Symfony\Component\Console\Output\ConsoleOutput();
+        $out->writeln("------------------------------------------------------------------------------------------------");
+        $out->writeln(Session::has('customer'));
+        $out->writeln("------------------------------------------------------------------------------------------------");
 
         if(Session::has('customer') && Session::has('shipping') && Session::has('payment'))
         {
@@ -192,7 +204,7 @@ class ShoppingCartController extends Controller
             ));
         }
 
-        return view('layout.checkout-recap');
+        return view('layout.checkout-recap', compact('items', $items, 'customer', $customer));
     }
 
     public function choosePaymentMethod(Request $request)

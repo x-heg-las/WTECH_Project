@@ -6,10 +6,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Customer;
 use App\Models\CartItem;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ShoppingCart extends Model
 {
     use HasFactory;
+    use SoftDeletes;
 
     protected $fillable = ['customer_id', 'total_price'];
 
