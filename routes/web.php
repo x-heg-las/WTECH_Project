@@ -27,6 +27,15 @@ Route::put('/products/{product}', [ShoppingCartController::class, 'addToShopping
 
 Route::get('/search', [ProductController::class, 'search'])->name('search');
 
+
+Route::get('/checkout/payment', [ShoppingCartController::class, 'choosePaymentMethod']);
+
+Route::get('/activate/{option}/{value}/{page}', [ShoppingCartController::class, 'changeOption']);
+
+Route::get('/checkout/shipping', [ShoppingCartController::class, 'chooseShippingMethod']);
+
+Route::post('/shipping', [ShoppingCartController::class, 'addShippingData']);
+
 Route::get('/shopping_cart', [ShoppingCartController::class, 'index']);
 
 Route::get('/', function () {

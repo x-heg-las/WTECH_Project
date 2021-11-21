@@ -48,6 +48,19 @@ class ShoppingCartController extends Controller
         return $id;
     }
 
+    public function changeOption(Request $request, $option, $value, $page)
+    {
+        if(Session::has($option))
+        {
+            Session::forget($option);
+        }
+       
+
+        Session::put($option, $value);
+       
+        return redirect('/checkout/'.$page);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -89,6 +102,65 @@ class ShoppingCartController extends Controller
         
         $request->session()->flash('message', 'Added to the sopping cart.');
         return redirect('products/'.$id);
+    }
+
+    public function addShippingData(Request $request)
+    {
+        $request->validate([
+            'first_name' => 'required|min:3|max:255',
+            'last_name' => 'required|min:3|max:255',
+            'street_and_number' => 'required|max:255',
+            'city' => 'required',
+            'zip_code' => 'required|min:5|max:5',
+            'telephone' => 'required|regex:/(+421)|(0)[0-9]{9}/',
+            'email' => 'required|max:255'
+        ]);
+
+        $customer = Session::has('customer') ? Session::get('customer') : null;
+        if(Auth::check())
+        {
+            $customer = Customer::find(Auth::id());
+        }
+
+        //len pre testovanie
+        if(!$customer)
+        {
+            $customer = Customer::create([
+                'first_name' => $request->first_name,
+                'last_name' => $request->last_name,
+                'email' => $request->email,
+                'telephone' => $request->telephone
+            ]);
+
+            if(Session::has('customer'))
+            {
+                Session::forget('customer', $customer);
+            }
+
+            Session::put('customer', $customer);
+        }
+
+        $address = Address::create([
+            'customer_id' => $customer->id,
+            'street_and_number' => $request->street_and_number,
+            'city' => $request->city,
+            'zip_code' => $request->zip_code
+        ]);
+
+        //pridaj priradenie nakupneho kosa k zakaznikovi
+
+        return redirect('/checkout/payment');
+    }
+
+    public function chooseShippingMethod(Request $request)
+    {
+        return view('layout.checkout-shipping');
+    }
+
+    public function choosePaymentMethod(Request $request)
+    {
+
+        return view('layout.checkout-pay');
     }
 
     /**
