@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Models\Product;
+use App\Models\Category;
 use App\Models\Image;
 use App\Models\Parameter;
 
@@ -102,14 +103,6 @@ class ProductController extends Controller
         $search = $request->input('search');
         $products = Product::select("*")->where('name', 'ILIKE', "%{$search}%");
 
-        if ($request->has('brand')) {  
-            $brands = $request->input('brand');
-
-            foreach ($brands as $brand) {
-                $out->writeln($brand);
-            }
-        }
-
         if ($request->has('memory')) {
 
             $memory = $request->input('memory');
@@ -159,6 +152,20 @@ class ProductController extends Controller
         }
 
         $products = $products->paginate(10);
+
+        //$category = Category::first('name', 'Arduino')->products()->get();
+        /*$category = Product::whereHas('categories', function($q) {
+            $q->where('name', 'Arduino');
+         })->get();*/
+
+        $category = Category::where('name', 'ESP32')->first()->products()->get();
+
+        $out = new \Symfony\Component\Console\Output\ConsoleOutput();
+        $out->writeln("XXXXXXXXXX-----------------------------------------------------------------------------------");
+        $out->writeln($category);
+        $out->writeln("XXXXXXXXXX--------------------------------------------------------------------------------------");
+        
+        dd($category);
 
         return view('layout.filter', compact('products',$products));
     }

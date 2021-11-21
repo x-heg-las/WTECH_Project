@@ -1,6 +1,9 @@
 @extends('layout.app')
 
 @section('content')
+    @if (Session::has('message'))
+        <div class="alert alert-info">{{ Session::get('message') }}</div>
+    @endif
     <div class="row justify-content-between">
         <!-- card-->
         <div class="col-sm d-flex">
