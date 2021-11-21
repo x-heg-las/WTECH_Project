@@ -1,6 +1,9 @@
 @extends('layout.app')
 
 @section('content')
+    @if (Session::has('message'))
+        <div class="alert alert-info">{{ Session::get('message') }}</div>
+    @endif
     <div class="row justify-content-between">
         <!-- card-->
         <div class="col-sm d-flex">
@@ -52,7 +55,7 @@
         <h1 class="text-center">Popular categories</h1>
         <div class="row pt-3">
             <div class="col-sm d-flex">
-            <a href="#" class="d-flex flex-fill">
+            <a href="/search?category[]=Arduino" class="d-flex flex-fill">
                 <div class="card flex-fill">
                     <div class="card-body category-card bg-info bg-gradient">
                         <article>
@@ -63,7 +66,7 @@
             </a>
             </div>
             <div class="col-sm d-flex">
-            <a href="#" class="d-flex flex-fill">
+            <a href="/search?category[]=ESP32" class="d-flex flex-fill">
                 <div class="card bg-secondary bg-gradient flex-fill">
                 <div class="card-body category-card">
                     <article>
@@ -74,7 +77,7 @@
             </a>
             </div>
             <div class="col-sm d-flex">
-            <a href="#" class="d-flex flex-fill">
+            <a href="/search?category[]=Raspberry_Pi" class="d-flex flex-fill">
                 <div class="card category-card bg-danger bg-gradient flex-fill">
                 <div class="card-body">
                     <article>

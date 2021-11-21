@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Models\Product;
+use App\Models\Category;
 use App\Models\Image;
 use App\Models\Parameter;
 
@@ -102,12 +103,20 @@ class ProductController extends Controller
         $search = $request->input('search');
         $products = Product::select("*")->where('name', 'ILIKE', "%{$search}%");
 
-        if ($request->has('brand')) {  
-            $brands = $request->input('brand');
+        if ($request->has('category')){
 
-            foreach ($brands as $brand) {
-                $out->writeln($brand);
-            }
+            $category = $request->input('category');
+
+            $out = new \Symfony\Component\Console\Output\ConsoleOutput();
+            $out->writeln("CCCCCCCCCCCCC----------------------------------------------------------------------------------");
+            $out->writeln($category);
+            $out->writeln("CCCCCCCCCCCCCC-------------------------------------------------------------------------------------");
+            
+            //$category = Category::where('name', $category)->first()->products()->get();
+
+            $products = Product::whereHas('categories', function($q) use ($category) {
+                $q->whereIn('name', $category);
+            });
         }
 
         if ($request->has('memory')) {
