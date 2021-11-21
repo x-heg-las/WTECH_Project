@@ -40,6 +40,7 @@ class RegisteredUserController extends Controller
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
+
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
@@ -54,7 +55,7 @@ class RegisteredUserController extends Controller
 
         $customer = Customer::create([
             'first_name' => $split_name[0],
-            'second_name' => $split_name[1],
+            'last_name' => $split_name[1],
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'telephone' => $request->telephone,
