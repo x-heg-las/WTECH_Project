@@ -1,12 +1,17 @@
 @extends('layout.app')
+@section('title')
+    <title>Register</title>
+    @endsection
     @section('content')
-        <x-auth-card>
+        <!--<x-auth-card>-->
+            <!--
             <x-slot name="logo">
                 <a href="/">
                     <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
                 </a>
             </x-slot>
-
+            -->
+            <div class="offset-4 col-4 ">
             <!-- Validation Errors -->
             <x-auth-validation-errors class="mb-4" :errors="$errors" />
 
@@ -63,5 +68,6 @@
                     </x-button>
                 </div>
             </form>
-        </x-auth-card>
+        <!--</x-auth-card>-->
+        </div>
     @endsection
