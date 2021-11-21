@@ -103,6 +103,22 @@ class ProductController extends Controller
         $search = $request->input('search');
         $products = Product::select("*")->where('name', 'ILIKE', "%{$search}%");
 
+        if ($request->has('category')){
+
+            $category = $request->input('category');
+
+            $out = new \Symfony\Component\Console\Output\ConsoleOutput();
+            $out->writeln("CCCCCCCCCCCCC----------------------------------------------------------------------------------");
+            $out->writeln($category);
+            $out->writeln("CCCCCCCCCCCCCC-------------------------------------------------------------------------------------");
+            
+            //$category = Category::where('name', $category)->first()->products()->get();
+
+            $products = Product::whereHas('categories', function($q) use ($category) {
+                $q->whereIn('name', $category);
+            });
+        }
+
         if ($request->has('memory')) {
 
             $memory = $request->input('memory');
@@ -152,20 +168,6 @@ class ProductController extends Controller
         }
 
         $products = $products->paginate(10);
-
-        //$category = Category::first('name', 'Arduino')->products()->get();
-        /*$category = Product::whereHas('categories', function($q) {
-            $q->where('name', 'Arduino');
-         })->get();*/
-
-        $category = Category::where('name', 'ESP32')->first()->products()->get();
-
-        $out = new \Symfony\Component\Console\Output\ConsoleOutput();
-        $out->writeln("XXXXXXXXXX-----------------------------------------------------------------------------------");
-        $out->writeln($category);
-        $out->writeln("XXXXXXXXXX--------------------------------------------------------------------------------------");
-        
-        dd($category);
 
         return view('layout.filter', compact('products',$products));
     }

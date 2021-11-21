@@ -42,17 +42,17 @@
               <div class="collapse" id="collapseExample">
                 
                 <div class="radio-button">
-                  <input name="brand[]" type="checkbox" id="rasp_pi" value="raspberry_pi">
+                  <input name="category[]" type="checkbox" id="rasp_pi" value="Raspberry_Pi">
                   <label for="rasp_pi">Raspberry Pi</label>
                 </div>
 
                 <div class="radio-button">
-                  <input name="brand[]" type="checkbox" id="ard" value="arduino">
+                  <input name="category[]" type="checkbox" id="ard" value="Arduino">
                   <label for="ard">Arduino</label>
                 </div>
 
                 <div class="radio-button">
-                  <input name="brand[]" type="checkbox" id="esp" value="esp32">
+                  <input name="category[]" type="checkbox" id="esp" value="ESP32">
                   <label for="esp">ESP32</label>
                 </div>
               </div>
