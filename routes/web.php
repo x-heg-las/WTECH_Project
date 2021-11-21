@@ -42,6 +42,8 @@ Route::get('/shopping_cart', [ShoppingCartController::class, 'index']);
 
 Route::get('/checkout/recap', [ShoppingCartController::class, 'recapitulation']);
 
+Route::put('/quantity/{item}', [CartItemController::class, 'update']);
+
 Route::get('/', function () {
 
     $out = new \Symfony\Component\Console\Output\ConsoleOutput();

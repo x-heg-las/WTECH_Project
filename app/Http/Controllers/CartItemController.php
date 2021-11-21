@@ -70,7 +70,7 @@ class CartItemController extends Controller
      */
     public function update(UpdateCartItemRequest $request, CartItem $cartItem)
     {
-        //
+        
     }
 
     /**
