@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use App\Models\Customer;
 use App\Models\ShoppingCart;
+use App\Models\CartItem;
 use Illuminate\Support\Facades\DB;
 use App\Models\Product;
 use Session;
@@ -16,19 +17,10 @@ class ShoppingCartController extends Controller
 
     public function getCartIdFromSession()
     {
-        $customer = Session::has('shopping_cart') ? Session::get('shopping_cart') : null;
-
-        $out = new \Symfony\Component\Console\Output\ConsoleOutput();
-        $out->writeln("EEEEEEEEEEEEEEE------------------------------------------------------------------------------------------------");
-        $out->writeln(Auth::check());
-        $out->writeln("------------------------------------------------------------------------------------------------");
+        $session = Session::has('shopping_cart') ? Session::get('shopping_cart') : null;
         
         if(Auth::check())
         {
-            $out = new \Symfony\Component\Console\Output\ConsoleOutput();
-            $out->writeln("FFFFFFFFFFFFFFF------------------------------------------------------------------------------------------------");
-            $out->writeln(Auth::id());
-            $out->writeln("------------------------------------------------------------------------------------------------");
             $customer = Customer::where('user_id', Auth::id())->first();
 
             $shopping_cart = ShoppingCart::where('customer_id' ,$customer->id)->first();
@@ -44,16 +36,11 @@ class ShoppingCartController extends Controller
             else{
                 return $shopping_cart->id;
             }
-            
-            $out->writeln("------------------------------------------------------------------------------------------------");
-            $out->writeln($shoppingCart);
-            $out->writeln("------------------------------------------------------------------------------------------------");
         }
 
-        if($customer)
+        if($session)
         {
-            return ShoppingCart::where('customer_id' ,$customer->id)->first()->id;      // toto jest problemo
-        
+            return $session->id;
         }
        
         $id = DB::table('shopping_carts')->insertGetId([]);
@@ -79,13 +66,24 @@ class ShoppingCartController extends Controller
     public function addToShoppingCart(Request $request, $id)
     {
         $cartId = $this->getCartIdFromSession();
+        $quantity = $request->input('quantity');
         $product = Product::find($id);
-        DB::table('cart_items')->insert(
+
+        /*DB::table('cart_items')->insert(
             ['shopping_cart_id' => $cartId,
              'product_id' => $product->id,
-             'quantity' => 1,                       // vyber pre detail
-             'unit_price' => $product->price,       // dorob calc pre tieto hodnoty
-             'total_price' => $product->price
+             'quantity' => $quantity,
+             'unit_price' => $product->price,
+             'total_price' => $product->price * $quantity,
+             ]
+        );*/
+
+        $new_item = CartItem::create(
+            ['shopping_cart_id' => $cartId,
+             'product_id' => $product->id,
+             'quantity' => $quantity,
+             'unit_price' => $product->price,
+             'total_price' => $product->price * $quantity,
              ]
         );
         
