@@ -56,17 +56,15 @@
                     </div>
 
                     <div class="row">
-                            <form  method="POST" class="d-grid col-md-7" action="{{ URL::to('/') }}/products/{{ $request->route('product')->id }}">
-                                <input name="_method" type="hidden" value="PUT">
-                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                <input type='number' name='quantity' id="number"  value=1 min="1">
-                                <input type="submit" value="Buy" class="btn btn-success btn-lg"/>
-                            </form>
-                        <div class="col-md-5">
-                            <button type="button" class="btn btn-lg btn-full-width btn-secondary big-button">Add to
-                                wishlist</button>
-                        </div>
-
+                        <form  method="POST" class="d-grid col-md-7 form-inline" action="{{ URL::to('/') }}/products/{{ $request->route('product')->id }}">
+                            <input name="_method" type="hidden" value="PUT">
+                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                            <div class="input-group">
+                                <input type="submit" value="Buy" class="btn btn-success btn-lg col-12 col-sm-8 col-md-8"/>    
+                                <input type='number' name='quantity' id="number" value=1 min="1" class="col-12 col-sm-4 col-md-4">
+                            </div>
+                        </form>
+                        
                     </div>
                 </div>
             </div>
