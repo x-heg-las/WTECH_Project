@@ -12,11 +12,13 @@
 <div class="row">
     <div class="col-lg-9 pr-lg-5 shopping-container">
         <ul class="shopping-cart">
-            @if($items ?? '')
-                @foreach ($items ?? '' as $item)
-                    <x-cart-item :item="$item"/>
-                @endforeach
-            @endif
+            
+            @forelse ($items ?? '' as $item)
+                <x-cart-item :item="$item"/>
+            @empty
+                <p>The shopping cart is empty.</p>
+            @endforelse
+        
         </ul>
     </div>
     <div class="summary-wrapper col-lg-3">
@@ -29,8 +31,10 @@
             </div>
             <div class="mt-3 d-flex flex-column justify-content-center text-center">
                 <a href="{{ url()->previous() }}" id="continue-shopping" role="button" class="btn btn-dark mt-3">Continue shopping</a> 
-                <span class="mt-3 fs-4 fw-bold">Total: 129$</span>
+                <span class="mt-3 fs-4 fw-bold">Total: {{ $sum }}$</span>
+                @if(count($items) > 0)
                 <a href="{{ url('/checkout/shipping')}}" role="button" class="mt-3 btn btn-dark purple-btn">Checkout</a>
+                @endif
             </div>
         </div>
         <div class="row pay-options">
