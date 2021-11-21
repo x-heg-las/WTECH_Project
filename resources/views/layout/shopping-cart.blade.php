@@ -31,7 +31,7 @@
             </div>
             <div class="mt-3 d-flex flex-column justify-content-center text-center">
                 <a href="{{ url()->previous() }}" id="continue-shopping" role="button" class="btn btn-dark mt-3">Continue shopping</a> 
-                <span class="mt-3 fs-4 fw-bold">Total: {{ $sum }}$</span>
+                <livewire:pricetag price="{{ $sum }}"/>
                 @if(count($items) > 0)
                 <a href="{{ url('/checkout/shipping')}}" role="button" class="mt-3 btn btn-dark purple-btn">Checkout</a>
                 @endif

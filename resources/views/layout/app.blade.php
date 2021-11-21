@@ -3,6 +3,7 @@
 <head>
         @include('layout.partials.head')
         @yield('title')
+        @livewireStyles
 </head>
 
 <body>
@@ -13,6 +14,7 @@
         @yield('content')
 
     </main>
+    @livewireScripts
     @include('layout.partials.footer')
 </body>
 </html>

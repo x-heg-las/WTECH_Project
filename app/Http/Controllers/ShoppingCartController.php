@@ -69,11 +69,12 @@ class ShoppingCartController extends Controller
      */
     public function index(Request $request)
     {
-        $customer = $this->getCartIdFromSession();
+        $cartId = $this->getCartIdFromSession();
         
-        $items = ShoppingCart::find($customer)->cartItems()->get();
+        $items = ShoppingCart::find($cartId)->cartItems()->get();
         $sum = $items->sum('total_price');
 
+       
         return view('layout.shopping-cart', compact('items', $items, 'sum', $sum));
    
     }
