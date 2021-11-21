@@ -108,7 +108,7 @@ class ShoppingCartController extends Controller
 
     public function addShippingData(Request $request)
     {
-        /*
+        /*                                              // vrat validaciu
         $request->validate([
             'first_name' => 'required|min:3|max:255',
             'last_name' => 'required|min:3|max:255',
@@ -135,14 +135,14 @@ class ShoppingCartController extends Controller
                 'email' => $request->email,
                 'telephone' => $request->telephone
             ]);
-
-            if(Session::has('customer'))
-            {
-                Session::forget('customer', $customer);
-            }
-
-            Session::put('customer', $customer);
         }
+
+        if(Session::has('customer'))
+        {
+            Session::forget('customer');
+        }
+
+        Session::put('customer', $customer);
 
         $address = Address::create([
             'customer_id' => $customer->id, 
@@ -181,6 +181,10 @@ class ShoppingCartController extends Controller
         $cartId = $this->getCartIdFromSession();
         $items = ShoppingCart::find($cartId)->cartItems()->get();
 
+        $out = new \Symfony\Component\Console\Output\ConsoleOutput();
+        $out->writeln("------------------------------------------------------------------------------------------------");
+        $out->writeln(Session::has('customer'));
+        $out->writeln("------------------------------------------------------------------------------------------------");
 
         if(Session::has('customer') && Session::has('shipping') && Session::has('payment'))
         {
@@ -199,7 +203,7 @@ class ShoppingCartController extends Controller
             ));
         }
 
-        return view('layout.checkout-recap');
+        return view('layout.checkout-recap', compact('items', $items, 'customer', $customer));
     }
 
     public function choosePaymentMethod(Request $request)

@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ShoppingCartController;
+use App\Http\Controllers\OrderController;
 use App\Models\ShoppingCart;
 use App\Models\Product;
 
@@ -27,6 +28,7 @@ Route::put('/products/{product}', [ShoppingCartController::class, 'addToShopping
 
 Route::get('/search', [ProductController::class, 'search'])->name('search');
 
+Route::get('/order/store', [OrderController::class, 'store'])->name('store');
 
 Route::get('/checkout/payment', [ShoppingCartController::class, 'choosePaymentMethod']);
 

@@ -6,10 +6,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Product;
 use App\Models\ShoppingCart;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class CartItem extends Model
 {
     use HasFactory;
+    use SoftDeletes;
 
     public $timestamps = true;
 
