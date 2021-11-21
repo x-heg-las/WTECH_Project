@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
+use App\Models\Customer;
 
 class RegisteredUserController extends Controller
 {
@@ -43,6 +44,21 @@ class RegisteredUserController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+        ]);
+
+        $split_name = explode(" ", $request->name);
+
+        if(count($split_name) < 2){
+            array_push($split_name, null);
+        }
+
+        $customer = Customer::create([
+            'first_name' => $split_name[0],
+            'second_name' => $split_name[1],
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'telephone' => $request->telephone,
+            'user_id' => $user->id,
         ]);
 
         event(new Registered($user));

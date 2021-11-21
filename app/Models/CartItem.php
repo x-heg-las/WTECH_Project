@@ -11,7 +11,9 @@ class CartItem extends Model
 {
     use HasFactory;
 
-    protected $filalble = ['order_id', 'product_id', 'quantity', 'total_price', 'unit_price', 'shopping_cart_id'];
+    public $timestamps = true;
+
+    protected $fillable = ['product_id', 'quantity', 'total_price', 'unit_price', 'shopping_cart_id'];
 
     public function product()
     {

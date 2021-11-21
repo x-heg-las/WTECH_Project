@@ -29,7 +29,8 @@
         <div class="summary-wrapper col-12 col-md-4 col-lg-3">
           <div class="checkout-wrapper shadow row">
             <span class="display-5 row">Options</span>
-
+            <form id='filter' name="filter" action='/search'>
+            <!--<input type="hidden" name="search">-->
             <div class="brand py-3">
               <button class="btn purple-btn" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample"
                 aria-expanded="false" aria-controls="collapseExample">
@@ -39,18 +40,19 @@
               <hr>
 
               <div class="collapse" id="collapseExample">
+                
                 <div class="radio-button">
-                  <input type="radio" id="pi">
-                  <label for="pi">Raspberry Pi</label>
+                  <input name="brand[]" type="checkbox" id="rasp_pi" value="raspberry_pi">
+                  <label for="rasp_pi">Raspberry Pi</label>
                 </div>
 
                 <div class="radio-button">
-                  <input type="radio" id="ard">
+                  <input name="brand[]" type="checkbox" id="ard" value="arduino">
                   <label for="ard">Arduino</label>
                 </div>
 
                 <div class="radio-button">
-                  <input type="radio" id="esp">
+                  <input name="brand[]" type="checkbox" id="esp" value="esp32">
                   <label for="esp">ESP32</label>
                 </div>
               </div>
@@ -66,22 +68,22 @@
 
               <div class="collapse" id="collapseMemory">
                 <div class="radio-button">
-                  <input type="radio" id="1gb">
+                  <input name="memory[]" type="checkbox" id="1gb" value=1>
                   <label for="1gb">1 GB</label>
                 </div>
 
                 <div class="radio-button">
-                  <input type="radio" id="2gb">
+                  <input name="memory[]" type="checkbox" id="2gb" value=2>
                   <label for="2gb">2 GB</label>
                 </div>
 
                 <div class="radio-button">
-                  <input type="radio" id="4gb">
+                  <input name="memory[]" type="checkbox" id="4gb" value=4>
                   <label for="4gb">4 GB</label>
                 </div>
 
                 <div class="radio-button">
-                  <input type="radio" id="8gb">
+                  <input name="memory[]" type="checkbox" id="8gb" value=8>
                   <label for="8gb">8 GB</label>
                 </div>
               </div>
@@ -97,17 +99,17 @@
 
               <div class="collapse" id="collapseStorage">
                 <div class="radio-button">
-                  <input type="radio" id="8-storage">
+                  <input name="storage[]" type="checkbox" id="8-storage" value=8>
                   <label for="8-storage">8 GB</label>
                 </div>
 
                 <div class="radio-button">
-                  <input type="radio" id="16-storage">
+                  <input name="storage[]" type="checkbox" id="16-storage" value=16>
                   <label for="16-storage">16 GB</label>
                 </div>
 
                 <div class="radio-button">
-                  <input type="radio" id="32-storage">
+                  <input name="storage[]" type="checkbox" id="32-storage" value=32>
                   <label for="32-storage">32 GB</label>
                 </div>
               </div>
@@ -116,9 +118,12 @@
             <span class="fs-6 text-center">Lowest and highest price</span>
 
             <div class="input-group">
-              <input type="number" aria-label="Lowest price" class="form-control">
-              <input type="number" aria-label="Highest price" class="form-control">
+              <input name="min_price" type="number" step="0.01" aria-label="Lowest price" class="form-control">
+              <input name="max_price" type="number" step="0.01" aria-label="Highest price" class="form-control">
             </div>
+
+            <input class="btn btn-primary" type="submit" value="Submit">
+          </form>
           </div>
         </div>
 
