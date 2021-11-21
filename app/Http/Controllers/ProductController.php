@@ -169,6 +169,6 @@ class ProductController extends Controller
 
         $products = $products->paginate(10);
 
-        return view('layout.filter', compact('products',$products));
+        return view('layout.filter', compact('products', $products));
     }
 }

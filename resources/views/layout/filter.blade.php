@@ -5,7 +5,7 @@
 
       <div class="row">
         <div class="col-12 col-md-6">
-          <h1 class="display-5">Filtered result</h1>
+          <h1 class="display-5">Filtered result for "{{Request::get('search')}}"</h1>
         </div>
 
         <div class="col-12 col-md-6 pt-3">
@@ -30,6 +30,9 @@
           <div class="checkout-wrapper shadow row">
             <span class="display-5 row">Options</span>
             <form id='filter' name="filter" action='/search'>
+            @if(Request::exists('search'))
+              <input type="hidden" name="search" value="<?php echo htmlspecialchars($_GET['search']);?>">
+            @endif
             <!--<input type="hidden" name="search">-->
             <div class="brand py-3">
               <button class="btn purple-btn" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample"
