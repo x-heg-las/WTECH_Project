@@ -16,7 +16,7 @@
         </ul>
         </li>
         <li class="nav-item">
-        <a class="nav-link" href="#">Shopping cart</a>
+        <a class="nav-link" href="/shopping_cart">Shopping cart</a>
         </li>
     </ul>
     <form class="d-flex" action='/search'>
