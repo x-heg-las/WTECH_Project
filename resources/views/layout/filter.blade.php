@@ -5,7 +5,11 @@
 
       <div class="row">
         <div class="col-12 col-md-6">
+        @if(Request::filled('search'))
           <h1 class="display-5">Filtered result for "{{Request::get('search')}}"</h1>
+        @else
+          <h1 class="display-5">Filtered result</h1>
+        @endif
         </div>
 
         <div class="col-12 col-md-6 pt-3">
