@@ -22,6 +22,7 @@ class ShoppingCartController extends Controller
         
         if(Auth::check())
         {
+           
             $customer = Customer::where('user_id', Auth::id())->first();
 
             $shopping_cart = ShoppingCart::where('customer_id' ,$customer->id)->first();
@@ -39,7 +40,7 @@ class ShoppingCartController extends Controller
             }
         }
 
-        if($session)
+        if($session && ShoppingCart::find($session->id))
         {
             return $session->id;
         }
@@ -109,17 +110,17 @@ class ShoppingCartController extends Controller
 
     public function addShippingData(Request $request)
     {
-        /*                                              // vrat validaciu
+                                                // vrat validaciu
         $request->validate([
-            'first_name' => 'required|min:3|max:255',
-            'last_name' => 'required|min:3|max:255',
+            'first_name' => 'required|max:255',
+            'last_name' => 'required|max:255',
             'street_and_number' => 'required|max:255',
             'city' => 'required',
             'zip_code' => 'required|min:5|max:5',
             'telephone' => 'regex:/^\+421[0-9]{9}/',
             'email' => 'regex:/^.+@.+$/i'
         ]);
-        */
+        
 
         $customer = Session::has('customer') ? Session::get('customer') : null;
         if(Auth::check())

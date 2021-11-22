@@ -8,7 +8,7 @@ use App\Models\OrderItem;
 use App\Models\ShoppingCart;
 use App\Models\CartItem;
 use App\Providers\RouteServiceProvider;
-
+use Session;
 
 class OrderController extends Controller
 {
@@ -80,6 +80,8 @@ class OrderController extends Controller
         }
 
         $cart->delete();
+
+        
 
         $request->session()->flash('message', 'Order was succesfully created!');
         return redirect(RouteServiceProvider::HOME);
