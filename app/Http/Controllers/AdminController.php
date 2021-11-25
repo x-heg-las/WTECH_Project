@@ -23,7 +23,7 @@ class AdminController extends Controller
         $out->writeln($products);
         $out->writeln("------------------------------------------------------------------------------------------------");
 
-        return view('dashboard');
+        return view('dashboard', compact('products', $products));
     }
 
     /**

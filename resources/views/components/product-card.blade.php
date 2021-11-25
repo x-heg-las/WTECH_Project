@@ -2,7 +2,7 @@
     <div class="card product-card text-center">
         <a href="/products/{{$record->id}}">
             @if(count($gallery) >= 1)
-                <img src="images/{{ $gallery->first()->image_source }}" alt="Arduino" class="img-fluid" />
+                <img src="/images/{{ $gallery->first()->image_source }}" alt="Arduino" class="img-fluid" />
             @else
             <img src="s" alt="No available image" class="img-fluid" />
             @endif

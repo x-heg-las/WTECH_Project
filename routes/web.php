@@ -20,9 +20,9 @@ use App\Models\Product;
 |
 */
 
-Route::prefix('admin')->group(function() {
+Route::prefix('admin')->middleware(['auth_admin'])->group(function() {
     Route::get('/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
-   }) ;
+   });
 
 Route::get('/shopping_cart', function () {
     return view('layout.shopping-cart');

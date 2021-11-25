@@ -1,4 +1,6 @@
-<x-app-layout>
+@extends('layout.app')
+
+@section('content')
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             {{ __('Dashboard') }}
@@ -14,4 +16,13 @@
             </div>
         </div>
     </div>
-</x-app-layout>
+
+    <section>
+            <h2 class="text-center">New products</h2>
+            <div class="row">
+                @foreach ($products as $product)
+                    <x-product-card :product="$product"/>
+                @endforeach
+            </div>
+    </section>
+@endsection
