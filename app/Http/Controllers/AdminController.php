@@ -35,7 +35,8 @@ class AdminController extends Controller
      */
     public function create()
     {
-        //
+        // Show create form.
+        return view('layout.admin.create');
     }
 
     /**

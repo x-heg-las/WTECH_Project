@@ -29,7 +29,7 @@
                         <a class="btn btn-warning" href="{{ URL::to('admin/product/' . $product->id . '/edit') }}">
                             Editovať
                         </a>&nbsp;&nbsp;
-                        <form action="{{url('admin/delete', [$product->id])}}" method="POST">
+                        <form action="{{url('admin/product', [$product->id])}}" method="POST">
                             <input type="hidden" name="_method" value="DELETE">
                             <input type="hidden" name="_token" value="{{ csrf_token() }}">
                             <input type="submit" class="btn btn-danger" value="Delete"/>
@@ -40,5 +40,7 @@
         @endforeach
         </tbody>
     </table>
+
+    <a class="btn btn-primary" href="/admin/product/create" role="button">New product</a>
 
 @endsection
