@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
 use App\Models\Address;
+use App\Models\Product;
 
 class Customer extends Model
 {
@@ -26,5 +27,10 @@ class Customer extends Model
     public function address()
     {
         return $this->hasOne(Address::class);
+    }
+
+    public function products()
+    {
+        return $this->hasMany(Product::class);
     }
 }
