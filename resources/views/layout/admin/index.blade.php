@@ -26,7 +26,7 @@
                 <td>{{$product->created_at->toFormattedDateString()}}</td>
                 <td>
                     <div class="btn-group" role="group">
-                        <a class="btn btn-warning" href="{{ URL::to('tasks/' . $product->id . '/edit') }}">
+                        <a class="btn btn-warning" href="{{ URL::to('admin/product/' . $product->id . '/edit') }}">
                             Editovať
                         </a>&nbsp;&nbsp;
                         <form action="{{url('admin/delete', [$product->id])}}" method="POST">

@@ -23,6 +23,8 @@ use App\Models\Product;
 Route::prefix('admin')->middleware(['auth_admin'])->group(function() {
     Route::get('/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
     Route::delete('/delete/{product}', [AdminController::class, 'destroy'])->name('admin.delete');
+    Route::get('/product/{product}/edit', [AdminController::class, 'edit'])->name('admin.edit');
+    Route::put('/product/{product}', [AdminController::class, 'update'])->name('admin.update');
    });
 
 Route::get('/shopping_cart', function () {

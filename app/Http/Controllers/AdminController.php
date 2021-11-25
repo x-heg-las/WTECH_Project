@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Product;
+use App\Models\Category;
 use Session;
 use File;
 
@@ -24,7 +25,7 @@ class AdminController extends Controller
         $out->writeln($products);
         $out->writeln("------------------------------------------------------------------------------------------------");
 
-        return view('layout.admin_index', compact('products', $products));
+        return view('layout.admin.index', compact('products', $products));
     }
 
     /**
@@ -70,7 +71,10 @@ class AdminController extends Controller
      */
     public function edit(Product $product)
     {
-        //
+        // Edit given product.
+        $product_categories = $product->categories()->get();
+        $categories = Category::all();
+        return view('layout.admin.edit', compact('product', $product, 'product_categories', $product_categories, 'categories', $categories));
     }
 
     /**
@@ -80,9 +84,24 @@ class AdminController extends Controller
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateProductRequest $request, Product $product)
+    public function update(Request $request, Product $product)
     {
-        //
+        // Update product with updated data.
+        $request->validate([
+            'name' => 'required|min:3',
+            'description' => 'required',
+            'price' => 'required',
+            'stock' => 'required',
+        ]);
+
+        $product->name = $request->name;
+        $product->description = $request->description;
+        $product->price = $request->price;
+        $product->stock = $request->stock;
+        $product->save();
+        $request->session()->flash('message', 'Product has been sucessfully updated!');
+        
+        return redirect('/admin/dashboard');
     }
 
     /**
