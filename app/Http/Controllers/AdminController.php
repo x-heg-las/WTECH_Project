@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use Session;
+use File;
 
 class AdminController extends Controller
 {
@@ -104,5 +105,19 @@ class AdminController extends Controller
         $out->writeln("------------------------------------------------------------------------------------------------");
         $out->writeln($images);
         $out->writeln("------------------------------------------------------------------------------------------------");
+
+        foreach($images as $image){
+            $out->writeln($image);
+            if(File::exists(public_path("images/{$image->image_source}"))){
+                $out->writeln("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+                File::delete(public_path("images/{$image->image_source}"));
+            }
+            $image->delete();
+        }
+
+        $product->delete();
+
+        $request->session()->flash('message', 'Product has been succesfully deleted!');
+        return redirect('/admin/dashboard');
     }
 }
