@@ -23,7 +23,7 @@ class AdminController extends Controller
         $out->writeln($products);
         $out->writeln("------------------------------------------------------------------------------------------------");
 
-        return view('dashboard', compact('products', $products));
+        return view('layout.admin_index', compact('products', $products));
     }
 
     /**
@@ -90,8 +90,19 @@ class AdminController extends Controller
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Product $product)
+    public function destroy(Request $request, Product $product)
     {
-        //
+        $out = new \Symfony\Component\Console\Output\ConsoleOutput();
+        $out->writeln("------------------------------------------------------------------------------------------------");
+        $out->writeln($product);
+        $out->writeln("------------------------------------------------------------------------------------------------");
+
+        // Delete chosen product.
+        $images = $product->images()->get();
+
+        $out = new \Symfony\Component\Console\Output\ConsoleOutput();
+        $out->writeln("------------------------------------------------------------------------------------------------");
+        $out->writeln($images);
+        $out->writeln("------------------------------------------------------------------------------------------------");
     }
 }

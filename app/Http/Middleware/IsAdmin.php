@@ -18,11 +18,6 @@ class IsAdmin
     public function handle(Request $request, Closure $next)
     {
         $customer = Session::get('customer');
-        $out = new \Symfony\Component\Console\Output\ConsoleOutput();
-        $out->writeln("------------------------------------------------------------------------------------------------");
-        $out->writeln("EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
-        $out->writeln($customer);
-        $out->writeln("------------------------------------------------------------------------------------------------");
 
         if (Session::has('customer')){
             if (Session::get('customer')->is_admin){
