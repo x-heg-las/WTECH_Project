@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Category;
+use App\Models\Image;
 use App\Models\CategoryProduct;
 use Session;
 use File;
@@ -51,19 +52,15 @@ class AdminController extends Controller
      */
     public function store(Request $request)
     {
-        $out = new \Symfony\Component\Console\Output\ConsoleOutput();
-        $out->writeln(Session::get('customer'));
-        $out->writeln("------------------------------------------------------------------------------------------------");
-        $out->writeln(Session::get('customer')->id);
-        $out->writeln("------------------------------------------------------------------------------------------------");
-
         // Store new product.
         $request->validate([
             'name' => 'required|min:3',
             'description' => 'required',
             'price' => 'required',
             'stock' => 'required',
-        ]);
+            'images' => 'required',
+            'images.*' => 'image'
+        ]);        
 
         $product = Product::create([
             'name' => $request->name,
@@ -78,6 +75,18 @@ class AdminController extends Controller
                 'category_id' => $request->category,
                 'product_id' => $product->id
             ]);
+        }
+
+        if($request->hasfile('images')){
+            foreach($request->file('images') as $file)
+            {
+                $name = time().rand(1,100).'.'.$file->extension();
+                $file->move(public_path('images'), $name);  
+                Image::create([
+                    'product_id' => $product->id,
+                    'image_source' => $name 
+                ]);
+            }
         }
 
         $request->session()->flash('message', 'Product has been sucessfully created!');
