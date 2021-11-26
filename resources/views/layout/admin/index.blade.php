@@ -4,15 +4,15 @@
 @if (Session::has('message'))
         <div class="alert alert-info">{{ Session::get('message') }}</div>
     @endif
-	<h1>Zoznam úloh</h1>
+	<h1>List of your products</h1>
     <table class="table">
         <thead class="thead-light">
             <tr>
                 <th scope="col">#</th>
-                <th scope="col">Názov</th>
-                <th scope="col">Opis</th>
-                <th scope="col">Dátum vytvorenia</th>
-                <th scope="col">Akcia</th>
+                <th scope="col">Name</th>
+                <th scope="col">Description</th>
+                <th scope="col">Date of creation</th>
+                <th scope="col">Options</th>
             </tr>
         </thead>
         <tbody>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Category;
+use App\Models\CategoryProduct;
 use Session;
 use File;
 
@@ -36,7 +37,10 @@ class AdminController extends Controller
     public function create()
     {
         // Show create form.
-        return view('layout.admin.create');
+
+        $categories = Category::all();
+
+        return view('layout.admin.create', compact('categories', $categories));
     }
 
     /**
@@ -45,9 +49,40 @@ class AdminController extends Controller
      * @param  \App\Http\Requests\StoreProductRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreProductRequest $request)
+    public function store(Request $request)
     {
-        //
+        $out = new \Symfony\Component\Console\Output\ConsoleOutput();
+        $out->writeln(Session::get('customer'));
+        $out->writeln("------------------------------------------------------------------------------------------------");
+        $out->writeln(Session::get('customer')->id);
+        $out->writeln("------------------------------------------------------------------------------------------------");
+
+        // Store new product.
+        $request->validate([
+            'name' => 'required|min:3',
+            'description' => 'required',
+            'price' => 'required',
+            'stock' => 'required',
+        ]);
+
+        $product = Product::create([
+            'name' => $request->name,
+            'description' => $request->description,
+            'price' => $request->price,
+            'stock' => $request->stock,
+            'customer_id' => Session::get('customer')->id
+        ]);
+
+        if ($request->category != 'empty'){
+            $category = CategoryProduct::create([
+                'category_id' => $request->category,
+                'product_id' => $product->id
+            ]);
+        }
+
+        $request->session()->flash('message', 'Product has been sucessfully created!');
+        
+        return redirect('/admin/dashboard');
     }
 
     /**

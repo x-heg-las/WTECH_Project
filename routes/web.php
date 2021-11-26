@@ -26,7 +26,7 @@ Route::prefix('admin')->middleware(['auth_admin'])->group(function() {
     Route::get('/product/{product}/edit', [AdminController::class, 'edit'])->name('admin.edit');
     Route::put('/product/{product}', [AdminController::class, 'update'])->name('admin.update');
     Route::get('/product/create', [AdminController::class, 'create'])->name('admin.create');
-
+    Route::post('/product', [AdminController::class, 'store'])->name('admin.store');
    });
 
 Route::get('/shopping_cart', function () {
