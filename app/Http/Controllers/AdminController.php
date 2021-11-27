@@ -117,9 +117,10 @@ class AdminController extends Controller
     public function edit(Product $product)
     {
         // Edit given product.
+        $images = $product->images()->get();
         $product_categories = $product->categories()->get();
         $categories = Category::all();
-        return view('layout.admin.edit', compact('product', $product, 'product_categories', $product_categories, 'categories', $categories));
+        return view('layout.admin.edit', compact('product', $product, 'product_categories', $product_categories, 'categories', $categories, 'images', $images));
     }
 
     /**
@@ -138,6 +139,34 @@ class AdminController extends Controller
             'price' => 'required',
             'stock' => 'required',
         ]);
+
+        $out = new \Symfony\Component\Console\Output\ConsoleOutput();
+        $out->writeln("------------------------------------------------------------------------------------------------");
+        $out->writeln($request->remove);
+        $out->writeln("------------------------------------------------------------------------------------------------");
+
+        if($request->has('remove')){
+            $images = Image::select("*")->whereIn('id', $request->remove)->get();
+
+            foreach($images as $image){
+                if(File::exists(public_path("images/{$image->image_source}"))){
+                    File::delete(public_path("images/{$image->image_source}"));
+                }
+                $image->delete();
+            }
+        }
+
+        if($request->hasfile('images')){
+            foreach($request->file('images') as $file)
+            {
+                $name = time().rand(1,100).'.'.$file->extension();
+                $file->move(public_path('images'), $name);  
+                Image::create([
+                    'product_id' => $product->id,
+                    'image_source' => $name 
+                ]);
+            }
+        }
 
         $product->name = $request->name;
         $product->description = $request->description;
@@ -171,9 +200,7 @@ class AdminController extends Controller
         $out->writeln("------------------------------------------------------------------------------------------------");
 
         foreach($images as $image){
-            $out->writeln($image);
             if(File::exists(public_path("images/{$image->image_source}"))){
-                $out->writeln("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
                 File::delete(public_path("images/{$image->image_source}"));
             }
             $image->delete();
