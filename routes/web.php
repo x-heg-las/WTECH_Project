@@ -65,9 +65,11 @@ Route::get('/', function () {
     }
     $out->writeln("------------------------------------------------------------------------------------------------");
 
-    $products = Product::all();
+    $new = Product::orderByDesc('updated_at')
+                    ->take(10)
+                    ->get();
 
-    return view('layout.index', compact('products', $products));
+    return view('layout.index', compact('new', $new));
 });
 
 Route::get('/dashboard', function () {
