@@ -7,6 +7,8 @@ use App\Http\Requests\Auth\LoginRequest;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Customer;
+use Session;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -31,6 +33,13 @@ class AuthenticatedSessionController extends Controller
         $request->authenticate();
 
         $request->session()->regenerate();
+
+        $customer = Customer::where('user_id', Auth::user()->id)->first();
+        Session::put('customer', $customer);
+
+        if ($customer->is_admin){
+            return redirect('/admin/dashboard');
+        }
 
         return redirect()->intended(RouteServiceProvider::HOME);
     }

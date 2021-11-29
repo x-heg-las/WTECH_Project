@@ -6,11 +6,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Category;
+use App\Models\Customer;
 
 class Product extends Model
 {
     use HasFactory;
-    protected $fillable = ['name', 'description', 'price', 'stock'];
+    protected $fillable = ['name', 'description', 'price', 'stock', 'customer_id'];
 
     public function images()
     {
@@ -28,5 +29,13 @@ class Product extends Model
     public function categories()
     {
         return $this->belongsToMany(Category::class, 'category_product');
+    }
+
+    /**
+     * Customer, which created product.
+     */
+    public function customer()
+    {
+        return $this->hasOne(Customer::class, 'customer_id');
     }
 }

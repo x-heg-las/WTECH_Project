@@ -3,7 +3,9 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ShoppingCartController;
+use App\Http\Controllers\CartItemController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\AdminController;
 use App\Models\ShoppingCart;
 use App\Models\Product;
 
@@ -17,6 +19,15 @@ use App\Models\Product;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+Route::prefix('admin')->middleware(['auth_admin'])->group(function() {
+    Route::get('/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
+    Route::delete('/product/{product}', [AdminController::class, 'destroy'])->name('admin.delete');
+    Route::get('/product/{product}/edit', [AdminController::class, 'edit'])->name('admin.edit');
+    Route::put('/product/{product}', [AdminController::class, 'update'])->name('admin.update');
+    Route::get('/product/create', [AdminController::class, 'create'])->name('admin.create');
+    Route::post('/product', [AdminController::class, 'store'])->name('admin.store');
+   });
 
 Route::get('/shopping_cart', function () {
     return view('layout.shopping-cart');
