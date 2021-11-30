@@ -7,6 +7,8 @@ use App\Models\Product;
 use App\Models\Category;
 use App\Models\Image;
 use App\Models\CategoryProduct;
+use Illuminate\Support\Facades\Hash;
+
 use Session;
 use File;
 
@@ -80,12 +82,14 @@ class AdminController extends Controller
         if($request->hasfile('images')){
             foreach($request->file('images') as $file)
             {
-                $name = time().rand(1,100).'.'.$file->extension();
-                $file->move(public_path('images'), $name);  
-                Image::create([
+                $originalName = $file->getClientOriginalName();
+                $file->move(public_path('images'), md5($originalName));  
+                $rec =  Image::create([
                     'product_id' => $product->id,
-                    'image_source' => $name 
+                    'image_source' => md5($originalName),
+                    'original_name' => $originalName,
                 ]);
+            
             }
         }
 
@@ -159,11 +163,13 @@ class AdminController extends Controller
         if($request->hasfile('images')){
             foreach($request->file('images') as $file)
             {
-                $name = time().rand(1,100).'.'.$file->extension();
-                $file->move(public_path('images'), $name);  
+                $originalName = $file->getOriginalName();
+                
+                $file->move(public_path('images'), md5($originalName));  
                 Image::create([
                     'product_id' => $product->id,
-                    'image_source' => $name 
+                    'image_source' => md5($originalName),
+                    'original_name' => $originalName,
                 ]);
             }
         }

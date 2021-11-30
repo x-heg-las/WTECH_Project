@@ -36,7 +36,7 @@ Route::get('/shopping_cart', function () {
 
 Route::get('/products/{product}', [ProductController::class, 'show'])->name('show');
 
-Route::put('/products/{product}', [ShoppingCartController::class, 'addToShoppingCart']);
+Route::put('/products/{product}', [ShoppingCartController::class, 'addToShoppingCart'])->name('addToShoppingCart');
 
 Route::get('/search', [ProductController::class, 'search'])->name('search');
 
