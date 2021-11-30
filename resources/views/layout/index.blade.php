@@ -44,8 +44,11 @@
             <div class="collapse " id="allCategories">
                 <div class="card card-body container-fluid" >
                     <ul class="list-group categories-group list-group-horizontal-m ">
-                    <li class="list-group-item"><a href="#">Category 1</a></li>
-                    # dopln list vsetkych kategorii
+                    @forelse($categories as $category)
+                        <li class="list-group-item"><a href="/search?category[]={{ $category->name }}">{{ $category->name }}</a></li>
+                    @empty
+                        <li class="list-group-item">No category yet</li>
+                    @endforelse
                     </ul>
                 </div>
             </div>

@@ -7,6 +7,7 @@ use App\Http\Controllers\CartItemController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\AdminController;
 use App\Models\ShoppingCart;
+use App\Models\Category;
 use App\Models\Product;
 
 /*
@@ -69,7 +70,9 @@ Route::get('/', function () {
                     ->take(10)
                     ->get();
 
-    return view('layout.index', compact('new', $new));
+    $categories = Category::all();
+
+    return view('layout.index', compact('new', $new, 'categories', $categories));
 });
 
 Route::get('/dashboard', function () {
