@@ -14,7 +14,7 @@
             @if(Auth::user())
                 <li><span class="dropdown-item">{{ Auth::user()->name }}</span></li>
                 @if(Session::has('customer') && Session::get('customer')->is_admin)
-                    <li><a class="dropdown-item" href="#">Dashboard</a></li>
+                    <li><a class="dropdown-item" href="/admin/dashboard">Dashboard</a></li>
                 @endif
                 <li><form method="POST" action="{{ route('logout') }}">
                                 @csrf
