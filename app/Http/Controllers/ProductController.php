@@ -53,8 +53,23 @@ class ProductController extends Controller
     {
         $gallery = Image::where('product_id', $product->id)->get();
         $parameters = Parameter::where('product_id', $product->id)->get();
+        $recent = $request->session()->get('recently_viewed', []);
+        
+        //Session remmembers only last 5 recently visited products
+        if($recent && count($recent) > 4)
+        {
+           $index = array_key_first($recent);
+           $request->session()->pull('recently_viewed.' . $index);;
+        }
+        
+        if(!$recent || ($recent && !in_array($product, $recent)))
+        {
+            $request->session()->push('recently_viewed', $product);
+        }
+            
+
         // Show product detail page
-        return view('layout.product_detail',compact('product', $product, 'gallery', $gallery, 'parameters', $parameters, 'request', $request));
+        return view('layout.product_detail',compact('product', $product, 'gallery', $gallery, 'parameters', $parameters, 'request', $request, 'recent', $recent));
     }
 
     /**

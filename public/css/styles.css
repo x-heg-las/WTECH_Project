@@ -274,7 +274,14 @@ main
      
 }
 
-.arrow{
+.arrow
+{
     font-size: 5vw;
     vertical-align: middle;
+}
+
+img 
+{
+    max-width: 430px;
+    max-height: 320px;
 }
