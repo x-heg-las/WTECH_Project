@@ -5,9 +5,11 @@
     </button>
     <div class="collapse navbar-collapse" id="mainNavbar">
     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        @guest
         <li class="nav-item">
         <a class="nav-link" href="{{ URL::to('login') }}">Login</a>
         </li>
+        @endguest
         <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" role="button" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user-circle fa-lg"></i></a>
         <ul class="dropdown-menu" aria-labelledby="profileDropdown">
@@ -33,7 +35,7 @@
         </ul>
         </li>
         <li class="nav-item">
-        <a class="nav-link" href="/shopping_cart">Shopping cart</a>
+        <a class="nav-link" href="{{ url('shopping_cart') }}">Shopping cart</a>
         </li>
     </ul>
     <form class="d-flex" action='/search'>

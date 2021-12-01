@@ -21,8 +21,8 @@ class AdminController extends Controller
      */
     public function index()
     {
-        // Load all admins products
-        $products = Session::get('customer')->products()->get();
+        // Load all products
+        $products = Product::all();
 
         $out = new \Symfony\Component\Console\Output\ConsoleOutput();
         $out->writeln("------------------------------------------------------------------------------------------------");

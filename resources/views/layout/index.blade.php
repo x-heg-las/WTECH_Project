@@ -1,5 +1,9 @@
 @extends('layout.app')
 
+@section('title')
+<title>PiStore</title>
+@endsection
+
 @section('content')
     @if (Session::has('message'))
         <div class="alert alert-info">{{ Session::get('message') }}</div>
@@ -7,7 +11,7 @@
     <div class="row justify-content-between">
         <!-- card-->
         <div class="col-sm d-flex">
-            <a href="#" role="button" class="d-flex flex-fill">
+            <a href="/search?category[]=Supply" role="button" class="d-flex flex-fill">
             <div class="card inactive-btn d-flex flex-fill">
                 <div class="card-body text-center">
                 <i class="fas fa-bolt"></i>
@@ -18,7 +22,7 @@
         </div>
         <!-- card-->
         <div class="col-sm d-flex">
-            <a href="#" class="d-flex flex-fill">
+            <a href="/search?category[]=Shield_Module" class="d-flex flex-fill">
             <div class="card inactive-btn d-flex flex-fill">
                 <div class="card-body text-center">
                 <i class="fas fa-shield-alt"></i>
@@ -95,7 +99,7 @@
             <div class="col-sm container-fluid d-none d-lg-grid">
             <div class="row">
                 <div class="col-sm d-flex">
-                    <a href="#" class="d-flex flex-fill">
+                    <a href="/search?category[]=Display" class="d-flex flex-fill">
                         <div class="card d-flex flex-fill" id="card_1">
                             <div class="card-body category-card">
                                 <article>
@@ -108,7 +112,7 @@
             </div>
             <div class="row pt-3">
                 <div class="col-sm d-flex">
-                    <a href="#" class="d-flex flex-fill">
+                    <a href="/search?category[]=Kit" class="d-flex flex-fill">
                         <div class="card d-flex flex-fill" id="card_2">
                             <div class="card-body category-card">
                                 <article>
@@ -119,7 +123,7 @@
                     </a>
                 </div>
                 <div class="col-sm d-flex">
-                    <a href="#" class="d-flex flex-fill">
+                    <a href="/search?category[]=Sensor" class="d-flex flex-fill">
                         <div class="card d-flex flex-fill" id="card_3">
                             <div class="card-body category-card">
                                 <article>
@@ -132,7 +136,7 @@
             </div>
             </div>
             <div class="col-sm container-fluid ">
-                <a href="#">
+                <a href="/search?category[]=Sale">
                     <div class="card" id="card_sale">
                         <div class="card-body category-card text-center">
                             <article>

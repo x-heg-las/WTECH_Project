@@ -13,16 +13,16 @@
                             @forelse($gallery as $image)
                                 @if ($loop->first)
                                 <div class="carousel-item active">
-                                    <img src="{{ URL::to('/') }}/images/{{ $image->image_source }}" alt="Product image" class="mx-auto d-block">
+                                    <img src="{{ URL::to('/') }}/images/{{ $image->image_source }}" alt="Product image" class="mx-auto d-block w-100">
                                 </div>
                                 @else
                                 <div class="carousel-item">
-                                    <img src="{{ URL::to('/') }}/images/{{ $image->image_source }}" alt="Product image" class="mx-auto d-block">
+                                    <img src="{{ URL::to('/') }}/images/{{ $image->image_source }}" alt="Product image" class="mx-auto d-block w-100">
                                 </div>
                                 @endif
                             @empty
                                 <div class="carousel-item">
-                                    <img src="s" alt="No available image" class="img-fluid" />  
+                                    <img src="s" alt="No available image" class="img-fluid  w-100" />  
                                 </div>
                             @endforelse
                         </div>
@@ -298,5 +298,4 @@
             }
         }
     </script>
-    
 @endsection
