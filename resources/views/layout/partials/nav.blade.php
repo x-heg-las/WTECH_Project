@@ -16,15 +16,17 @@
                 @if(Session::has('customer') && Session::get('customer')->is_admin)
                     <li><a class="dropdown-item" href="/admin/dashboard">Dashboard</a></li>
                 @endif
-                <li><form method="POST" action="{{ route('logout') }}">
-                                @csrf
+                <li>
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
 
-                                <x-dropdown-link :href="route('logout')"
-                                        onclick="event.preventDefault();
-                                                    this.closest('form').submit();">
-                                    {{ __('Log Out') }}
-                                </x-dropdown-link>
-                            </form></li>
+                        <x-dropdown-link :href="route('logout')"
+                                onclick="event.preventDefault();
+                                            this.closest('form').submit();">
+                            {{ __('Log Out') }}
+                        </x-dropdown-link>
+                    </form>
+                </li>
             @else
                 <li><a class="dropdown-item"  href="{{ URL::to('register') }}">Register</a></li>
             @endif

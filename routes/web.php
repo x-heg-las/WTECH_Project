@@ -6,6 +6,7 @@ use App\Http\Controllers\ShoppingCartController;
 use App\Http\Controllers\CartItemController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\AdminController;
+use App\Http\Middleware\CheckoutLoginCheck;
 use App\Models\ShoppingCart;
 use App\Models\Category;
 use App\Models\Product;
@@ -34,19 +35,25 @@ Route::get('/shopping_cart', function () {
     return view('layout.shopping-cart');
 });
 
-Route::get('/products/{product}', [ProductController::class, 'show'])->name('show');
+Route::get('/products/{product}', [ProductController::class, 'show'])
+                ->name('show');
 
-Route::put('/products/{product}', [ShoppingCartController::class, 'addToShoppingCart'])->name('addToShoppingCart');
+Route::put('/products/{product}', [ShoppingCartController::class, 'addToShoppingCart'])
+                ->name('addToShoppingCart');
 
-Route::get('/search', [ProductController::class, 'search'])->name('search');
+Route::get('/search', [ProductController::class, 'search'])
+                ->name('search');
 
-Route::get('/order/store', [OrderController::class, 'store'])->name('store');
+Route::get('/order/store', [OrderController::class, 'store'])
+                ->name('store');
 
 Route::get('/checkout/payment', [ShoppingCartController::class, 'choosePaymentMethod']);
 
 Route::get('/activate/{option}/{value}/{page}', [ShoppingCartController::class, 'changeOption']);
 
-Route::get('/checkout/shipping', [ShoppingCartController::class, 'chooseShippingMethod']);
+Route::get('/checkout/shipping', [ShoppingCartController::class, 'chooseShippingMethod'])
+                ->middleware('check_login')
+                ->name('shipping');
 
 Route::post('/shipping', [ShoppingCartController::class, 'addShippingData']);
 

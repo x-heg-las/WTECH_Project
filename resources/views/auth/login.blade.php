@@ -4,12 +4,7 @@
     @endsection
     @section('content')
 
-            <div class="offset-4 col-4 ">
-                <x-slot name="logo">
-                    <a href="/">
-                        <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
-                    </a>
-                </x-slot>
+            <div class="offset-4 col-4 ">     
     
                 <!-- Session Status -->
                 <x-auth-session-status class="mb-4" :status="session('status')" />
@@ -37,8 +32,9 @@
                                             name="password"
                                             required autocomplete="current-password" />
                         </div>
-                    
-    
+                        @isset($checkout)
+                            <input type="hidden" name="checkout" value="checkout"/>
+                        @endisset
                         <!-- Remember Me -->
                         <div class="block mt-4">
                             <label for="remember_me" class="inline-flex items-center">
@@ -60,6 +56,21 @@
                         </div>
                     </div>
                 </form>
+                @guest    
+                    @isset($checkout)
+                        <div class="row text-center mt-4">
+                            <span>If you are not registered you can..</span>
+                            <form method="GET" action="{{ route('register')}}">
+                                <input type="hidden" name="checkout" value="continue"/>
+                                <input type="submit" value="Register"  class="btn purple-btn"/>
+                            </form>
+                            <span>or</span>
+                            <form method="GET" action="{{ route('shipping')}}">
+                                <input type="hidden" name="checkout" value="continue"/>
+                                <input type="submit" class="btn purple-btn" value="Continue without registration"/>
+                            </form>
+                        </div>
+                    @endisset
+                @endguest
             </div>
-      
     @endsection

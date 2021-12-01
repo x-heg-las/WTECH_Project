@@ -86,15 +86,6 @@ class ShoppingCartController extends Controller
         $quantity = $request->input('quantity');
         $product = Product::find($id);
 
-        /*DB::table('cart_items')->insert(
-            ['shopping_cart_id' => $cartId,
-             'product_id' => $product->id,
-             'quantity' => $quantity,
-             'unit_price' => $product->price,
-             'total_price' => $product->price * $quantity,
-             ]
-        );*/
-
         $new_item = CartItem::create(
             ['shopping_cart_id' => $cartId,
              'product_id' => $product->id,
@@ -110,7 +101,7 @@ class ShoppingCartController extends Controller
 
     public function addShippingData(Request $request)
     {
-                                                // vrat validaciu
+        // vrat validaciu
         $request->validate([
             'first_name' => 'required|max:255',
             'last_name' => 'required|max:255',
@@ -175,6 +166,7 @@ class ShoppingCartController extends Controller
                 $address = $customer->address;
             }
         }
+       
         return view('layout.checkout-shipping', compact('customer', $customer, 'address', $address));
     }
 
@@ -214,13 +206,13 @@ class ShoppingCartController extends Controller
         $items = ShoppingCart::find($cartId)->cartItems()->get();
         $sum = $items->sum('total_price');
 
+
+
         return view('layout.checkout-pay', compact('items', $items, 'sum', $sum));
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
+     * Show the form for creating a new resource.next
      */
     public function create()
     {

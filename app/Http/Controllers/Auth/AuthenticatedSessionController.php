@@ -17,8 +17,15 @@ class AuthenticatedSessionController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function create()
+    public function create(Request $request)
     {
+
+        if($request->checkout)
+        {
+            $checkout = $request->checkout;
+            //if the request is sent from shopping cart
+            return view('auth.login', compact('checkout', $checkout));
+        }
         return view('auth.login');
     }
 
@@ -31,14 +38,33 @@ class AuthenticatedSessionController extends Controller
     public function store(LoginRequest $request)
     {
         $request->authenticate();
-
         $request->session()->regenerate();
-
+       
         $customer = Customer::where('user_id', Auth::user()->id)->first();
         Session::put('customer', $customer);
 
         if ($customer->is_admin){
             return redirect('/admin/dashboard');
+        }
+
+        if($request->checkout)
+        {
+            $shoppingCart = $customer->shoppingCart()->first();
+            if($shoppingCart)
+            {
+                $shoppingCart->delete();
+            }
+
+            if(!Session::has('shopping_cart'))
+            {
+                return redirect()->intended(RouteServiceProvider::HOME);
+            }
+
+            $shoppingCart = Session::get('shopping_cart');
+            $shoppingCart->customer_id = $customer->id;
+            $shoppingCart->save();
+
+            return redirect('/checkout/shipping');
         }
 
         return redirect()->intended(RouteServiceProvider::HOME);
