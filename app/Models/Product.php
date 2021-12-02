@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Category;
 use App\Models\Customer;
+use App\Models\CartItem;
 
 class Product extends Model
 {
@@ -32,10 +33,15 @@ class Product extends Model
     }
 
     /**
-     * Customer, which created product.
+     * Person, who created product.
      */
     public function customer()
     {
         return $this->hasOne(Customer::class, 'customer_id');
+    }
+
+    public function cart_items()
+    {
+        return $this->belongsToMany(CartItem::class);
     }
 }

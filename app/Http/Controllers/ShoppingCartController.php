@@ -82,19 +82,18 @@ class ShoppingCartController extends Controller
 
     public function addToShoppingCart(Request $request, $id)
     {
-        $cartId = $this->getCartIdFromSession();
+        $shoppingCart = ShoppingCart::find($this->getCartIdFromSession());
         $quantity = $request->input('quantity');
         $product = Product::find($id);
-
-        $new_item = CartItem::create(
-            ['shopping_cart_id' => $cartId,
-             'product_id' => $product->id,
-             'quantity' => $quantity,
-             'unit_price' => $product->price,
-             'total_price' => $product->price * $quantity,
-             ]
+        $newItem = CartItem::firstOrNew(
+            ['shopping_cart_id' => $shoppingCart->id, 'product_id' => $product->id],
+            ['quantity' => 0, 'total_price' => 0, 'unit_price' => $product->price]
         );
-        
+
+        $newItem->quantity = $quantity + $newItem->quantity;
+        $newItem->total_price = $newItem->quantity * $newItem->unit_price;
+        $newItem->save();
+
         $request->session()->flash('message', 'Added to the sopping cart.');
         return redirect('products/'.$id);
     }

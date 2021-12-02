@@ -1,7 +1,7 @@
 @extends('layout.app')
  
 @section('content')
-<h1>Editácia úlohy</h1>
+<h1>Edit Product</h1>
 <hr>
 <form action="{{url('admin/product', [$product->id])}}" method="POST" enctype="multipart/form-data">
 	<input type="hidden" name="_method" value="PUT">
@@ -45,7 +45,7 @@
         @endforeach
     </div>
 
-    <div class="form-group">
+    <div class="form-group mt-4">
             <div id="inputFormRow">
                 <div class="input-group mb-3" style="margin-top:10px">
                     <input type="file" name="images[]" multiple class="form-control" accept="image/*">
@@ -56,7 +56,7 @@
             </div>
 
         <div id="newRow"></div>
-        <button id="addRow" type="button" class="btn btn-info">Add Row</button>
+        <button id="addRow" type="button" class="btn btn-info">Add Image</button>
     </div>
 
     <div class="form-group">

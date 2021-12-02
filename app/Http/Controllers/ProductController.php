@@ -121,11 +121,6 @@ class ProductController extends Controller
         if ($request->has('category')){
 
             $category = $request->input('category');
-
-            $out = new \Symfony\Component\Console\Output\ConsoleOutput();
-            $out->writeln("CCCCCCCCCCCCC----------------------------------------------------------------------------------");
-            $out->writeln($category);
-            $out->writeln("CCCCCCCCCCCCCC-------------------------------------------------------------------------------------");
             
             //$category = Category::where('name', $category)->first()->products()->get();
 

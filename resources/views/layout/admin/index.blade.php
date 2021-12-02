@@ -27,7 +27,7 @@
                 <td>
                     <div class="btn-group" role="group">
                         <a class="btn btn-warning" href="{{ URL::to('admin/product/' . $product->id . '/edit') }}">
-                            Editovať
+                            Edit
                         </a>&nbsp;&nbsp;
                         <form action="{{url('admin/product', [$product->id])}}" method="POST">
                             <input type="hidden" name="_method" value="DELETE">
