@@ -62,7 +62,7 @@
     <div class="form-group">
         <label for="category">Product category</label>
         <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
-            <option value="{{ $product_categories->first()->id }}" selected>{{ $product_categories->first()->name }}</option>
+            <option value="{{ $product_categories->first()->id ?? '-' }}" selected>{{ $product_categories->first()->name ?? '-' }}</option>
             @foreach ($categories as $category)
                <option value="{{$category->id}}">{{$category->name}}</option>
             @endforeach

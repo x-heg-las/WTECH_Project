@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use App\Models\Parameter;
 
 class ParameterSeeder extends Seeder
 {
@@ -13,6 +14,8 @@ class ParameterSeeder extends Seeder
      */
     public function run()
     {
-        //
+        Parameter::factory()
+            ->count(100)
+            ->create();
     }
 }
