@@ -1,4 +1,4 @@
-<div class="col-12 col-sm-6 col-md-4 col-lg-3 d-flex flex-column toto">
+<div class="col-12 col-sm-6 col-md-4 col-lg-3 d-flex flex-column">
     <div class="card product-card text-center flex-grow flex-fill shadow">
         <a href="/products/{{$record->id}}">
             @if(count($gallery) >= 1)

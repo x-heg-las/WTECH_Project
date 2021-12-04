@@ -38,14 +38,15 @@ Route::get('/shopping_cart', function () {
 Route::get('/products/{product}', [ProductController::class, 'show'])
                 ->name('show');
 
-Route::put('/products/{product}', [ShoppingCartController::class, 'addToShoppingCart'])
+Route::put('/products/{product}', [CartItemController::class, 'create'])
                 ->name('addToShoppingCart');
 
 Route::get('/search', [ProductController::class, 'search'])
+                ->middleware('check_search_input')
                 ->name('search');
 
 Route::get('/order/store', [OrderController::class, 'store'])
-                ->name('store');
+                ->name('store_order');
 
 Route::get('/checkout/payment', [ShoppingCartController::class, 'choosePaymentMethod']);
 
@@ -57,12 +58,22 @@ Route::get('/checkout/shipping', [ShoppingCartController::class, 'chooseShipping
 
 Route::post('/shipping', [ShoppingCartController::class, 'addShippingData']);
 
-Route::delete('/remove_item/{id}', [ShoppingCartController::class, 'removeFromShoppingCart']);
+//Route::delete('/remove_item/{id}', [ShoppingCartController::class, 'removeFromShoppingCart']);
+
+Route::delete('/remove_item_customer/{item}/{id}', [CartItemController::class, 'destroy'])
+                ->name('remove_item_customer');
+
+Route::delete('/remove_item/{id}', [CartItemController::class, 'destroy'])
+                ->name('remove_item');
 
 Route::get('/shopping_cart', [ShoppingCartController::class, 'index'])
                 ->name('shopping_cart');
 
-Route::get('/checkout/recap', [ShoppingCartController::class, 'recapitulation']);
+//Route::get('/checkout/recap', [ShoppingCartController::class, 'recapitulation'])
+ //               ->name('recapitulation');
+
+ Route::get('/checkout/recap', [OrderController::class, 'index'])
+                ->name('recapitulation');
 
 Route::put('/quantity/{item}', [CartItemController::class, 'update']);
 

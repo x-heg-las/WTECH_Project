@@ -1,5 +1,8 @@
 @extends('layout.app')
 
+@section('title')
+<title>{{$product->name}}</title>
+@endsection
 @section('content')
     @if (Session::has('message'))
         <div class="alert alert-info">{{ Session::get('message') }}</div>
@@ -71,7 +74,7 @@
                 </div>
             </div>
             <div class="row py-5">
-                <div class="col-md-8">
+                <div class="col-12">
                     <div class="row">
                         <ul class="nav nav-tabs">
                             <li class="nav-item col-md-4">
@@ -213,64 +216,6 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-
-                <div class="col-md-3 offset-md-1">
-                    <div class="row">
-                        <h1 class="display-6">Recommended</h1>
-                    </div>
-                    <div class="row">
-
-                        <div class="card product-card">
-                            <a href="#">
-                                <img src="img/electronics_arduino_diy.png" alt="Arduino" class="img-fluid" />
-                            </a>
-                            <section>
-                                <div class="card-body">
-                                    <a href="#">
-                                        <h3 class="text-truncate">Product name</h3>
-                                    </a>
-                                </div>
-                                <div class="card-body">
-                                    123 €
-                                </div>
-                            </section>
-                        </div>
-
-                        <div class="card product-card">
-                            <a href="#">
-                                <img src="img/electronics_arduino_diy.png" alt="Arduino" class="img-fluid" />
-                            </a>
-                            <section>
-                                <div class="card-body">
-                                    <a href="#">
-                                        <h3 class="text-truncate">Product name</h3>
-                                    </a>
-                                </div>
-                                <div class="card-body">
-                                    123 €
-                                </div>
-                            </section>
-                        </div>
-
-                        <div class="card product-card">
-                            <a href="#">
-                                <img src="img/electronics_arduino_diy.png" alt="Arduino" class="img-fluid" />
-                            </a>
-                            <section>
-                                <div class="card-body">
-                                    <a href="#">
-                                        <h3 class="text-truncate">Product name</h3>
-                                    </a>
-                                </div>
-                                <div class="card-body">
-                                    123 €
-                                </div>
-                            </section>
-                        </div>
-
-
                     </div>
                 </div>
 

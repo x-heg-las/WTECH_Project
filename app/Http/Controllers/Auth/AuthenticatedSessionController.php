@@ -37,8 +37,10 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request)
     {
+        $request->session()->flush();
         $request->authenticate();
         $request->session()->regenerate();
+      
        
         $customer = Customer::where('user_id', Auth::user()->id)->first();
         Session::put('customer', $customer);
@@ -79,6 +81,8 @@ class AuthenticatedSessionController extends Controller
     public function destroy(Request $request)
     {
         Auth::guard('web')->logout();
+
+        $request->session()->flush();
 
         $request->session()->invalidate();
 

@@ -11,13 +11,15 @@ use App\Models\CartItem;
 use App\Models\Address;
 use Illuminate\Support\Facades\DB;
 use App\Models\Product;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
 use Session;
 
 class ShoppingCartController extends Controller
 {
 
     public function getCartIdFromSession()
-    {
+    {/*
         $session = Session::has('shopping_cart') ? Session::get('shopping_cart') : null;
         
         if(Auth::check())
@@ -48,7 +50,7 @@ class ShoppingCartController extends Controller
         $id = DB::table('shopping_carts')->insertGetId([]);
         Session::put('shopping_cart', ShoppingCart::find($id));
         return $id;
-    }
+    */}
 
     public function changeOption(Request $request, $option, $value, $page)
     {
@@ -70,18 +72,61 @@ class ShoppingCartController extends Controller
      */
     public function index(Request $request)
     {
-        $cartId = $this->getCartIdFromSession();
-        
-        $items = ShoppingCart::find($cartId)->cartItems()->get();
-        $sum = $items->sum('total_price');
+        $customerId = Customer::where('user_id', Auth::id())->first()->id;
 
+        $shoppingCart = Session::get('shopping_cart', function () use($customerId){
+            $cart =  ShoppingCart::firstOrNew(
+                ['customer_id' => $customerId]
+            );
+            Session::forget('cart_items');
+            Session::put('shopping_cart', $cart);
+            return $cart;
+        });
+
+        $cartItems = Session::get('cart_items', function() use($shoppingCart) {
+            $insertedProducts = [];
+            if(Auth::check())
+            {
+                $products = $shoppingCart->cartItems()->get(); 
+   
+                if($products)
+                {
+                   
+                    foreach($products as $product)
+                    {   
+                        $insertedProducts[$product->product_id] = $product;
+                    }
+                }
+            }
+            Session::put('cart_items', $insertedProducts);
+            return Session::get('cart_items', []);
+        });
+
+       // $cartId = $this->getCartIdFromSession();
+        //$items = ShoppingCart::find($cartId)->cartItems()->get();
+        
+        $items = Session::get('cart_items', []);
        
+        $sum = 0;
+        if($items)
+        {
+            
+            foreach ($items as $item)
+            {
+    
+                $sum += $item->total_price;
+            }
+        }
+  
         return view('layout.shopping-cart', compact('items', $items, 'sum', $sum));
    
     }
 
     public function addToShoppingCart(Request $request, $id)
     {
+        //$caca = new ShoppingCart();
+  
+        /*
         $shoppingCart = ShoppingCart::find($this->getCartIdFromSession());
         $quantity = $request->input('quantity');
         $product = Product::find($id);
@@ -96,6 +141,8 @@ class ShoppingCartController extends Controller
 
         $request->session()->flash('message', 'Added to the sopping cart.');
         return redirect('products/'.$id);
+        
+        */
     }
 
     public function addShippingData(Request $request)
@@ -144,8 +191,6 @@ class ShoppingCartController extends Controller
             'country' => $request->country
         ]);
 
-        //pridaj priradenie nakupneho kosa k zakaznikovi
-
         return redirect('/checkout/payment');
     }
 
@@ -170,7 +215,7 @@ class ShoppingCartController extends Controller
     }
 
     public function recapitulation()
-    {
+    {/*
         $cartId = $this->getCartIdFromSession();
         $items = ShoppingCart::find($cartId)->cartItems()->get();
 
@@ -196,27 +241,22 @@ class ShoppingCartController extends Controller
             ));
         }
 
-        return view('layout.checkout-recap', compact('items', $items, 'customer', $customer));
+        return view('layout.checkout-recap', compact('items', $items, 'customer', $customer));*/
     }
 
     public function choosePaymentMethod(Request $request)
     {
-        $cartId = $this->getCartIdFromSession();
-        $items = ShoppingCart::find($cartId)->cartItems()->get();
-        $sum = $items->sum('total_price');
-
-
-
+        $items = Session::get('cart_items', []);
+        //$sum = $items->sum('total_price');
+        $sum = 0;
+        foreach($items as $item)
+        {
+            $sum += $item->total_price;
+        }
         return view('layout.checkout-pay', compact('items', $items, 'sum', $sum));
     }
 
-    /**
-     * Show the form for creating a new resource.next
-     */
-    public function create()
-    {
-        //
-    }
+  
 
     /**
      * Store a newly created resource in storage.

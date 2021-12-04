@@ -163,7 +163,7 @@ class AdminController extends Controller
         if($request->hasfile('images')){
             foreach($request->file('images') as $file)
             {
-                $originalName = $file->getOriginalName();
+                $originalName = $file->getClientOriginalName();
                 
                 $file->move(public_path('images'), md5($originalName));  
                 Image::create([

@@ -38,7 +38,7 @@
         <a class="nav-link" href="{{ url('shopping_cart') }}">Shopping cart</a>
         </li>
     </ul>
-    <form class="d-flex" action='/search'>
+    <form class="d-flex" action="{{ url('search')}}">
         <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="search">
         <button class="btn purple-btn" type="submit" id="searchButton">Search</button>
     </form>
