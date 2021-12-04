@@ -6,6 +6,8 @@ use Illuminate\Database\Seeder;
 use App\Models\Product;
 use App\Models\Image;
 use App\Models\Parameter;
+use App\Models\CategoryProduct;
+use App\Models\Category;
 
 class ProductSeeder extends Seeder
 {
@@ -16,10 +18,18 @@ class ProductSeeder extends Seeder
      */
     public function run()
     {
-        Product::factory()
+        $products = Product::factory()
             ->count(100)
             ->has(Parameter::factory()->count(5))
             ->has(Image::factory()->count(3))
             ->create();
+
+        foreach ($products as $product)
+        {
+            $category = CategoryProduct::create([
+                'product_id' => $product->id,
+                'category_id' => Category::all()->random()->id
+            ]);
+        }
     }
 }

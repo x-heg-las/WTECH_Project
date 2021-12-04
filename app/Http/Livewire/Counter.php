@@ -51,7 +51,7 @@ class Counter extends Component
         $cartItems[$item->product_id] = $item;
 
         Session::put('cart_items', $cartItems);
-        $this->quantity = $record->quantity;
+        $this->quantity = $item->quantity;
         $this->emit('set-price');
         redirect('/shopping_cart');
     }

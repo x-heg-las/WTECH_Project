@@ -14,7 +14,7 @@ class CategoryProductFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'category_id' => Category::all()->random()->id,
         ];
     }
 }
