@@ -201,12 +201,12 @@ main
     border-color: #9615DB;
 }
 
-.product-card
+
+
+.product-card, .product-card > a
 {
-    margin-top: 15px;
+    margin-top:15px;
 }
-
-
 
 #card_0
 {
@@ -241,14 +241,21 @@ main
 @media (min-width: 576px) 
 { 
     
-    .product-card{
-        max-height: 500px;
+    .product-card
+    {
+        height: 400px;
+    }
+
+    .product-card > a > img
+    {
+        height: 200px;
     }
  }
 
 
 @media (min-width: 768px) 
 { 
+    
     .categories-group
     {
         display: grid;
@@ -274,7 +281,14 @@ main
      
 }
 
-.arrow{
+.arrow
+{
     font-size: 5vw;
     vertical-align: middle;
+}
+
+img 
+{
+    max-width: 430px;
+    max-height: 320px;
 }

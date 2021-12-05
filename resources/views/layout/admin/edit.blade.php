@@ -1,7 +1,10 @@
 @extends('layout.app')
- 
+@section('title')
+<title>Admin Dashboard</title>
+@endsection 
+
 @section('content')
-<h1>Editácia úlohy</h1>
+<h1>Edit Product</h1>
 <hr>
 <form action="{{url('admin/product', [$product->id])}}" method="POST" enctype="multipart/form-data">
 	<input type="hidden" name="_method" value="PUT">
@@ -36,16 +39,13 @@
                         <input class="form-check-input-lg" type="checkbox" name="remove[]" value="{{ $image->id }}" id="flexCheckDefault" style="transform: scale(2);">
                     </div>
                     <img src="/images/{{ $image->image_source }}" alt="product_images" class="img-fluid" width="400" height="400"/>
-                    <label for="image_name">{{ $image->image_source }}</label>
-                    <!--<div class="input-group-append">               
-                        <button id="removeRow" type="button" class="btn btn-danger">Remove</button>
-                    </div>-->
+                    <label for="image_name">{{ $image->original_name }}</label>
                 </div>
             </div>
         @endforeach
     </div>
 
-    <div class="form-group">
+    <div class="form-group mt-4">
             <div id="inputFormRow">
                 <div class="input-group mb-3" style="margin-top:10px">
                     <input type="file" name="images[]" multiple class="form-control" accept="image/*">
@@ -56,13 +56,13 @@
             </div>
 
         <div id="newRow"></div>
-        <button id="addRow" type="button" class="btn btn-info">Add Row</button>
+        <button id="addRow" type="button" class="btn btn-info">Add Image</button>
     </div>
 
     <div class="form-group">
         <label for="category">Product category</label>
-        <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
-            <option value="{{ $product_categories->first()->id }}" selected>{{ $product_categories->first()->name }}</option>
+        <select name="categorySelect" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
+            <option value="{{ $product_categories->first()->id ?? '-' }}" selected>{{ $product_categories->first()->name ?? '-' }}</option>
             @foreach ($categories as $category)
                <option value="{{$category->id}}">{{$category->name}}</option>
             @endforeach

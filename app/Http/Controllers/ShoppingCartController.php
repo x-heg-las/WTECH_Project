@@ -11,44 +11,12 @@ use App\Models\CartItem;
 use App\Models\Address;
 use Illuminate\Support\Facades\DB;
 use App\Models\Product;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
 use Session;
 
 class ShoppingCartController extends Controller
 {
-
-    public function getCartIdFromSession()
-    {
-        $session = Session::has('shopping_cart') ? Session::get('shopping_cart') : null;
-        
-        if(Auth::check())
-        {
-           
-            $customer = Customer::where('user_id', Auth::id())->first();
-
-            $shopping_cart = ShoppingCart::where('customer_id' ,$customer->id)->first();
-
-            if ($shopping_cart == null){
-                $id = DB::table('shopping_carts')->insertGetId([
-                    'customer_id' => $customer->id,
-                ]);
-                Session::put('shopping_cart', ShoppingCart::find($id));
-                return $id;
-            }
-
-            else{
-                return $shopping_cart->id;
-            }
-        }
-
-        if($session && ShoppingCart::find($session->id))
-        {
-            return $session->id;
-        }
-       
-        $id = DB::table('shopping_carts')->insertGetId([]);
-        Session::put('shopping_cart', ShoppingCart::find($id));
-        return $id;
-    }
 
     public function changeOption(Request $request, $option, $value, $page)
     {
@@ -70,54 +38,74 @@ class ShoppingCartController extends Controller
      */
     public function index(Request $request)
     {
-        $cartId = $this->getCartIdFromSession();
-        
-        $items = ShoppingCart::find($cartId)->cartItems()->get();
-        $sum = $items->sum('total_price');
+        $customer = Customer::where('user_id', Auth::id())->first();
 
+        $shoppingCart = Session::get('shopping_cart', function () use($customer){
+            if(Auth::check())
+            {
+                $cart =  ShoppingCart::firstOrNew(
+                    ['customer_id' => $customer->id]
+                );
+            }
+            else
+            {
+                $cart =  Session::get('shopping_cart', new ShoppingCart);
+            }
+            Session::forget('cart_items');
+            Session::put('shopping_cart', $cart);
+            return $cart;
+        });
+
+        $cartItems = Session::get('cart_items', function() use($shoppingCart) {
+            $insertedProducts = [];
+            if(Auth::check())
+            {
+                $products = $shoppingCart->cartItems()->get(); 
+   
+                if($products)
+                {
+                   
+                    foreach($products as $product)
+                    {   
+                        $insertedProducts[$product->product_id] = $product;
+                    }
+                }
+            }
+            Session::put('cart_items', $insertedProducts);
+            return Session::get('cart_items', []);
+        });
+
+       // $cartId = $this->getCartIdFromSession();
+        //$items = ShoppingCart::find($cartId)->cartItems()->get();
+        
+        $items = Session::get('cart_items', []);
        
+        $sum = 0;
+        if($items)
+        {
+            
+            foreach ($items as $item)
+            {
+    
+                $sum += $item->total_price;
+            }
+        }
+  
         return view('layout.shopping-cart', compact('items', $items, 'sum', $sum));
    
     }
 
-    public function addToShoppingCart(Request $request, $id)
-    {
-        $cartId = $this->getCartIdFromSession();
-        $quantity = $request->input('quantity');
-        $product = Product::find($id);
-
-        /*DB::table('cart_items')->insert(
-            ['shopping_cart_id' => $cartId,
-             'product_id' => $product->id,
-             'quantity' => $quantity,
-             'unit_price' => $product->price,
-             'total_price' => $product->price * $quantity,
-             ]
-        );*/
-
-        $new_item = CartItem::create(
-            ['shopping_cart_id' => $cartId,
-             'product_id' => $product->id,
-             'quantity' => $quantity,
-             'unit_price' => $product->price,
-             'total_price' => $product->price * $quantity,
-             ]
-        );
-        
-        $request->session()->flash('message', 'Added to the sopping cart.');
-        return redirect('products/'.$id);
-    }
 
     public function addShippingData(Request $request)
     {
-                                                // vrat validaciu
+        // vrat validaciu
         $request->validate([
             'first_name' => 'required|max:255',
             'last_name' => 'required|max:255',
             'street_and_number' => 'required|max:255',
             'city' => 'required',
             'zip_code' => 'required|min:5|max:5',
-            'telephone' => 'regex:/^\+421[0-9]{9}/',
+            'telephone' => 'regex:/^[0-9]{10}/',
             'email' => 'regex:/^.+@.+$/i'
         ]);
         
@@ -128,7 +116,6 @@ class ShoppingCartController extends Controller
             $customer = Customer::find(Auth::id());
         }
 
-        //len pre testovanie
         if(!$customer)
         {
             $customer = Customer::create([
@@ -154,8 +141,6 @@ class ShoppingCartController extends Controller
             'country' => $request->country
         ]);
 
-        //pridaj priradenie nakupneho kosa k zakaznikovi
-
         return redirect('/checkout/payment');
     }
 
@@ -175,11 +160,12 @@ class ShoppingCartController extends Controller
                 $address = $customer->address;
             }
         }
+       
         return view('layout.checkout-shipping', compact('customer', $customer, 'address', $address));
     }
 
     public function recapitulation()
-    {
+    {/*
         $cartId = $this->getCartIdFromSession();
         $items = ShoppingCart::find($cartId)->cartItems()->get();
 
@@ -205,92 +191,19 @@ class ShoppingCartController extends Controller
             ));
         }
 
-        return view('layout.checkout-recap', compact('items', $items, 'customer', $customer));
+        return view('layout.checkout-recap', compact('items', $items, 'customer', $customer));*/
     }
 
     public function choosePaymentMethod(Request $request)
     {
-        $cartId = $this->getCartIdFromSession();
-        $items = ShoppingCart::find($cartId)->cartItems()->get();
-        $sum = $items->sum('total_price');
-
+        $items = Session::get('cart_items', []);
+        //$sum = $items->sum('total_price');
+        $sum = 0;
+        foreach($items as $item)
+        {
+            $sum += $item->total_price;
+        }
         return view('layout.checkout-pay', compact('items', $items, 'sum', $sum));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request, Product $product)
-    {
-        
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        if (Auth::check())
-        {
-            $user = Auth::id();
-            
-        }
-        else
-        {
-            $user = Cache::get('id');
-        }
-
-        $cart = Customer::find($user)->shoppingCart;
-        return redirect('/lauout.shopping-cart', compact('cart', $cart->find($cart->id)->get()));
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
 }

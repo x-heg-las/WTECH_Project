@@ -21,7 +21,15 @@ class Pricetag extends Component
 
     public function refreshPrice()
     {
-        $this->pricetag = Session::get('shopping_cart')->cartItems()->sum('total_price');
+        //$this->pricetag = Session::get('shopping_cart')->cartItems()->sum('total_price');
+
+        $items = Session::get('cart_items');
+        $sum = 0;
+        foreach ($items as $item)
+        {
+            $sum += $item->total_price;
+        }
+        $this->pricetag = $sum;
     }
 
     public function render()

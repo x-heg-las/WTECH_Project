@@ -6,7 +6,9 @@ use App\Http\Controllers\ShoppingCartController;
 use App\Http\Controllers\CartItemController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\AdminController;
+use App\Http\Middleware\CheckoutLoginCheck;
 use App\Models\ShoppingCart;
+use App\Models\Category;
 use App\Models\Product;
 
 /*
@@ -33,44 +35,64 @@ Route::get('/shopping_cart', function () {
     return view('layout.shopping-cart');
 });
 
-Route::get('/products/{product}', [ProductController::class, 'show'])->name('show');
+Route::get('/products/{product}', [ProductController::class, 'show'])
+                ->name('show');
 
-Route::put('/products/{product}', [ShoppingCartController::class, 'addToShoppingCart']);
+Route::put('/products/{product}', [CartItemController::class, 'create'])
+                ->name('addToShoppingCart');
 
-Route::get('/search', [ProductController::class, 'search'])->name('search');
+Route::get('/search', [ProductController::class, 'search'])
+                ->middleware('check_search_input')
+                ->name('search');
 
-Route::get('/order/store', [OrderController::class, 'store'])->name('store');
+Route::get('/order/store', [OrderController::class, 'store'])
+                ->name('store_order');
 
-Route::get('/checkout/payment', [ShoppingCartController::class, 'choosePaymentMethod']);
+Route::get('/checkout/payment', [ShoppingCartController::class, 'choosePaymentMethod'])
+                ->name('payment_method');
 
 Route::get('/activate/{option}/{value}/{page}', [ShoppingCartController::class, 'changeOption']);
 
-Route::get('/checkout/shipping', [ShoppingCartController::class, 'chooseShippingMethod']);
+Route::get('/checkout/shipping', [ShoppingCartController::class, 'chooseShippingMethod'])
+                ->middleware('check_login')
+                ->name('shipping');
 
 Route::post('/shipping', [ShoppingCartController::class, 'addShippingData']);
 
-Route::delete('/remove_item/{id}', [ShoppingCartController::class, 'removeFromShoppingCart']);
+//Route::delete('/remove_item/{id}', [ShoppingCartController::class, 'removeFromShoppingCart']);
 
-Route::get('/shopping_cart', [ShoppingCartController::class, 'index']);
+Route::delete('/remove_item_customer/{item}/{id}', [CartItemController::class, 'destroy'])
+                ->name('remove_item_customer');
 
-Route::get('/checkout/recap', [ShoppingCartController::class, 'recapitulation']);
+Route::delete('/remove_item/{id}', [CartItemController::class, 'destroy'])
+                ->name('remove_item');
+
+Route::get('/shopping_cart', [ShoppingCartController::class, 'index'])
+                ->name('shopping_cart');
+
+//Route::get('/checkout/recap', [ShoppingCartController::class, 'recapitulation'])
+ //               ->name('recapitulation');
+
+ Route::get('/checkout/recap', [OrderController::class, 'index'])
+                ->middleware('chack_payment_shipment')
+                ->name('recapitulation');
 
 Route::put('/quantity/{item}', [CartItemController::class, 'update']);
 
 Route::get('/', function () {
 
-    $out = new \Symfony\Component\Console\Output\ConsoleOutput();
-    if (Auth::user() != null){
-        $out->writeln(Auth::user()->name);
-    }
-    $out->writeln("------------------------------------------------------------------------------------------------");
-
     $new = Product::orderByDesc('updated_at')
-                    ->take(10)
+                    ->take(12)
                     ->get();
 
-    return view('layout.index', compact('new', $new));
-});
+    $categories = Category::all();
+    
+    $sale = Product::whereHas('categories', function($q) {
+        $q->whereIn('name', ["SALE"]);
+    });
+    $sale = $sale->take(12)->get();
+    return view('layout.index', compact('new', $new, 'categories', $categories, 'sale', $sale));
+})->name('home');
 
 Route::get('/dashboard', function () {
     return view('dashboard');

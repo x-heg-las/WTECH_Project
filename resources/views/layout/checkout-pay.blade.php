@@ -4,6 +4,9 @@
 <title>Payment information</title>
 @endsection
 @section('content')
+@if (Session::has('message'))
+    <div class="alert alert-info">{{ Session::get('message') }}</div>
+@endif
 <div class="row">
     <h1 class="display-5">Checkout</h1>
 </div>

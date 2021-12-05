@@ -6,43 +6,14 @@ use Illuminate\Http\Request;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Models\Product;
+use App\Models\CategoryProduct;
 use App\Models\Category;
 use App\Models\Image;
 use App\Models\Parameter;
 
 class ProductController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StoreProductRequest  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(StoreProductRequest $request)
-    {
-        //
-    }
-
+    
     /**
      * Display the specified resource.
      *
@@ -53,8 +24,40 @@ class ProductController extends Controller
     {
         $gallery = Image::where('product_id', $product->id)->get();
         $parameters = Parameter::where('product_id', $product->id)->get();
+        $recent = $request->session()->get('recently_viewed', []);
+
+
+        //Session remmembers only last 5 recently visited products
+        if($recent && count($recent) > 4)
+        {
+           $index = array_key_first($recent);
+           $request->session()->pull('recently_viewed.' . $index);;
+        }
+        
+        if(!$recent || ($recent && !in_array($product, $recent)))
+        {
+            $request->session()->push('recently_viewed', $product);
+        }
+        
+        $category = CategoryProduct::where('product_id', $product->id)->get()->first();
+        $similar = null;
+        if($category)
+        {
+           
+            $similar = Product::whereHas('categories', function($q) use ($category) {
+                $q->whereIn('name', [$category->category()->first()->name]);
+            });
+
+            $similar = $similar->take(4)->get();
+        }
+
         // Show product detail page
-        return view('layout.product_detail',compact('product', $product, 'gallery', $gallery, 'parameters', $parameters, 'request', $request));
+        return view('layout.product_detail',compact('product', $product,
+         'gallery', $gallery,
+         'parameters', $parameters,
+         'request', $request,
+         'recent', $recent,
+         'similar', $similar));
     }
 
     /**
@@ -107,13 +110,6 @@ class ProductController extends Controller
 
             $category = $request->input('category');
 
-            $out = new \Symfony\Component\Console\Output\ConsoleOutput();
-            $out->writeln("CCCCCCCCCCCCC----------------------------------------------------------------------------------");
-            $out->writeln($category);
-            $out->writeln("CCCCCCCCCCCCCC-------------------------------------------------------------------------------------");
-            
-            //$category = Category::where('name', $category)->first()->products()->get();
-
             $products = Product::whereHas('categories', function($q) use ($category) {
                 $q->whereIn('name', $category);
             });
@@ -150,16 +146,6 @@ class ProductController extends Controller
             $products = $products->where('price', '<=', $max_price);
         }
 
-        // Find all products with request string in their name, order by sort
-        /*if ($request->has('order_by')){
-            $order_by = $request->input('order_by');
-            $order = (string) $request->input('order');
-
-            $products = Product::select("*")->where('name', 'ILIKE', "%{$search}%")->orderBy("{$order_by}", "{$order}")->paginate(10);
-        } else {
-            $products = Product::select("*")->where('name', 'ILIKE', "%{$search}%")->paginate(10);    
-        }*/
-
         if ($request->has('order_by')){
             $order_by = $request->input('order_by');
             $order = (string) $request->input('order');
@@ -167,7 +153,7 @@ class ProductController extends Controller
             $products = $products->orderBy("{$order_by}", "{$order}");
         }
 
-        $products = $products->paginate(10);
+        $products = $products->paginate(10)->withQueryString();
 
         return view('layout.filter', compact('products', $products));
     }

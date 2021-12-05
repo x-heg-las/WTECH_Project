@@ -1,5 +1,7 @@
 @extends('layout.app')
-
+@section('title')
+<title>PiStore</title>
+@endsection
 @section('content')
     <div class="container-xxl px-4 px-xl-4 px-xxl-0">
 

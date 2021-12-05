@@ -18,16 +18,10 @@
                         Useful links
                     </h6>
                     <p>
-                        <a href="#" class="text-reset">Pricing</a>
+                        <a href="{{ route('home') }}" class="text-reset">Home</a>
                     </p>
                     <p>
-                        <a href="#" class="text-reset">Delivery</a>
-                    </p>
-                    <p>
-                        <a href="#" class="text-reset">Business conditions</a>
-                    </p>
-                    <p>
-                        <a href="#" class="text-reset">Language</a>
+                        <a href="{{ route('shopping_cart') }}" class="text-reset">Shopping Cart</a>
                     </p>
                 </div>
 
@@ -35,15 +29,17 @@
                     <h6 class="text-uppercase fw-bold mb-4">
                         Contact
                     </h6>
-                    <p><i class="fas fa-home me-3"></i> New York, NY 10012, US</p>
                     <p>
                         <i class="fas fa-envelope me-3"></i>
-                        info@example.com
+                        xheglas@stuba.sk
                     </p>
-                    <p><i class="fas fa-phone me-3"></i> + 01 234 567 88</p>
-                    <p><i class="fas fa-print me-3"></i> + 01 234 567 89</p>
+                    <p>
+                        <i class="fas fa-envelope me-3"></i>
+                        xzaka@stuba.sk
+                    </p>
                 </div>
             </div>
         </div>
     </section>
 </footer>
+

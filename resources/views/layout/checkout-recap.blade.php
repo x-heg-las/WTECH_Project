@@ -119,7 +119,7 @@
         <a href="payment_information.html" role="button" class="btn btn-dark btn-lg w-100 w-sm-auto">Back</a>
     </div>
     <div class="col-sm-3 d-flex flex-fill ">
-        <a href="{{ route('store', ['customer_id' => $customer->id, 'shopping_cart_id' => $items->first()->shopping_cart_id]) }}" role="button" class=" btn purple-btn btn-lg w-100 w-sm-auto">Confirm order</a>
+        <a href="{{ route('store_order', ['customer_id' => $customer->id, 'shopping_cart_id' => Session::get('shopping_cart')]) }}" role="button" class=" btn purple-btn btn-lg w-100 w-sm-auto">Confirm order</a>
     </div>
 </div>
 @endsection

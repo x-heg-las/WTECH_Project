@@ -26,4 +26,5 @@ class CartItem extends Model
     {
         return $this->hasOne(ShoppingCart::class, 'shopping_cart_id');
     }
+
 }

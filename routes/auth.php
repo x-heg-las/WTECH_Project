@@ -21,6 +21,9 @@ Route::get('/login', [AuthenticatedSessionController::class, 'create'])
                 ->middleware('guest')
                 ->name('login');
 
+Route::get('/login/{checkout}', [AuthenticatedSessionController::class, 'create'])
+                ->middleware('guest');
+
 Route::post('/login', [AuthenticatedSessionController::class, 'store'])
                 ->middleware('guest');
 

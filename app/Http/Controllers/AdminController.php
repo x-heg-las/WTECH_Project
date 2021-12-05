@@ -7,6 +7,9 @@ use App\Models\Product;
 use App\Models\Category;
 use App\Models\Image;
 use App\Models\CategoryProduct;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
+
 use Session;
 use File;
 
@@ -19,8 +22,8 @@ class AdminController extends Controller
      */
     public function index()
     {
-        // Load all admins products
-        $products = Session::get('customer')->products()->get();
+        // Load all products
+        $products = Product::all();
 
         $out = new \Symfony\Component\Console\Output\ConsoleOutput();
         $out->writeln("------------------------------------------------------------------------------------------------");
@@ -67,7 +70,6 @@ class AdminController extends Controller
             'description' => $request->description,
             'price' => $request->price,
             'stock' => $request->stock,
-            'customer_id' => Session::get('customer')->id
         ]);
 
         if ($request->category != 'empty'){
@@ -77,15 +79,19 @@ class AdminController extends Controller
             ]);
         }
 
+    
         if($request->hasfile('images')){
             foreach($request->file('images') as $file)
-            {
-                $name = time().rand(1,100).'.'.$file->extension();
-                $file->move(public_path('images'), $name);  
-                Image::create([
+            {   
+                $timestamp = microtime(true);
+                $originalName = $file->getClientOriginalName();
+                $file->move(public_path('images'), $timestamp.md5($originalName));  
+                $rec =  Image::create([
                     'product_id' => $product->id,
-                    'image_source' => $name 
+                    'image_source' => $timestamp.md5($originalName),
+                    'original_name' => $originalName,
                 ]);
+           
             }
         }
 
@@ -140,11 +146,6 @@ class AdminController extends Controller
             'stock' => 'required',
         ]);
 
-        $out = new \Symfony\Component\Console\Output\ConsoleOutput();
-        $out->writeln("------------------------------------------------------------------------------------------------");
-        $out->writeln($request->remove);
-        $out->writeln("------------------------------------------------------------------------------------------------");
-
         if($request->has('remove')){
             $images = Image::select("*")->whereIn('id', $request->remove)->get();
 
@@ -156,14 +157,26 @@ class AdminController extends Controller
             }
         }
 
+        if($request->has('categorySelect'))
+        {
+            $category = CategoryProduct::where('product_id', $product->id)->first();
+            //$categoryName = Category::where('id', $category->category_id)->first();
+            $category->category_id = $request->categorySelect;
+            $category->save();
+        }
+
+
         if($request->hasfile('images')){
             foreach($request->file('images') as $file)
             {
-                $name = time().rand(1,100).'.'.$file->extension();
-                $file->move(public_path('images'), $name);  
+                $timestamp = microtime(true);
+                $originalName = $file->getClientOriginalName();
+                
+                $file->move(public_path('images'), $timestamp.md5($originalName));  
                 Image::create([
                     'product_id' => $product->id,
-                    'image_source' => $name 
+                    'image_source' => $timestamp.md5($originalName),
+                    'original_name' => $originalName,
                 ]);
             }
         }
@@ -186,21 +199,13 @@ class AdminController extends Controller
      */
     public function destroy(Request $request, Product $product)
     {
-        $out = new \Symfony\Component\Console\Output\ConsoleOutput();
-        $out->writeln("------------------------------------------------------------------------------------------------");
-        $out->writeln($product);
-        $out->writeln("------------------------------------------------------------------------------------------------");
 
         // Delete chosen product.
         $images = $product->images()->get();
 
-        $out = new \Symfony\Component\Console\Output\ConsoleOutput();
-        $out->writeln("------------------------------------------------------------------------------------------------");
-        $out->writeln($images);
-        $out->writeln("------------------------------------------------------------------------------------------------");
-
         foreach($images as $image){
             if(File::exists(public_path("images/{$image->image_source}"))){
+            
                 File::delete(public_path("images/{$image->image_source}"));
             }
             $image->delete();

@@ -1,5 +1,8 @@
 @extends('layout.app')
 
+@section('title')
+<title>{{$product->name}}</title>
+@endsection
 @section('content')
     @if (Session::has('message'))
         <div class="alert alert-info">{{ Session::get('message') }}</div>
@@ -7,30 +10,33 @@
         <div class="container">
             <div class="row py-5">
                 <div class="col-12 col-md-6 col-lg-6">
-                    <!-- image -->
-                
-                    @if(count($gallery) >= 1)
-                <img src="{{ URL::to('/') }}/images/{{ $gallery->first()->image_source }}" alt="Arduino" class="img-fluid" />
-            @else
-            <img src="s" alt="No available image" class="img-fluid" />
-            @endif
-         
-           
-                    <div class="row py-3">
-                        <i class="col-lg-1 offset-lg-1 fas fa-caret-left arrow d-none d-lg-grid"></i>
-                        <div class="col-lg-2 d-none d-lg-grid">
-                            <img src="http://placehold.it/100x100" class="img-fluid" alt="placeholder" />
+                    <!-- image -->  
+                    <div id="gallery" class="carousel slide carousel-dark" data-bs-ride="carousel">
+                        <div class="carousel-inner">
+                            @forelse($gallery as $image)
+                                @if ($loop->first)
+                                <div class="carousel-item active">
+                                    <img src="{{ URL::to('/') }}/images/{{ $image->image_source }}" alt="Product image" class="mx-auto d-block w-100">
+                                </div>
+                                @else
+                                <div class="carousel-item">
+                                    <img src="{{ URL::to('/') }}/images/{{ $image->image_source }}" alt="Product image" class="mx-auto d-block w-100">
+                                </div>
+                                @endif
+                            @empty
+                                <div class="carousel-item">
+                                    <img src="s" alt="No available image" class="img-fluid  w-100" />  
+                                </div>
+                            @endforelse
                         </div>
-                        <div class="col-lg-2 d-none d-lg-grid">
-                            <img src="http://placehold.it/100x100" class="img-fluid" alt="placeholder" />
-                        </div>
-                        <div class="col-lg-2 d-none d-lg-grid">
-                            <img src="http://placehold.it/100x100" class="img-fluid" alt="placeholder" />
-                        </div>
-                        <div class="col-lg-2 d-none d-lg-grid">
-                            <img src="http://placehold.it/100x100" class="img-fluid" alt="placeholder" />
-                        </div>
-                        <i class="col-lg-1 fas fa-caret-right arrow d-none d-lg-grid"></i>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#gallery" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#gallery" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
                     </div>
                 </div>
                 <div class="col-12 col-md-6 col-lg-6">
@@ -54,7 +60,6 @@
                             <h2 class="product-price">${{ $product->price }}</h2>
                         </div>
                     </div>
-
                     <div class="row">
                         <form  method="POST" class="d-grid col-md-7 form-inline" action="{{ URL::to('/') }}/products/{{ $request->route('product')->id }}">
                             <input name="_method" type="hidden" value="PUT">
@@ -68,9 +73,8 @@
                     </div>
                 </div>
             </div>
-
             <div class="row py-5">
-                <div class="col-md-8">
+                <div class="col-12">
                     <div class="row">
                         <ul class="nav nav-tabs">
                             <li class="nav-item col-md-4">
@@ -88,83 +92,11 @@
                             </div>
                             <div class="tab-pane fade" id="profile">
                                 <div class="row">
-                                    <div class="col-md-4 offset-md-2">
-                                        <div class="card product-card">
-                                            <a href="#">
-                                                <img src="img/electronics_arduino_diy.png" alt="Arduino"
-                                                    class="img-fluid" />
-                                            </a>
-                                            <section>
-                                                <div class="card-body">
-                                                    <a href="#">
-                                                        <h3 class="text-truncate">Product name</h3>
-                                                    </a>
-                                                </div>
-                                                <div class="card-body">
-                                                    123 €
-                                                </div>
-                                            </section>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-4 offset-md-2">
-                                        <div class="card product-card">
-                                            <a href="#">
-                                                <img src="img/electronics_arduino_diy.png" alt="Arduino"
-                                                    class="img-fluid" />
-                                            </a>
-                                            <section>
-                                                <div class="card-body">
-                                                    <a href="#">
-                                                        <h3 class="text-truncate">Product name</h3>
-                                                    </a>
-                                                </div>
-                                                <div class="card-body">
-                                                    123 €
-                                                </div>
-                                            </section>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-md-4 offset-md-2">
-                                        <div class="card product-card">
-                                            <a href="#">
-                                                <img src="img/electronics_arduino_diy.png" alt="Arduino"
-                                                    class="img-fluid" />
-                                            </a>
-                                            <section>
-                                                <div class="card-body">
-                                                    <a href="#">
-                                                        <h3 class="text-truncate">Product name</h3>
-                                                    </a>
-                                                </div>
-                                                <div class="card-body">
-                                                    123 €
-                                                </div>
-                                            </section>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-4 offset-md-2">
-                                        <div class="card product-card">
-                                            <a href="#">
-                                                <img src="img/electronics_arduino_diy.png" alt="Arduino"
-                                                    class="img-fluid" />
-                                            </a>
-                                            <section>
-                                                <div class="card-body">
-                                                    <a href="#">
-                                                        <h3 class="text-truncate">Product name</h3>
-                                                    </a>
-                                                </div>
-                                                <div class="card-body">
-                                                    123 €
-                                                </div>
-                                            </section>
-                                        </div>
-                                    </div>
+                                @isset($similar)
+                                    @foreach($similar as $item)
+                                    <x-product-card :product="$item"/>
+                                    @endforeach
+                                @endisset
                                 </div>
                             </div>
                         </div>
@@ -215,140 +147,14 @@
                     </div>
                 </div>
 
-                <div class="col-md-3 offset-md-1">
-                    <div class="row">
-                        <h1 class="display-6">Recommended</h1>
-                    </div>
-                    <div class="row">
-
-                        <div class="card product-card">
-                            <a href="#">
-                                <img src="img/electronics_arduino_diy.png" alt="Arduino" class="img-fluid" />
-                            </a>
-                            <section>
-                                <div class="card-body">
-                                    <a href="#">
-                                        <h3 class="text-truncate">Product name</h3>
-                                    </a>
-                                </div>
-                                <div class="card-body">
-                                    123 €
-                                </div>
-                            </section>
-                        </div>
-
-                        <div class="card product-card">
-                            <a href="#">
-                                <img src="img/electronics_arduino_diy.png" alt="Arduino" class="img-fluid" />
-                            </a>
-                            <section>
-                                <div class="card-body">
-                                    <a href="#">
-                                        <h3 class="text-truncate">Product name</h3>
-                                    </a>
-                                </div>
-                                <div class="card-body">
-                                    123 €
-                                </div>
-                            </section>
-                        </div>
-
-                        <div class="card product-card">
-                            <a href="#">
-                                <img src="img/electronics_arduino_diy.png" alt="Arduino" class="img-fluid" />
-                            </a>
-                            <section>
-                                <div class="card-body">
-                                    <a href="#">
-                                        <h3 class="text-truncate">Product name</h3>
-                                    </a>
-                                </div>
-                                <div class="card-body">
-                                    123 €
-                                </div>
-                            </section>
-                        </div>
-
-
-                    </div>
-                </div>
-
                 <div class="row text-center py-3">
                     <h1 class="display-6">Recently viewed</h1>
                 </div>
 
                 <div class="row  px-0 flex-d">
-                    <div class="col-12 col-sm-6 col-md-6 col-lg-3 d-flex align-items-stretch">
-                        <div class="card product-card">
-                            <a href="#">
-                                <img src="img/electronics_arduino_diy.png" alt="Arduino" class="img-fluid" />
-                            </a>
-                            <section>
-                                <div class="card-body">
-                                    <a href="#">
-                                        <h3 class="text-truncate">Product name</h3>
-                                    </a>
-                                </div>
-                                <div class="card-body">
-                                    123 €
-                                </div>
-                            </section>
-                        </div>
-                    </div>
-
-                    <div class="col-12 col-sm-6 col-md-6 col-lg-3 d-flex align-items-stretch">
-                        <div class="card product-card">
-                            <a href="#">
-                                <img src="img/electronics_arduino_diy.png" alt="Arduino" class="img-fluid" />
-                            </a>
-                            <section>
-                                <div class="card-body">
-                                    <a href="#">
-                                        <h3 class="text-truncate">Product name</h3>
-                                    </a>
-                                </div>
-                                <div class="card-body">
-                                    123 €
-                                </div>
-                            </section>
-                        </div>
-                    </div>
-
-                    <div class="col-12 col-sm-6 col-md-6 col-lg-3 d-flex align-items-stretch">
-                        <div class="card product-card">
-                            <a href="#">
-                                <img src="img/electronics_arduino_diy.png" alt="Arduino" class="img-fluid" />
-                            </a>
-                            <section>
-                                <div class="card-body">
-                                    <a href="#">
-                                        <h3 class="text-truncate">Product name</h3>
-                                    </a>
-                                </div>
-                                <div class="card-body">
-                                    123 €
-                                </div>
-                            </section>
-                        </div>
-                    </div>
-
-                    <div class="col-12 col-sm-6 col-md-6 col-lg-3 d-flex align-items-stretch">
-                        <div class="card product-card">
-                            <a href="#">
-                                <img src="img/electronics_arduino_diy.png" alt="Arduino" class="img-fluid" />
-                            </a>
-                            <section>
-                                <div class="card-body">
-                                    <a href="#">
-                                        <h3 class="text-truncate">Product name</h3>
-                                    </a>
-                                </div>
-                                <div class="card-body">
-                                    123 €
-                                </div>
-                            </section>
-                        </div>
-                    </div>
+                @foreach($recent as $item)
+                    <x-product-card :product="$item"/>
+                @endforeach
                 </div>
             </div>
         </div>
@@ -365,5 +171,4 @@
             }
         }
     </script>
-    
 @endsection

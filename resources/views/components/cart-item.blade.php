@@ -6,7 +6,12 @@
         <div class="product-description row mb-auto">
             <a href="#"><p>{{ $product->name }}</p></a>
         </div>
-        <form class="product-meta row " action="/remove_item/{{ $item->id }}" method="POST">
+        @auth
+        <form class="product-meta row " action="{{url('remove_item_customer', [$item, $item->product_id])}}" method="POST">
+        @endauth
+        @guest
+        <form class="product-meta row " action="{{url('remove_item', [$item->product_id])}}" method="POST">
+        @endguest
             <input type="hidden" name="_method" value="DELETE">
             <input type="hidden" name="_token" value="{{ csrf_token() }}">
             <ul>
@@ -16,6 +21,6 @@
     </form>
     </div>
     <div class="product-quantity-wrapper col-2">
-        <livewire:counter quantity="{{ $item->quantity }}" item="{{ $item->id }}"/>
+        <livewire:counter quantity="{{ $item->quantity }}" item="{{ $item->id }}" productID="{{ $item->product_id }}"/>
     </div>
 </li>

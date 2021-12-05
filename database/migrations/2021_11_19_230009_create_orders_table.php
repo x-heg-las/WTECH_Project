@@ -15,7 +15,7 @@ class CreateOrdersTable extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('customer_id');         // In case of problem, rewrite to: custimer_id
+            $table->unsignedInteger('custimer_id');
             $table->double('total_price');
             $table->timestamps();
             $table->softDeletes();

@@ -36,6 +36,13 @@ class CartItem extends Component
     public function thumbnail()
     {
         $thumbnail = Image::where('product_id', $this->product->id)->get()->first();
-        return $thumbnail->image_source;
+        if($thumbnail)
+        {
+            return $thumbnail->image_source;
+        }
+        else
+        {
+            return null;
+        }
     }
 }

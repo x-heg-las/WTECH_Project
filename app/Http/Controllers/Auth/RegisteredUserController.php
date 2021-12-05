@@ -11,6 +11,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use App\Models\Customer;
+use App\Models\ShoppingCart;
+
+use Session;
 
 class RegisteredUserController extends Controller
 {
@@ -19,8 +22,22 @@ class RegisteredUserController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function create()
+    public function create(Request $request)
     {
+
+        if($request->checkout)
+        {
+            //stores the order from the session for registered customer 
+            if(Session::has('transfered_cart'))
+            {
+                Session::forget('transfered_cart');
+            }
+            
+            if(Session::has('shopping_cart'))
+            {
+                Session::put('transfered_cart', Session::get('shopping_cart')); 
+            }
+        }
         return view('auth.register');
     }
 
@@ -62,6 +79,23 @@ class RegisteredUserController extends Controller
             'user_id' => $user->id,
         ]);
 
+        if(Session::has('transfered_cart'))
+        {   
+            //inserts transferred shopping cart and cart items to the database
+            $cart = Session::pull('transfered_cart');
+            $cart->customer_id = $customer->id;
+            $cart->save();
+            if(Session::has('cart_items'))
+            {
+                $items = Session::pull('cart_items');
+                foreach($items as $item)
+                {
+                    $item->shopping_cart_id = $cart->id;
+                    $item->save();
+                }
+            }
+        }
+        Session::forget('shopping_cart');
         event(new Registered($user));
 
         Auth::login($user);

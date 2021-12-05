@@ -1,5 +1,9 @@
 @extends('layout.app')
 
+@section('title')
+<title>PiStore</title>
+@endsection
+
 @section('content')
     @if (Session::has('message'))
         <div class="alert alert-info">{{ Session::get('message') }}</div>
@@ -7,7 +11,7 @@
     <div class="row justify-content-between">
         <!-- card-->
         <div class="col-sm d-flex">
-            <a href="#" role="button" class="d-flex flex-fill">
+            <a href="/search?category[]=Powering" role="button" class="d-flex flex-fill">
             <div class="card inactive-btn d-flex flex-fill">
                 <div class="card-body text-center">
                 <i class="fas fa-bolt"></i>
@@ -18,7 +22,7 @@
         </div>
         <!-- card-->
         <div class="col-sm d-flex">
-            <a href="#" class="d-flex flex-fill">
+            <a href="/search?category[]=Modules" class="d-flex flex-fill">
             <div class="card inactive-btn d-flex flex-fill">
                 <div class="card-body text-center">
                 <i class="fas fa-shield-alt"></i>
@@ -44,8 +48,11 @@
             <div class="collapse " id="allCategories">
                 <div class="card card-body container-fluid" >
                     <ul class="list-group categories-group list-group-horizontal-m ">
-                    <li class="list-group-item"><a href="#">Category 1</a></li>
-                    # dopln list vsetkych kategorii
+                    @forelse($categories as $category)
+                        <li class="list-group-item"><a href="/search?category[]={{ $category->name }}">{{ $category->name }}</a></li>
+                    @empty
+                        <li class="list-group-item">No category yet</li>
+                    @endforelse
                     </ul>
                 </div>
             </div>
@@ -92,7 +99,7 @@
             <div class="col-sm container-fluid d-none d-lg-grid">
             <div class="row">
                 <div class="col-sm d-flex">
-                    <a href="#" class="d-flex flex-fill">
+                    <a href="/search?category[]=Displays" class="d-flex flex-fill">
                         <div class="card d-flex flex-fill" id="card_1">
                             <div class="card-body category-card">
                                 <article>
@@ -105,18 +112,18 @@
             </div>
             <div class="row pt-3">
                 <div class="col-sm d-flex">
-                    <a href="#" class="d-flex flex-fill">
+                    <a href="/search?category[]=DIY" class="d-flex flex-fill">
                         <div class="card d-flex flex-fill" id="card_2">
                             <div class="card-body category-card">
                                 <article>
-                                    <h2 class="text-center">DYI Kits</h2>
+                                    <h2 class="text-center">DIY Kits</h2>
                                 </article>
                             </div>
                         </div>
                     </a>
                 </div>
                 <div class="col-sm d-flex">
-                    <a href="#" class="d-flex flex-fill">
+                    <a href="/search?category[]=Sensors" class="d-flex flex-fill">
                         <div class="card d-flex flex-fill" id="card_3">
                             <div class="card-body category-card">
                                 <article>
@@ -129,7 +136,7 @@
             </div>
             </div>
             <div class="col-sm container-fluid ">
-                <a href="#">
+                <a href="/search?category[]=SALE">
                     <div class="card" id="card_sale">
                         <div class="card-body category-card text-center">
                             <article>
@@ -151,9 +158,11 @@
             </div>
     </section>
     <section>
-            <h2 class="text-center">Trending products</h2>
-    </section>
-    <section>
-            <h2 class="text-center">Sale !</h2>
+            <h2 class="text-center">Sale</h2>
+            <div class="row">
+                @foreach ($sale as $product)
+                    <x-product-card :product="$product"/>
+                @endforeach
+            </div>
     </section>
 @endsection

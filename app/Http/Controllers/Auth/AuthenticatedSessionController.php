@@ -17,8 +17,15 @@ class AuthenticatedSessionController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function create()
+    public function create(Request $request)
     {
+
+        if($request->checkout)
+        {
+            $checkout = $request->checkout;
+            //if the request is sent from shopping cart
+            return view('auth.login', compact('checkout', $checkout));
+        }
         return view('auth.login');
     }
 
@@ -30,15 +37,45 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request)
     {
+        $sessionShoppingCart = Session::get('shopping_cart');
+        $sesionCartItems = Session::get('cart_items');
+        $request->session()->flush();
         $request->authenticate();
-
         $request->session()->regenerate();
-
+      
+       
         $customer = Customer::where('user_id', Auth::user()->id)->first();
         Session::put('customer', $customer);
 
         if ($customer->is_admin){
             return redirect('/admin/dashboard');
+        }
+
+        if($request->checkout)
+        {
+            $shoppingCart = $customer->shoppingCart()->first();
+            if($shoppingCart)
+            {
+                $shoppingCart->delete();
+            }
+
+            if(!$sessionShoppingCart)
+            {
+                return redirect()->intended(RouteServiceProvider::HOME);
+            }
+
+            
+            $shoppingCart = $sessionShoppingCart;
+            $shoppingCart->customer_id = $customer->id;
+            $shoppingCart->save();
+            
+            foreach($sesionCartItems as $item) 
+            {
+                $item->shopping_cart_id = $shoppingCart->id;
+                $item->save();
+            }
+
+            return redirect('/checkout/shipping');
         }
 
         return redirect()->intended(RouteServiceProvider::HOME);
@@ -53,6 +90,8 @@ class AuthenticatedSessionController extends Controller
     public function destroy(Request $request)
     {
         Auth::guard('web')->logout();
+
+        $request->session()->flush();
 
         $request->session()->invalidate();
 
