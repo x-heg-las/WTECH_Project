@@ -48,7 +48,8 @@ Route::get('/search', [ProductController::class, 'search'])
 Route::get('/order/store', [OrderController::class, 'store'])
                 ->name('store_order');
 
-Route::get('/checkout/payment', [ShoppingCartController::class, 'choosePaymentMethod']);
+Route::get('/checkout/payment', [ShoppingCartController::class, 'choosePaymentMethod'])
+                ->name('payment_method');
 
 Route::get('/activate/{option}/{value}/{page}', [ShoppingCartController::class, 'changeOption']);
 
@@ -73,26 +74,21 @@ Route::get('/shopping_cart', [ShoppingCartController::class, 'index'])
  //               ->name('recapitulation');
 
  Route::get('/checkout/recap', [OrderController::class, 'index'])
+                ->middleware('chack_payment_shipment')
                 ->name('recapitulation');
 
 Route::put('/quantity/{item}', [CartItemController::class, 'update']);
 
 Route::get('/', function () {
 
-    $out = new \Symfony\Component\Console\Output\ConsoleOutput();
-    if (Auth::user() != null){
-        $out->writeln(Auth::user()->name);
-    }
-    $out->writeln("------------------------------------------------------------------------------------------------");
-
     $new = Product::orderByDesc('updated_at')
-                    ->take(10)
+                    ->take(12)
                     ->get();
 
     $categories = Category::all();
 
     return view('layout.index', compact('new', $new, 'categories', $categories));
-});
+})->name('home');
 
 Route::get('/dashboard', function () {
     return view('dashboard');

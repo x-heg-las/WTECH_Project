@@ -57,12 +57,13 @@ class OrderController extends Controller
         $out->writeln("------------------------------------------------------------------------------------------------");
         $out->writeln($request);
         $out->writeln("------------------------------------------------------------------------------------------------");
-
+        
+        /*
         $request->validate([
             'customer_id' => 'required',
             'shopping_cart_id' => 'required',
         ]);
-
+*/
         //$shopping_items = ShoppingCart::with('cartItems')->find($request->shopping_cart_id);      // Toto treba srpavit na jednu query!!!!!
         
         //$shopping_items = ShoppingCart::find($request->shopping_cart_id)->cartItems()->get();
@@ -76,13 +77,20 @@ class OrderController extends Controller
         $out->writeln($shopping_items);
         $out->writeln("------------------------------------------------------------------------------------------------");
 
+
+        $total_price = 0;
+
+        foreach ($shopping_items as $item)
+        {
+            $total_price += $item->total_price;
+        }
         
         //Create new Order
         $order = Order::create([
             'customer_id' => $request->customer_id,
-            'total_price' => $cart->total_price
+            'total_price' => $total_price
         ]);
-
+      
         foreach($shopping_items as $item){
             OrderItem::create([
                 'order_id' => $order->id,
@@ -92,10 +100,10 @@ class OrderController extends Controller
                 'unit_price' => $item->unit_price
             ]);
 
-            $item->delete();
+            CartItem::destroy($item->id);
         }
 
-        $cart->delete();
+        ShoppingCart::destroy($cart->id);
         Session::forget('shopping_cart');
         Session::forget('cart_items');
 

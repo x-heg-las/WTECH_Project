@@ -71,7 +71,7 @@ class CartItemController extends Controller
         $insertedProducts = Session::get('cart_items', []);
 
         $newItem = Arr::pull($insertedProducts,  $id, function () use($shoppingCart, $product, $id) {
-   
+
             return  CartItem::firstOrNew(
                 ['shopping_cart_id' => $shoppingCart->id, 'product_id' => $product->id],
                 ['quantity' => 0, 'total_price' => 0, 'unit_price' => $product->price]
@@ -87,7 +87,7 @@ class CartItemController extends Controller
             $shoppingCart->save();
             $newItem->save();
         }
-        //dd(Session::get('cart_items'));
+       
         $request->session()->flash('message', 'Added to the sopping cart.');
         return redirect('products/'.$id);
     }

@@ -37,6 +37,8 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request)
     {
+        $sessionShoppingCart = Session::get('shopping_cart');
+        $sesionCartItems = Session::get('cart_items');
         $request->session()->flush();
         $request->authenticate();
         $request->session()->regenerate();
@@ -57,14 +59,21 @@ class AuthenticatedSessionController extends Controller
                 $shoppingCart->delete();
             }
 
-            if(!Session::has('shopping_cart'))
+            if(!$sessionShoppingCart)
             {
                 return redirect()->intended(RouteServiceProvider::HOME);
             }
 
-            $shoppingCart = Session::get('shopping_cart');
+            
+            $shoppingCart = $sessionShoppingCart;
             $shoppingCart->customer_id = $customer->id;
             $shoppingCart->save();
+            
+            foreach($sesionCartItems as $item) 
+            {
+                $item->shopping_cart_id = $shoppingCart->id;
+                $item->save();
+            }
 
             return redirect('/checkout/shipping');
         }

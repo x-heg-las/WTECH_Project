@@ -66,5 +66,6 @@ class Kernel extends HttpKernel
         'auth_admin' => \App\Http\Middleware\IsAdmin::class,
         'check_login' => \App\Http\Middleware\CheckoutLoginCheck::class,
         'check_search_input' => \App\Http\Middleware\EnsureSearchStringIsValid::class,
+        'chack_payment_shipment' => \App\Http\Middleware\ValidPaymentAndShippment::class,
     ];
 }

@@ -192,22 +192,14 @@ class AdminController extends Controller
      */
     public function destroy(Request $request, Product $product)
     {
-        $out = new \Symfony\Component\Console\Output\ConsoleOutput();
-        $out->writeln("------------------------------------------------------------------------------------------------");
-        $out->writeln($product);
-        $out->writeln("------------------------------------------------------------------------------------------------");
 
         // Delete chosen product.
         $images = $product->images()->get();
 
-        $out = new \Symfony\Component\Console\Output\ConsoleOutput();
-        $out->writeln("------------------------------------------------------------------------------------------------");
-        $out->writeln($images);
-        $out->writeln("------------------------------------------------------------------------------------------------");
-
         foreach($images as $image){
             if(File::exists(public_path("images/{$image->image_source}"))){
-                File::delete(public_path("images/{$image->image_source}"));
+                //uncomment this to delete image file in every product deletion
+                //File::delete(public_path("images/{$image->image_source}"));
             }
             $image->delete();
         }

@@ -20,7 +20,7 @@ class CategorySeeder extends Seeder
             ['name' => "Raspberry_Pi"],
             ['name' => "Displays"],
             ['name' => "Sensors"],
-            ['name' => "DYI"],
+            ['name' => "DIY"],
             ['name' => "SALE"],
             ['name' => "Powering"],
             ['name' => "Modules"]

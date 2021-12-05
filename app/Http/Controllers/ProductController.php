@@ -54,7 +54,8 @@ class ProductController extends Controller
         $gallery = Image::where('product_id', $product->id)->get();
         $parameters = Parameter::where('product_id', $product->id)->get();
         $recent = $request->session()->get('recently_viewed', []);
-        
+
+
         //Session remmembers only last 5 recently visited products
         if($recent && count($recent) > 4)
         {
@@ -177,7 +178,7 @@ class ProductController extends Controller
             $products = $products->orderBy("{$order_by}", "{$order}");
         }
 
-        $products = $products->paginate(10);
+        $products = $products->paginate(10)->withQueryString();
 
         return view('layout.filter', compact('products', $products));
     }

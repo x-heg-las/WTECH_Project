@@ -154,7 +154,7 @@ class ShoppingCartController extends Controller
             'street_and_number' => 'required|max:255',
             'city' => 'required',
             'zip_code' => 'required|min:5|max:5',
-            'telephone' => 'regex:/^\+421[0-9]{9}/',
+            'telephone' => 'regex:/^[0-9]{10}/',
             'email' => 'regex:/^.+@.+$/i'
         ]);
         
@@ -257,18 +257,6 @@ class ShoppingCartController extends Controller
     }
 
   
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request, Product $product)
-    {
-        
-    }
-
     /**
      * Display the specified resource.
      *
@@ -291,37 +279,4 @@ class ShoppingCartController extends Controller
         return redirect('/lauout.shopping-cart', compact('cart', $cart->find($cart->id)->get()));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
 }

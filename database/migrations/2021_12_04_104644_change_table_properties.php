@@ -51,6 +51,20 @@ class ChangeTableProperties extends Migration
                 ->onUpdate('cascade');
         });
 
+        Schema::table('customers', function (Blueprint $table) {
+            $table->dropForeign(['user_id']);
+            $table->foreign('user_id')->references('id')->on('users')
+            ->onDelete('cascade')
+            ->onUpdate('cascade');
+        });
+
+        Schema::table('shopping_carts', function (Blueprint $table) {
+            $table->dropForeign('shopping_cart_customer_id_foreign');
+            $table->foreign('customer_id')->references('id')->on('customers')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
+        });
+
         DB::statement("ALTER TABLE products
                        ALTER COLUMN description TYPE TEXT");
 
