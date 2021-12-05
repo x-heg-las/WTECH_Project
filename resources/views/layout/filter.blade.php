@@ -131,7 +131,7 @@
               <input name="max_price" type="number" step="0.01" aria-label="Highest price" class="form-control">
             </div>
 
-            <input class="btn btn-primary" type="submit" value="Submit">
+            <input class="btn btn-primary purple-btn mt-2" type="submit" value="Submit">
           </form>
           </div>
         </div>

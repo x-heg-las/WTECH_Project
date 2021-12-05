@@ -169,35 +169,7 @@ class ShoppingCartController extends Controller
         return view('layout.checkout-shipping', compact('customer', $customer, 'address', $address));
     }
 
-    public function recapitulation()
-    {/*
-        $cartId = $this->getCartIdFromSession();
-        $items = ShoppingCart::find($cartId)->cartItems()->get();
-
-        $out = new \Symfony\Component\Console\Output\ConsoleOutput();
-        $out->writeln("------------------------------------------------------------------------------------------------");
-        $out->writeln(Session::has('customer'));
-        $out->writeln("------------------------------------------------------------------------------------------------");
-
-        if(Session::has('customer') && Session::has('shipping') && Session::has('payment'))
-        {
-            $customer = Session::get('customer');
-            $shipping = Session::get('shipping');
-            $payment = Session::get('payment');
-            $sum = $items->sum('total_price');
-
-            return view('layout.checkout-recap',
-            compact(
-                'customer', $customer,
-                'shipping',
-                'payment',
-                'items', $items,
-                'sum'
-            ));
-        }
-
-        return view('layout.checkout-recap', compact('items', $items, 'customer', $customer));*/
-    }
+    
 
     public function choosePaymentMethod(Request $request)
     {
