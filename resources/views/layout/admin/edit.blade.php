@@ -40,9 +40,6 @@
                     </div>
                     <img src="/images/{{ $image->image_source }}" alt="product_images" class="img-fluid" width="400" height="400"/>
                     <label for="image_name">{{ $image->original_name }}</label>
-                    <!--<div class="input-group-append">               
-                        <button id="removeRow" type="button" class="btn btn-danger">Remove</button>
-                    </div>-->
                 </div>
             </div>
         @endforeach
