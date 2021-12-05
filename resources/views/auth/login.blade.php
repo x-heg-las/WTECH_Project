@@ -34,6 +34,7 @@
                         </div>
                         @isset($checkout)
                             <input type="hidden" name="checkout" value="checkout"/>
+                            <div class="alert alert-danger mt-2">If you login now, your saved shopping cart will be overwritten by current one.</div>
                         @endisset
                         <!-- Remember Me -->
                         <div class="block mt-4">

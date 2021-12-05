@@ -4,7 +4,7 @@
     </div>
     <div class="product-wrapper col-8 container-fluid d-flex align-item-begin align-content-start">
         <div class="product-description row mb-auto">
-            <a href="#"><p>{{ $product->name }}</p></a>
+            <a href="/products/{{$product->id}}"><p>{{ $product->name }}</p></a>
         </div>
         @auth
         <form class="product-meta row " action="{{url('remove_item_customer', [$item, $item->product_id])}}" method="POST">

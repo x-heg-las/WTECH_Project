@@ -89,6 +89,10 @@ class AuthenticatedSessionController extends Controller
      */
     public function destroy(Request $request)
     {
+        Session::forget('cart_items');
+
+        Session::forget('shopping_cart');
+
         Auth::guard('web')->logout();
 
         $request->session()->flush();
