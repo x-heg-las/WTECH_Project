@@ -36,7 +36,7 @@
                         <input class="form-check-input-lg" type="checkbox" name="remove[]" value="{{ $image->id }}" id="flexCheckDefault" style="transform: scale(2);">
                     </div>
                     <img src="/images/{{ $image->image_source }}" alt="product_images" class="img-fluid" width="400" height="400"/>
-                    <label for="image_name">{{ $image->image_source }}</label>
+                    <label for="image_name">{{ $image->original_name }}</label>
                     <!--<div class="input-group-append">               
                         <button id="removeRow" type="button" class="btn btn-danger">Remove</button>
                     </div>-->

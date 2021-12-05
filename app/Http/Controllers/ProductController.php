@@ -12,33 +12,13 @@ use App\Models\Parameter;
 
 class ProductController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
+    
     /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StoreProductRequest  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(StoreProductRequest $request)
     {
         //
     }
@@ -123,8 +103,6 @@ class ProductController extends Controller
 
             $category = $request->input('category');
             
-            //$category = Category::where('name', $category)->first()->products()->get();
-
             $products = Product::whereHas('categories', function($q) use ($category) {
                 $q->whereIn('name', $category);
             });
@@ -160,16 +138,6 @@ class ProductController extends Controller
             
             $products = $products->where('price', '<=', $max_price);
         }
-
-        // Find all products with request string in their name, order by sort
-        /*if ($request->has('order_by')){
-            $order_by = $request->input('order_by');
-            $order = (string) $request->input('order');
-
-            $products = Product::select("*")->where('name', 'ILIKE', "%{$search}%")->orderBy("{$order_by}", "{$order}")->paginate(10);
-        } else {
-            $products = Product::select("*")->where('name', 'ILIKE', "%{$search}%")->paginate(10);    
-        }*/
 
         if ($request->has('order_by')){
             $order_by = $request->input('order_by');

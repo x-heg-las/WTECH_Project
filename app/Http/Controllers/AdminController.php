@@ -8,6 +8,7 @@ use App\Models\Category;
 use App\Models\Image;
 use App\Models\CategoryProduct;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 use Session;
 use File;
@@ -69,7 +70,6 @@ class AdminController extends Controller
             'description' => $request->description,
             'price' => $request->price,
             'stock' => $request->stock,
-            'customer_id' => Session::get('customer')->id
         ]);
 
         if ($request->category != 'empty'){
@@ -79,17 +79,19 @@ class AdminController extends Controller
             ]);
         }
 
+    
         if($request->hasfile('images')){
             foreach($request->file('images') as $file)
-            {
+            {   
+                $timestamp = microtime(true);
                 $originalName = $file->getClientOriginalName();
-                $file->move(public_path('images'), md5($originalName));  
+                $file->move(public_path('images'), $timestamp.md5($originalName));  
                 $rec =  Image::create([
                     'product_id' => $product->id,
-                    'image_source' => md5($originalName),
+                    'image_source' => $timestamp.md5($originalName),
                     'original_name' => $originalName,
                 ]);
-            
+           
             }
         }
 
@@ -163,12 +165,13 @@ class AdminController extends Controller
         if($request->hasfile('images')){
             foreach($request->file('images') as $file)
             {
+                $timestamp = microtime(true);
                 $originalName = $file->getClientOriginalName();
                 
-                $file->move(public_path('images'), md5($originalName));  
+                $file->move(public_path('images'), $timestamp.md5($originalName));  
                 Image::create([
                     'product_id' => $product->id,
-                    'image_source' => md5($originalName),
+                    'image_source' => $timestamp.md5($originalName),
                     'original_name' => $originalName,
                 ]);
             }
@@ -198,8 +201,8 @@ class AdminController extends Controller
 
         foreach($images as $image){
             if(File::exists(public_path("images/{$image->image_source}"))){
-                //uncomment this to delete image file in every product deletion
-                //File::delete(public_path("images/{$image->image_source}"));
+            
+                File::delete(public_path("images/{$image->image_source}"));
             }
             $image->delete();
         }

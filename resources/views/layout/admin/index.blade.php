@@ -10,6 +10,7 @@
             <tr>
                 <th scope="col">#</th>
                 <th scope="col">Name</th>
+                <th scope="col">Thumbnail</th>
                 <th scope="col">Description</th>
                 <th scope="col">Date of creation</th>
                 <th scope="col">Options</th>
@@ -20,8 +21,7 @@
             <tr>
                 <th scope="row">{{$product->id}}</th>
                 <td><a href="/products/{{$product->id}}">{{$product->name}}</a></td>
-                <!--<td><img src="H.gif" alt="" height=100 width=100></img></td>            pato potrebujeme sem najak dostat obrazek je v produt-card :)--> 
-
+                <td><img src="{{ url('images/'.$product->images()->first()->image_source)}}" alt="NONE" width="100" height="100"></td>
                 <td>{{$product->description}}</td>
                 <td>{{$product->created_at->toFormattedDateString()}}</td>
                 <td>

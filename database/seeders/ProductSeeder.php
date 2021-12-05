@@ -19,7 +19,7 @@ class ProductSeeder extends Seeder
     public function run()
     {
         $products = Product::factory()
-            ->count(100)
+            ->count(5)
             ->has(Parameter::factory()->count(5))
             ->has(Image::factory()->count(3))
             ->create();
