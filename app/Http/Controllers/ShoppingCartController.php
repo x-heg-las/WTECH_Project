@@ -112,11 +112,13 @@ class ShoppingCartController extends Controller
             'email' => 'regex:/^.+@.+$/i'
         ]);
         
-
+        
         $customer = Session::has('customer') ? Session::get('customer') : null;
+        
         if(Auth::check())
         {
-            $customer = Customer::find(Auth::id());
+            $customer = Customer::where('user_id', Auth::id())->first();
+      
         }
 
         if(!$customer)
