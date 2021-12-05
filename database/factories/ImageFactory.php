@@ -19,7 +19,7 @@ class ImageFactory extends Factory
         $source = $this->faker->randomElement(['led_detail.png', 'electronics_arduino_diy.png']);
         $timestamp = microtime(true);
         
-        $old = file_get_contents(Storage::disk('local')->path('public/images/'.$source));
+        $old = file_get_contents(Storage::disk('local')->path('public/'.$source));
         $newPath = public_path('images/'.$timestamp.md5($source));
         file_put_contents($newPath, $old);
         return [
