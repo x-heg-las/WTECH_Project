@@ -1,7 +1,7 @@
 @extends('layout.app')
  
 @section('content')
-<h1>Nová úloha</h1>
+<h1>Product builder</h1>
 <hr>
 <form action="/admin/product" method="post" enctype="multipart/form-data">
     {{ csrf_field() }}
@@ -57,7 +57,7 @@
         </ul>
     </div>
     @endif
-    <button type="submit" class="btn btn-primary">Vytvoriť</button>
+    <button type="submit" class="btn btn-primary purple-btn">Create</button>
 </form>
 
 <script type="text/javascript">

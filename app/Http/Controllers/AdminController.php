@@ -25,10 +25,6 @@ class AdminController extends Controller
         // Load all products
         $products = Product::all();
 
-        $out = new \Symfony\Component\Console\Output\ConsoleOutput();
-        $out->writeln("------------------------------------------------------------------------------------------------");
-        $out->writeln($products);
-        $out->writeln("------------------------------------------------------------------------------------------------");
 
         return view('layout.admin.index', compact('products', $products));
     }

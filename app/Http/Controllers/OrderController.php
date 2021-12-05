@@ -53,29 +53,10 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-        $out = new \Symfony\Component\Console\Output\ConsoleOutput();
-        $out->writeln("------------------------------------------------------------------------------------------------");
-        $out->writeln($request);
-        $out->writeln("------------------------------------------------------------------------------------------------");
-        
-        /*
-        $request->validate([
-            'customer_id' => 'required',
-            'shopping_cart_id' => 'required',
-        ]);
-*/
-        //$shopping_items = ShoppingCart::with('cartItems')->find($request->shopping_cart_id);      // Toto treba srpavit na jednu query!!!!!
-        
-        //$shopping_items = ShoppingCart::find($request->shopping_cart_id)->cartItems()->get();
-        //$cart = ShoppingCart::find($request->shopping_cart_id);
+
         
         $shopping_items = Session::get('cart_items');
         $cart = Session::get('shopping_cart');
-
-        $out = new \Symfony\Component\Console\Output\ConsoleOutput();
-        $out->writeln("------------------------------------------------------------------------------------------------");
-        $out->writeln($shopping_items);
-        $out->writeln("------------------------------------------------------------------------------------------------");
 
 
         $total_price = 0;
