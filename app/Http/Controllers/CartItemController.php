@@ -37,16 +37,19 @@ class CartItemController extends Controller
             }
             else
             {
-                $cart = $cart =  ShoppingCart::firstOrCreate(
-                    ['customer_id' => $customer->id]
+                $cart =  ShoppingCart::firstOrCreate(
+                    ['customer_id' => $customer->id,
+                    'deleted_at' => null]
                 );
+              
             }
             Session::forget('cart_items');
-            
+       
             Session::put('shopping_cart', $cart);
             return $cart;
         });
-     
+
+
         $cartItems = Session::get('cart_items', function() use($shoppingCart) {
             if(Auth::check())
             {

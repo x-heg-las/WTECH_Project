@@ -41,15 +41,18 @@ class ShoppingCartController extends Controller
         $customer = Customer::where('user_id', Auth::id())->first();
 
         $shoppingCart = Session::get('shopping_cart', function () use($customer){
-            if(Auth::check())
+            if(!Auth::check())
             {
                 $cart =  ShoppingCart::firstOrNew(
-                    ['customer_id' => $customer->id]
+                    ['customer_id' => null]
                 );
             }
             else
             {
-                $cart =  Session::get('shopping_cart', new ShoppingCart);
+                $cart =  ShoppingCart::firstOrCreate(
+                    ['customer_id' => $customer->id,
+                    'deleted_at' => null]
+                );
             }
             Session::forget('cart_items');
             Session::put('shopping_cart', $cart);
