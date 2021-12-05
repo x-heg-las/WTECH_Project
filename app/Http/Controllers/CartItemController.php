@@ -26,19 +26,19 @@ class CartItemController extends Controller
     {   
         $quantity = $request->input('quantity');
         $product = Product::find($id);
-        $customerId = Customer::where('user_id', Auth::id())->first()->id;
+        $customer = Customer::where('user_id', Auth::id())->first();
         
-        $shoppingCart = Session::get('shopping_cart', function () use($customerId){
+        $shoppingCart = Session::get('shopping_cart', function () use($customer){
             if(! Auth::check())
             {
                 $cart =  ShoppingCart::firstOrNew(
-                    ['customer_id' => $customerId]
+                    ['customer_id' => null]
                 );
             }
             else
             {
                 $cart = $cart =  ShoppingCart::firstOrCreate(
-                    ['customer_id' => $customerId]
+                    ['customer_id' => $customer->id]
                 );
             }
             Session::forget('cart_items');
@@ -46,7 +46,7 @@ class CartItemController extends Controller
             Session::put('shopping_cart', $cart);
             return $cart;
         });
-      
+     
         $cartItems = Session::get('cart_items', function() use($shoppingCart) {
             if(Auth::check())
             {
@@ -62,29 +62,36 @@ class CartItemController extends Controller
             }
             return Session::get('cart_items', []);
         });
-  
+       
         if(!Session::has('cart_items'))
         {
             Session::put('cart_items', []);   
            
         }
+        
         $insertedProducts = Session::get('cart_items', []);
-
-        $newItem = Arr::pull($insertedProducts,  $id, function () use($shoppingCart, $product, $id) {
-
+        
+        $newItem = Arr::pull($insertedProducts,  $id, function () use($shoppingCart, $product) {
+           
             return  CartItem::firstOrNew(
                 ['shopping_cart_id' => $shoppingCart->id, 'product_id' => $product->id],
                 ['quantity' => 0, 'total_price' => 0, 'unit_price' => $product->price]
             );
         });
+    
         $newItem->quantity = $quantity + $newItem->quantity;
         $newItem->total_price = $newItem->quantity * $newItem->unit_price;
         $insertedProducts[$newItem->product_id] = $newItem;
         Session::put('cart_items', $insertedProducts);
 
+
         if(Auth::check())
         {
-            $shoppingCart->save();
+            if(!$newItem->shopping_cart_id)
+            {
+                $newItem->shopping_cart_id = $shoppingCart->id;
+            }
+            
             $newItem->save();
         }
        
@@ -92,51 +99,7 @@ class CartItemController extends Controller
         return redirect('products/'.$id);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StoreCartItemRequest  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(StoreCartItemRequest $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\CartItem  $cartItem
-     * @return \Illuminate\Http\Response
-     */
-    public function show(CartItem $cartItem)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\CartItem  $cartItem
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(CartItem $cartItem)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdateCartItemRequest  $request
-     * @param  \App\Models\CartItem  $cartItem
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UpdateCartItemRequest $request, CartItem $cartItem)
-    {
-
-    }
-
+  
     /**
      * Remove the specified resource from storage.
      *

@@ -157,4 +157,12 @@
                 @endforeach
             </div>
     </section>
+    <section>
+            <h2 class="text-center">Sale</h2>
+            <div class="row">
+                @foreach ($sale as $product)
+                    <x-product-card :product="$product"/>
+                @endforeach
+            </div>
+    </section>
 @endsection

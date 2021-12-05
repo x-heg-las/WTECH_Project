@@ -27,6 +27,7 @@ class RegisteredUserController extends Controller
 
         if($request->checkout)
         {
+            //stores the order from the session for registered customer 
             if(Session::has('transfered_cart'))
             {
                 Session::forget('transfered_cart');
@@ -79,12 +80,22 @@ class RegisteredUserController extends Controller
         ]);
 
         if(Session::has('transfered_cart'))
-        {
-            $cart = ShoppingCart::find(Session::get('transfered_cart')->id);
+        {   
+            //inserts transferred shopping cart and cart items to the database
+            $cart = Session::pull('transfered_cart');
             $cart->customer_id = $customer->id;
             $cart->save();
+            if(Session::has('cart_items'))
+            {
+                $items = Session::pull('cart_items');
+                foreach($items as $item)
+                {
+                    $item->shopping_cart_id = $cart->id;
+                    $item->save();
+                }
+            }
         }
-
+        Session::forget('shopping_cart');
         event(new Registered($user));
 
         Auth::login($user);

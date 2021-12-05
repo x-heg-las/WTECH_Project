@@ -18,40 +18,6 @@ use Session;
 class ShoppingCartController extends Controller
 {
 
-    public function getCartIdFromSession()
-    {/*
-        $session = Session::has('shopping_cart') ? Session::get('shopping_cart') : null;
-        
-        if(Auth::check())
-        {
-           
-            $customer = Customer::where('user_id', Auth::id())->first();
-
-            $shopping_cart = ShoppingCart::where('customer_id' ,$customer->id)->first();
-
-            if ($shopping_cart == null){
-                $id = DB::table('shopping_carts')->insertGetId([
-                    'customer_id' => $customer->id,
-                ]);
-                Session::put('shopping_cart', ShoppingCart::find($id));
-                return $id;
-            }
-
-            else{
-                return $shopping_cart->id;
-            }
-        }
-
-        if($session && ShoppingCart::find($session->id))
-        {
-            return $session->id;
-        }
-       
-        $id = DB::table('shopping_carts')->insertGetId([]);
-        Session::put('shopping_cart', ShoppingCart::find($id));
-        return $id;
-    */}
-
     public function changeOption(Request $request, $option, $value, $page)
     {
         if(Session::has($option))
@@ -72,12 +38,19 @@ class ShoppingCartController extends Controller
      */
     public function index(Request $request)
     {
-        $customerId = Customer::where('user_id', Auth::id())->first()->id;
+        $customer = Customer::where('user_id', Auth::id())->first();
 
-        $shoppingCart = Session::get('shopping_cart', function () use($customerId){
-            $cart =  ShoppingCart::firstOrNew(
-                ['customer_id' => $customerId]
-            );
+        $shoppingCart = Session::get('shopping_cart', function () use($customer){
+            if(Auth::check())
+            {
+                $cart =  ShoppingCart::firstOrNew(
+                    ['customer_id' => $customer->id]
+                );
+            }
+            else
+            {
+                $cart =  Session::get('shopping_cart', new ShoppingCart);
+            }
             Session::forget('cart_items');
             Session::put('shopping_cart', $cart);
             return $cart;
@@ -122,28 +95,6 @@ class ShoppingCartController extends Controller
    
     }
 
-    public function addToShoppingCart(Request $request, $id)
-    {
-        //$caca = new ShoppingCart();
-  
-        /*
-        $shoppingCart = ShoppingCart::find($this->getCartIdFromSession());
-        $quantity = $request->input('quantity');
-        $product = Product::find($id);
-        $newItem = CartItem::firstOrNew(
-            ['shopping_cart_id' => $shoppingCart->id, 'product_id' => $product->id],
-            ['quantity' => 0, 'total_price' => 0, 'unit_price' => $product->price]
-        );
-
-        $newItem->quantity = $quantity + $newItem->quantity;
-        $newItem->total_price = $newItem->quantity * $newItem->unit_price;
-        $newItem->save();
-
-        $request->session()->flash('message', 'Added to the sopping cart.');
-        return redirect('products/'.$id);
-        
-        */
-    }
 
     public function addShippingData(Request $request)
     {
@@ -165,7 +116,6 @@ class ShoppingCartController extends Controller
             $customer = Customer::find(Auth::id());
         }
 
-        //len pre testovanie
         if(!$customer)
         {
             $customer = Customer::create([
@@ -254,29 +204,6 @@ class ShoppingCartController extends Controller
             $sum += $item->total_price;
         }
         return view('layout.checkout-pay', compact('items', $items, 'sum', $sum));
-    }
-
-  
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        if (Auth::check())
-        {
-            $user = Auth::id();
-            
-        }
-        else
-        {
-            $user = Cache::get('id');
-        }
-
-        $cart = Customer::find($user)->shoppingCart;
-        return redirect('/lauout.shopping-cart', compact('cart', $cart->find($cart->id)->get()));
     }
 
 }

@@ -86,8 +86,12 @@ Route::get('/', function () {
                     ->get();
 
     $categories = Category::all();
-
-    return view('layout.index', compact('new', $new, 'categories', $categories));
+    
+    $sale = Product::whereHas('categories', function($q) {
+        $q->whereIn('name', ["SALE"]);
+    });
+    $sale = $sale->take(12)->get();
+    return view('layout.index', compact('new', $new, 'categories', $categories, 'sale', $sale));
 })->name('home');
 
 Route::get('/dashboard', function () {

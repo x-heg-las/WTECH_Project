@@ -146,11 +146,6 @@ class AdminController extends Controller
             'stock' => 'required',
         ]);
 
-        $out = new \Symfony\Component\Console\Output\ConsoleOutput();
-        $out->writeln("------------------------------------------------------------------------------------------------");
-        $out->writeln($request->remove);
-        $out->writeln("------------------------------------------------------------------------------------------------");
-
         if($request->has('remove')){
             $images = Image::select("*")->whereIn('id', $request->remove)->get();
 
@@ -161,6 +156,16 @@ class AdminController extends Controller
                 $image->delete();
             }
         }
+
+        if($request->categorySelect)
+        {
+            $category = CategoryProduct::where('product_id', $product->id)->first();
+            $categoryName = Category::where('id', $category->category_id)->first();
+            $category->category_id = $categoryName->id;
+            $category->save();
+            
+        }
+
 
         if($request->hasfile('images')){
             foreach($request->file('images') as $file)

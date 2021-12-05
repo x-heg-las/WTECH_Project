@@ -16,10 +16,10 @@ class ParameterFactory extends Factory
     public function definition()
     {
         return [
-            'key' => $this->faker->randomElement(['RAM', 'Memory', 'Storage', 'Brand']),
+            'key' => $this->faker->randomElement(['Memory', 'Storage']),
             'text' => Str::random(10),
-            'number' => $this->faker->randomNumber(),
-            'units' => $this->faker->randomElement(['MB', 'KB', 'GB', 'TB']),
+            'number' => $this->faker->randomNumber([1, 2,4, 8, 16, 32]),
+            'units' => $this->faker->randomElement(['GB']),
             'product_id' => Product::all()->random()->id,
         ];
     }

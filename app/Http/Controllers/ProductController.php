@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Models\Product;
+use App\Models\CategoryProduct;
 use App\Models\Category;
 use App\Models\Image;
 use App\Models\Parameter;
@@ -13,16 +14,6 @@ use App\Models\Parameter;
 class ProductController extends Controller
 {
     
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
     /**
      * Display the specified resource.
      *
@@ -47,10 +38,26 @@ class ProductController extends Controller
         {
             $request->session()->push('recently_viewed', $product);
         }
-            
+        
+        $category = CategoryProduct::where('product_id', $product->id)->get()->first();
+        $similar = null;
+        if($category)
+        {
+           
+            $similar = Product::whereHas('categories', function($q) use ($category) {
+                $q->whereIn('name', [$category->category()->first()->name]);
+            });
+
+            $similar = $similar->take(4)->get();
+        }
 
         // Show product detail page
-        return view('layout.product_detail',compact('product', $product, 'gallery', $gallery, 'parameters', $parameters, 'request', $request, 'recent', $recent));
+        return view('layout.product_detail',compact('product', $product,
+         'gallery', $gallery,
+         'parameters', $parameters,
+         'request', $request,
+         'recent', $recent,
+         'similar', $similar));
     }
 
     /**
@@ -102,7 +109,7 @@ class ProductController extends Controller
         if ($request->has('category')){
 
             $category = $request->input('category');
-            
+
             $products = Product::whereHas('categories', function($q) use ($category) {
                 $q->whereIn('name', $category);
             });

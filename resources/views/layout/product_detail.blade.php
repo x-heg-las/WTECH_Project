@@ -92,83 +92,11 @@
                             </div>
                             <div class="tab-pane fade" id="profile">
                                 <div class="row">
-                                    <div class="col-md-4 offset-md-2">
-                                        <div class="card product-card">
-                                            <a href="#">
-                                                <img src="img/electronics_arduino_diy.png" alt="Arduino"
-                                                    class="img-fluid" />
-                                            </a>
-                                            <section>
-                                                <div class="card-body">
-                                                    <a href="#">
-                                                        <h3 class="text-truncate">Product name</h3>
-                                                    </a>
-                                                </div>
-                                                <div class="card-body">
-                                                    123 €
-                                                </div>
-                                            </section>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-4 offset-md-2">
-                                        <div class="card product-card">
-                                            <a href="#">
-                                                <img src="img/electronics_arduino_diy.png" alt="Arduino"
-                                                    class="img-fluid" />
-                                            </a>
-                                            <section>
-                                                <div class="card-body">
-                                                    <a href="#">
-                                                        <h3 class="text-truncate">Product name</h3>
-                                                    </a>
-                                                </div>
-                                                <div class="card-body">
-                                                    123 €
-                                                </div>
-                                            </section>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-md-4 offset-md-2">
-                                        <div class="card product-card">
-                                            <a href="#">
-                                                <img src="img/electronics_arduino_diy.png" alt="Arduino"
-                                                    class="img-fluid" />
-                                            </a>
-                                            <section>
-                                                <div class="card-body">
-                                                    <a href="#">
-                                                        <h3 class="text-truncate">Product name</h3>
-                                                    </a>
-                                                </div>
-                                                <div class="card-body">
-                                                    123 €
-                                                </div>
-                                            </section>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-4 offset-md-2">
-                                        <div class="card product-card">
-                                            <a href="#">
-                                                <img src="img/electronics_arduino_diy.png" alt="Arduino"
-                                                    class="img-fluid" />
-                                            </a>
-                                            <section>
-                                                <div class="card-body">
-                                                    <a href="#">
-                                                        <h3 class="text-truncate">Product name</h3>
-                                                    </a>
-                                                </div>
-                                                <div class="card-body">
-                                                    123 €
-                                                </div>
-                                            </section>
-                                        </div>
-                                    </div>
+                                @isset($similar)
+                                    @foreach($similar as $item)
+                                    <x-product-card :product="$item"/>
+                                    @endforeach
+                                @endisset
                                 </div>
                             </div>
                         </div>
