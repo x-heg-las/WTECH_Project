@@ -54,7 +54,9 @@
             <div class="col-4 col-sm-2">
                 <span class="d-inline-block">Qty.: {{ $item->quantity }}</span>
             </div>
-            <div class="col-4 col-sm-2"><span class="d-inline-block">Type: something</span></div>
+            @if($item->product()->get()->first()->categories()->first())
+            <div class="col-4 col-sm-2"><span class="d-inline-block">Category: {{ $item->product()->get()->first()->categories()->first()->name }}</span></div>
+            @endif
             <div class="col-4 col-sm-2"><span class="d-inline-block">{{ $item->total_price }}$</span></div>
         </div>
         @endforeach

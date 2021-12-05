@@ -92,7 +92,9 @@
     @foreach($items as $item)
     <div class="row my-2">
         <div class="col-6">{{ $item->product()->get()->first()->name }}</div>
-        <div class="col-2">Product type</div>
+        @if($item->product()->get()->first()->categories()->first())
+        <div class="col-2">Category: {{ $item->product()->get()->first()->categories()->first()->name }}</div>
+        @endif
         <div class="col-2">{{ $item->unit_price }} $</div>
         <div class="col-2">{{ $item->total_price }} $</div>
     </div>
@@ -116,7 +118,7 @@
         <label class="form-check-label" for="flexCheckDefault">I agree with the terms and conditions</label>
     </div>
     <div class="col-sm-3 d-flex flex-fill">
-        <a href="payment_information.html" role="button" class="btn btn-dark btn-lg w-100 w-sm-auto">Back</a>
+        <a href="/checkout/payment" role="button" class="btn btn-dark btn-lg w-100 w-sm-auto">Back</a>
     </div>
     <div class="col-sm-3 d-flex flex-fill ">
         <a href="{{ route('store_order', ['customer_id' => $customer->id, 'shopping_cart_id' => Session::get('shopping_cart')]) }}" role="button" class=" btn purple-btn btn-lg w-100 w-sm-auto">Confirm order</a>
