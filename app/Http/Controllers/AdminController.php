@@ -157,13 +157,12 @@ class AdminController extends Controller
             }
         }
 
-        if($request->categorySelect)
+        if($request->has('categorySelect'))
         {
             $category = CategoryProduct::where('product_id', $product->id)->first();
-            $categoryName = Category::where('id', $category->category_id)->first();
-            $category->category_id = $categoryName->id;
+            //$categoryName = Category::where('id', $category->category_id)->first();
+            $category->category_id = $request->categorySelect;
             $category->save();
-            
         }
 
 
